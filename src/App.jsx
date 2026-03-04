@@ -1,22 +1,25 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Header from './components/Header.jsx'
+import Bg from './components/Bg.jsx'
+import Section1 from './components/Section1.jsx'
+import Section2 from './components/Section2.jsx'
+import Section3 from './components/Section3.jsx'
+import Section4 from './components/Section4.jsx'
+import Footer from './components/Footer.jsx'
+
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      
+      <Header />
+      <Bg />
+      <Section1 />
+      <Section2 />
+      <Section3 />
+      <Section4 />
+      <Footer />
     </>
   )
 }
