@@ -7,7 +7,7 @@ const Section1 = () => {
   const [isWeatherDetail, setIsWeatherDetail] = useState(false);
   const [weather, setWeather] = useState(null);
 
-  const API_KEY = '33604f04b412989cfbb84fb5b5a16ef5'; // 여기에 키를 입력하세요
+  const API_KEY = ''; // 여기에 키를 입력하세요
 
   useEffect(() => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${API_KEY}&units=metric`)
