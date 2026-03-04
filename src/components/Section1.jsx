@@ -14,7 +14,7 @@ const Section1 = () => {
   const [isWeatherDetail, setIsWeatherDetail] = useState(false);
   const [weather, setWeather] = useState(null);
 
-  const API_KEY = 'YOUR_API_KEY'; // API Key 유지
+  const API_KEY = VITE_WEATHER_API_KEY; // API Key 유지
 
   useEffect(() => {
     const fetchWeather = async () => {
