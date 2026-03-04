@@ -1,17 +1,16 @@
 @import "./variables.scss";
 
+*{margin: 0;padding: 0; box-sizing: border-box;}
+
 .section2 {
+  position: relative;
   width: 100%;
   min-height: 100vh;
-  background: #bfbab5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #0062a3;
+  padding: 160px 0;
 
   .section2-inner {
     max-width: 1440px;
-    display: flex;
-    gap: 60px;
     margin: 0 auto;
   }
 
@@ -39,17 +38,6 @@
       justify-content: space-between;
       align-items: center;
 
-      .card-text {
-        h3 {
-          margin-bottom: 8px;
-        }
-
-        p {
-          font-size: 14px;
-          opacity: 0.7;
-        }
-      }
-
       .card-thumb {
         width: 80px;
         height: 80px;
@@ -61,10 +49,15 @@
 
   /* ===== Right ===== */
   .playlist-detail {
-    width: 65%;
+    position: absolute;
+    top: 130px;
+    right: 0;   // ⭐️ 완전히 오른쪽에 붙임
+    width: 55%;
     background: #efefef;
-    border-radius: 40px;
+    border-radius: 40px 0 0 40px; // 오른쪽 붙은 느낌
     padding: 50px;
+    overflow: hidden;
+    padding-right: 0;
 
     .detail-top {
       display: flex;
@@ -80,21 +73,11 @@
       .detail-info {
         flex: 1;
 
-        h2 {
-          margin-bottom: 15px;
-        }
-
-        p {
-          font-size: 14px;
-          opacity: 0.7;
-        }
-
         .progress-bar {
           width: 100%;
           height: 4px;
           background: #ccc;
           margin: 30px 0;
-          position: relative;
 
           .progress {
             width: 30%;
@@ -105,8 +88,8 @@
 
         .player-controls {
           display: flex;
-          align-items: center;
-          gap: 20px;
+          gap: 30px;
+          padding-top: 20px;
 
           .desc-btn {
             padding: 12px 30px;
@@ -121,8 +104,15 @@
           .next-btn {
             border: none;
             background: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
+            color: #333;
+            transition: 0.3s;
+
+            &:hover {
+              transform: scale(1.15);
+              color: #000;
+            }
           }
         }
       }
@@ -132,25 +122,28 @@
       margin: 50px 0 20px;
     }
 
+    /* ⭐️ 여기 핵심 수정 */
     .detail-list {
       display: flex;
       gap: 20px;
+      width: max-content; // 내부를 더 넓게
+    }
 
-      .detail-card {
-        width: 120px;
+    .detail-card {
+      width: 140px;
+      flex-shrink: 0; // 줄어들지 않게
 
-        .detail-thumb {
-          width: 120px;
-          height: 120px;
-          background: #9d9d9d;
-          border-radius: 20px;
-          margin-bottom: 10px;
-        }
+      .detail-thumb {
+        width: 140px;
+        height: 140px;
+        background: #9d9d9d;
+        border-radius: 20px;
+        margin-bottom: 10px;
+      }
 
-        p {
-          font-size: 12px;
-          opacity: 0.6;
-        }
+      p {
+        font-size: 12px;
+        opacity: 0.6;
       }
     }
   }
