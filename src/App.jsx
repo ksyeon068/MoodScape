@@ -6,6 +6,8 @@ import Section2 from './components/Section2.jsx'
 import Section3 from './components/Section3.jsx'
 import Section4 from './components/Section4.jsx'
 import Footer from './components/Footer.jsx'
+
+import { ApiProvider } from './context/ApiContext'
 import './App.css'
 
 function App() {
