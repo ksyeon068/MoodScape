@@ -2,61 +2,199 @@
 @use './variables' as *;
 
 .about {
-  position: relative;
-  height: 250vh;
-  background: #bfbfbf;
+    padding-top: 50px;
+    position: relative;
+    height: 400vh;
+    background: #9b9198;
+    //overflow: hidden;
+
+  .top_des {
+        padding-top: 40px;
+        position: relative;
+
+        h2 {
+            display: flex;
+            font-family: $font-En;
+            font-weight: 700;
+            letter-spacing: 5px;
+            font-size: 60px;
+            color: $text-color;
+        }
+
+        .left_des {
+            justify-content: flex-start;
+            //padding-bottom: 20px;
+        }
+
+        .right_des {
+            justify-content: flex-end;
+        }
+    }
 
   .inner {
-    max-width: 1440px;
-    margin: 0 auto;
-    position: relative;
-    height: 100%;
-  }
+        max-width: 1440px;
+        margin: 0 auto;
+        position: relative;
+        height: 100%;
+        //background-color: red;
+    }
 
   .center-wrapper {
-    position: relative;
-    height: 100%;
-  }
+        position: relative;
+        height: 350vh;
+        //background: aqua;
+    }
 
   .sticky-circle {
-    position: sticky;
-    top: 50vh;
-    transform: translateY(-50%);
-    width: 420px;
-    height: 420px;
-    margin: 0 auto;
-    border-radius: 50%;
-    overflow: hidden;
-    z-index: 1;
-    background: red;
+        position: sticky;
+        top: 52vh;
+        transform: translateY(-50%);
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        border-radius: 50%;
+        overflow: hidden;
+        z-index: 2;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
-  }
 
   .scroll-content {
     position: absolute;
     top: 0;
     width: 100%;
-    padding: 10% 0;
+    //height: 100%;
+    padding: 50px 0;
     z-index: 2;
+    //background: rgba(0, 128, 0, 0.445);
 
-    .left-content {
-      max-width: 320px;
+    p, h3 {
+      color: white;
+      line-height: 1.6;
+      font-size: 24px;
+      letter-spacing: 3px;
+      font-weight: 400;
     }
 
-    .right-content {
-      max-width: 320px;
-      margin-left: auto;
-      margin-top: 60vh;
+    .text1 { //변화하는 환경 속에서
+      position: absolute;
+      top: 50vh;
+      left: 0;
+
+      h3{font-size: 30px;}
     }
 
-    .bottom-text {
-      text-align: center;
-      margin-top: 80vh;
+    .text2 { //날씨는 우리 일상에~
+        position: absolute;
+        top: 80vh;
+        right: 0;
+        text-align: right;
+    }
+
+    .text3 { //하루의 분위기 활동방식~
+        position: absolute;
+        top: 120vh;
+        left: 0;
+    }
+
+    .text4 { //날씨는 생활의 리듬을
+        position: absolute;
+        top: 170vh;
+        left: 0;
+    }
+
+    .text5 { //moodscape는 오늘의 날씨 정보를 기반으로
+        position: absolute;
+        top: 230vh;
+        right: 0;
+        text-align: right;
+
+        span{
+            font-family: $font-En;
+        }
+    }
+
+    .bottom-text.text6 { //당신의 환경에 가장 어울리는~
+        position: absolute;
+        top: 340vh;
+        width: 100%;
+        text-align: center;
     }
   }
+
+  
+  /* image circles */
+    .circle {
+        position: absolute;
+        border-radius: 50%;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+
+    .circle1 {
+        width: 120px;
+        height: 120px;
+        top: 24vh;
+        right: 180px;
+        z-index: 2;
+    }
+
+    .circle2 {
+        width: 140px;
+        height: 140px;
+        top: 450px;
+        left: 80px;
+    }
+
+    .circle3 {
+        width: 130px;
+        height: 130px;
+        background: aqua;
+        top: 780px;
+        right: 100px;
+    }
+
+    .circle4 {
+        width: 110px;
+        height: 110px;
+        top: 300vh;
+        left: 120px;
+    }
+
+  /* decorative circles */
+
+  .deco1 {
+    width: 70px;
+    height: 70px;
+    background: #ddd;
+    top: 650px;
+    left: 350px;
+  }
+
+  .deco2 {
+    width: 140px;
+    height: 140px;
+    background: #ddd;
+    top: 20vh;
+    right: 80px;
+  }
+
+  .deco3 {
+    width: 70px;
+    height: 70px;
+    background: #ddd;
+    top: 340vh;
+    right: 40px;
+  }
 }
+
