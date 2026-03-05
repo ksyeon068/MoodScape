@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Section1.scss';
 import { musicData } from './musicData';
 
-// React Icons (BiPause 추가됨)
+// React Icons
 import { BiShuffle, BiSkipPrevious, BiPlay, BiPause, BiSkipNext, BiRepeat, BiListUl, BiX } from "react-icons/bi";
 import { FiMapPin, FiImage, FiChevronDown, FiWind, FiDroplet, FiEye } from "react-icons/fi";
 import { MdOutlineEqualizer, MdWaves } from "react-icons/md";
@@ -23,6 +23,7 @@ const Section1 = () => {
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY; // 본인의 API 키를 입력하세요
 
   // --- [2. 뮤직 플레이어 상태 관리] ---
+  const [playlist, setPlaylist] = useState(musicData); 
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -33,9 +34,38 @@ const Section1 = () => {
   const audioRef = useRef(null);
   const progressBarRef = useRef(null);
 
-  const currentSong = musicData[currentSongIndex];
+  const currentSong = playlist[currentSongIndex];
 
-  // --- [날씨 API 로직 (유지)] ---
+  // --- [음악 파일 자동 길이 추출 로직] ---
+  useEffect(() => {
+    const fetchDurations = async () => {
+      const updatedPlaylist = await Promise.all(
+        musicData.map((song) => {
+          return new Promise((resolve) => {
+            const audio = new Audio(song.audioSrc);
+            
+            audio.addEventListener('loadedmetadata', () => {
+              const totalSeconds = audio.duration;
+              const minutes = Math.floor(totalSeconds / 60);
+              const seconds = Math.floor(totalSeconds % 60);
+              const formattedDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+              
+              resolve({ ...song, duration: formattedDuration });
+            });
+
+            audio.addEventListener('error', () => {
+              resolve({ ...song, duration: "--:--" });
+            });
+          });
+        })
+      );
+      setPlaylist(updatedPlaylist);
+    };
+
+    fetchDurations();
+  }, []);
+
+  // --- [날씨 API 로직] ---
   useEffect(() => {
     const fetchAllWeather = async () => {
       try {
@@ -80,17 +110,18 @@ const Section1 = () => {
     }
   };
 
-  const hourlyData = forecast ? forecast.list.slice(0, 6).map((item) => {
+  // 수정: slice(0, 7)로 변경하여 7개 항목 렌더링, 아이콘 크기 26으로 증가
+  const hourlyData = forecast ? forecast.list.slice(0, 7).map((item) => {
     const time = new Date(item.dt * 1000).getHours();
     return {
       time: `${time > 12 ? time - 12 : time} ${time >= 12 ? 'P.M.' : 'A.M.'}`,
-      icon: getWeatherIcon(item.weather[0].main, 24),
+      icon: getWeatherIcon(item.weather[0].main, 32), 
       temp: `${Math.round(item.main.temp)}°`
     };
-  }) : Array(6).fill({ time: '-', icon: <WiDaySunny size={24}/>, temp: '-' });
+  }) : Array(7).fill({ time: '-', icon: <WiDaySunny size={32}/>, temp: '-' });
 
   if (weather && hourlyData[0]) {
-    hourlyData.unshift({ time: '현재', icon: getWeatherIcon(weather.weather[0].main, 24), temp: `${Math.round(weather.main.temp)}°` });
+    hourlyData.unshift({ time: '현재', icon: getWeatherIcon(weather.weather[0].main, 32), temp: `${Math.round(weather.main.temp)}°` });
     hourlyData.pop(); 
   }
 
@@ -127,15 +158,12 @@ const Section1 = () => {
 
 
   // --- [3. 뮤직 플레이어 컨트롤 로직] ---
-
-  // 곡이 변경될 때 자동 재생 처리
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && audioRef.current) {
       audioRef.current.play().catch(e => console.log("재생 오류:", e));
     }
   }, [currentSongIndex]);
 
-  // 재생/일시정지 토글
   const togglePlay = () => {
     if (isPlaying) {
       audioRef.current.pause();
@@ -145,35 +173,30 @@ const Section1 = () => {
     setIsPlaying(!isPlaying);
   };
 
-  // 다음 곡 재생 (셔플 켜져있으면 랜덤)
   const playNext = () => {
     if (isShuffle) {
       let randomIndex = currentSongIndex;
-      while (randomIndex === currentSongIndex) {
-        randomIndex = Math.floor(Math.random() * musicData.length);
+      while (randomIndex === currentSongIndex && playlist.length > 1) {
+        randomIndex = Math.floor(Math.random() * playlist.length);
       }
       setCurrentSongIndex(randomIndex);
     } else {
-      setCurrentSongIndex((prev) => (prev + 1) % musicData.length);
+      setCurrentSongIndex((prev) => (prev + 1) % playlist.length);
     }
   };
 
-  // 이전 곡 재생
   const playPrev = () => {
-    setCurrentSongIndex((prev) => (prev - 1 + musicData.length) % musicData.length);
+    setCurrentSongIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
   };
 
-  // 오디오 메타데이터 로드 시 전체 길이 설정
   const handleLoadedMetadata = () => {
     setDuration(audioRef.current.duration);
   };
 
-  // 시간 업데이트 (진행바용)
   const handleTimeUpdate = () => {
     setCurrentTime(audioRef.current.currentTime);
   };
 
-  // 스크러빙(이동) 기능: 프로그레스 바 클릭 시 해당 위치로 재생 이동
   const handleScrub = (e) => {
     if (!progressBarRef.current) return;
     const progressBar = progressBarRef.current;
@@ -185,16 +208,14 @@ const Section1 = () => {
     setCurrentTime(newTime);
   };
 
-  // 곡이 끝났을 때 처리
   const handleEnded = () => {
     if (isRepeat) {
-      audioRef.current.play(); // 단일 곡 반복
+      audioRef.current.play(); 
     } else {
-      playNext(); // 다음 곡으로 넘어가기
+      playNext(); 
     }
   };
 
-  // 시간 포맷팅 함수 (초 -> 분:초)
   const formatTime = (timeInSeconds) => {
     if (isNaN(timeInSeconds)) return "0:00";
     const minutes = Math.floor(timeInSeconds / 60);
@@ -202,32 +223,23 @@ const Section1 = () => {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // 플레이리스트에서 직접 곡 클릭 시 재생
   const selectSongFromList = (index) => {
     setCurrentSongIndex(index);
     setIsPlaying(true);
   };
 
-  // 진행률 계산 (0 ~ 100%)
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
-
 
   return (
     <section className={`hero-container ${weatherClass}`}>
       <div className="inner">
-        
-        {/* 중앙 아트워크 */}
-        <div className="center-art">
-          <div className="icon-box"><FiImage size={60} color="white" /></div>
-        </div>
 
         {/* --- [뮤직 위젯 UI] --- */}
         <div className={`music-widget ${isMusicList ? 'expanded' : ''}`}>
           
-          {/* 눈에 보이지 않는 HTML5 Audio 요소 */}
           <audio 
             ref={audioRef}
-            src={currentSong.audioSrc}
+            src={currentSong?.audioSrc}
             onLoadedMetadata={handleLoadedMetadata}
             onTimeUpdate={handleTimeUpdate}
             onEnded={handleEnded}
@@ -236,7 +248,7 @@ const Section1 = () => {
           {!isMusicList ? (
             <div className="player-view">
               
-              {/* 진행 바 (스크러빙 기능 포함) */}
+              {/* 진행 바 */}
               <div className="progress-area">
                 <span className="time">{formatTime(currentTime)}</span>
                 <div 
@@ -253,38 +265,15 @@ const Section1 = () => {
 
               {/* 컨트롤러 */}
               <div className="controls">
-                {/* 셔플 버튼 */}
-                <button 
-                  className={`icon-btn ${isShuffle ? 'active' : ''}`} 
-                  onClick={() => setIsShuffle(!isShuffle)}
-                >
+                <button className={`icon-btn ${isShuffle ? 'active' : ''}`} onClick={() => setIsShuffle(!isShuffle)}>
                   <BiShuffle size={20} />
                 </button>
-
-                {/* 이전 곡 */}
-                <button className="icon-btn" onClick={playPrev}>
-                  <BiSkipPrevious size={28} />
-                </button>
-
-                {/* 재생 / 일시정지 */}
+                <button className="icon-btn" onClick={playPrev}><BiSkipPrevious size={28} /></button>
                 <button className="play-btn" onClick={togglePlay}>
-                  {isPlaying ? (
-                    <BiPause size={36} color="white" />
-                  ) : (
-                    <BiPlay size={36} color="white" style={{ marginLeft: '4px' }} />
-                  )}
+                  {isPlaying ? <BiPause size={36} color="white" /> : <BiPlay size={36} color="white" style={{ marginLeft: '4px' }} />}
                 </button>
-
-                {/* 다음 곡 */}
-                <button className="icon-btn" onClick={playNext}>
-                  <BiSkipNext size={28} />
-                </button>
-
-                {/* 반복 재생 (루프) */}
-                <button 
-                  className={`icon-btn ${isRepeat ? 'active' : ''}`} 
-                  onClick={() => setIsRepeat(!isRepeat)}
-                >
+                <button className="icon-btn" onClick={playNext}><BiSkipNext size={28} /></button>
+                <button className={`icon-btn ${isRepeat ? 'active' : ''}`} onClick={() => setIsRepeat(!isRepeat)}>
                   <BiRepeat size={20} />
                 </button>
               </div>
@@ -292,17 +281,12 @@ const Section1 = () => {
               {/* 하단 트랙 정보 */}
               <div className="footer-info">
                 <div className="album-mini">
-                  {/* 앨범 커버 이미지 연동 */}
-                  {currentSong.cover ? (
-                    <img src={currentSong.cover} alt="album cover" />
-                  ) : (
-                    <FiImage size={20} color="white" />
-                  )}
+                  {currentSong?.cover ? <img src={currentSong.cover} alt="album cover" /> : <FiImage size={20} color="white" />}
                 </div>
                 <div className="track-info">
                   <MdOutlineEqualizer size={20} className="eq-icon"/>
                   <span className="title" style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                    {currentSong.title}
+                    {currentSong?.title || "Loading..."}
                   </span>
                 </div>
                 <button className="list-btn" onClick={(e) => { e.stopPropagation(); setIsMusicList(true); }}>
@@ -316,14 +300,14 @@ const Section1 = () => {
               <div className="list-header">
                 <div className="text-group">
                   <h3>PLAYLIST: SUNNY DAY!</h3>
-                  <span>현재 {musicData.length}곡이 있습니다.</span>
+                  <span>현재 {playlist.length}곡이 있습니다.</span>
                 </div>
                 <button className="close-btn" onClick={(e) => { e.stopPropagation(); setIsMusicList(false); }}><BiX size={28} /></button>
               </div>
               <div className="list-content">
                  <span className="label">TRACKLIST</span>
                  <div className="scroll-area">
-                    {musicData.map((song, index) => (
+                    {playlist.map((song, index) => (
                       <div 
                         key={song.id} 
                         className={`song-item ${index === currentSongIndex ? 'playing' : ''}`}
@@ -339,9 +323,8 @@ const Section1 = () => {
                             <span className="artist">{song.artist}</span>
                           </div>
                         </div>
-                        {/* 현재 재생 중인 곡은 이퀄라이저 아이콘 표시 */}
                         <span className="duration">
-                          {index === currentSongIndex && isPlaying ? <MdOutlineEqualizer size={16} /> : song.duration}
+                          {index === currentSongIndex && isPlaying ? <MdOutlineEqualizer size={16} /> : (song.duration || "로딩중...")}
                         </span>
                       </div>
                     ))}
@@ -351,7 +334,7 @@ const Section1 = () => {
           )}
         </div>
 
-        {/* --- [날씨 위젯 영역 - 수정 없이 유지] --- */}
+        {/* --- [날씨 위젯 영역] --- */}
         <div 
           className={`weather-widget ${isWeatherDetail ? 'expanded' : ''}`}
           onClick={() => !isWeatherDetail && setIsWeatherDetail(true)}
@@ -378,7 +361,13 @@ const Section1 = () => {
                     <p className="summary-text">{weather?.weather[0].description || '날씨 정보를 불러오는 중입니다.'}</p>
                     <div className="divider"></div>
                     <div className="hourly-list">
-                      {hourlyData.map((item, idx) => (<div key={idx} className="hour-item"><span className="h-time">{item.time}</span><div className="h-icon">{item.icon}</div><span className="h-temp">{item.temp}</span></div>))}
+                      {hourlyData.map((item, idx) => (
+                        <div key={idx} className="hour-item">
+                          <span className="h-time">{item.time}</span>
+                          <div className="h-icon">{item.icon}</div>
+                          <span className="h-temp">{item.temp}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                   <div className="bottom-cards">
@@ -403,7 +392,6 @@ const Section1 = () => {
           )}
         </div>
 
-        {/* 화살표 */}
         <div className="scroll-indicator">
           <FiChevronDown size={40} className="arrow first" /><FiChevronDown size={40} className="arrow second" />
         </div>
