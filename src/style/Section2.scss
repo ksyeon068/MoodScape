@@ -6,7 +6,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: #0062a3;
+  background: #A9CCE4;
   padding: 160px 0;
 
   .section2-inner {
@@ -17,6 +17,7 @@
   /* ===== Left ===== */
   .playlist-list {
     width: 35%;
+    margin-top: -30px;
 
     .section-title {
       font-size: 28px;
@@ -41,9 +42,28 @@
       .card-thumb {
         width: 80px;
         height: 80px;
-        background: #9d9d9d;
         border-radius: 20px;
+
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
       }
+    }
+  }
+
+  .playlist-nav {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 10px 0;
+
+    &.up {
+      align-self: center;
+    }
+
+    &.down {
+      align-self: center;
     }
   }
 
@@ -51,10 +71,10 @@
   .playlist-detail {
     position: absolute;
     top: 130px;
-    right: 0;   // ⭐️ 완전히 오른쪽에 붙임
+    right: 0;
     width: 55%;
     background: #efefef;
-    border-radius: 40px 0 0 40px; // 오른쪽 붙은 느낌
+    border-radius: 40px 0 0 40px;
     padding: 50px;
     overflow: hidden;
     padding-right: 0;
@@ -66,15 +86,18 @@
       .album-cover {
         width: 250px;
         height: 250px;
-        background: #9d9d9d;
         border-radius: 30px;
+
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       .detail-info {
         flex: 1;
 
         .progress-bar {
-          width: 100%;
+          width: 80%;
           height: 4px;
           background: #ccc;
           margin: 30px 0;
@@ -122,23 +145,19 @@
       margin: 50px 0 20px;
     }
 
-    /* ⭐️ 여기 핵심 수정 */
-    .detail-list {
-      display: flex;
-      gap: 20px;
-      width: max-content; // 내부를 더 넓게
-    }
-
     .detail-card {
       width: 140px;
-      flex-shrink: 0; // 줄어들지 않게
+      flex-shrink: 0;
 
       .detail-thumb {
         width: 140px;
         height: 140px;
-        background: #9d9d9d;
         border-radius: 20px;
         margin-bottom: 10px;
+
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       p {
