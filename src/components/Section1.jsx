@@ -231,11 +231,6 @@ const Section1 = () => {
   return (
     <section className={`hero-container ${weatherClass}`}>
       <div className="inner">
-        
-        {/* 중앙 아트워크 */}
-        <div className="center-art">
-          <div className="icon-box"><FiImage size={60} color="white" /></div>
-        </div>
 
         <audio 
           ref={audioRef} src={currentSong?.audioSrc}
