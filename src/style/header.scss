@@ -1,53 +1,49 @@
+@use './variables' as *;
+body {
+  font-family: $font-Kr;
+}
 .header {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-
-  width: calc(100% - 40px);
-  height: 70px;
-
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.6);
-
-  border-radius: 20px;
-
-  transition: all 0.3s ease;
-
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    width: calc(100% - 40px);
+    height: 70px;
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    transition: all 0.3s ease;
   .header-inner{
-    max-width: 1400px;
-    margin: auto;
+        max-width: 1400px;
+        margin: auto;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 30px;
+    .logo{
+        font-size: 20px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .menu{
+        display: flex;
+        gap: 40px;
 
-    height: 100%;
+        button{
+        background: none;
+        border: none;
+        font-size: 15px;
+        color: #fff;
+        font-weight: 500;
+        cursor: pointer;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 0 30px;
-  }
-
-  .logo{
-    font-size: 20px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  .menu{
-    display: flex;
-    gap: 40px;
-
-    button{
-      background: none;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-
-      &:hover{
-        opacity: .6;
-      }
+        &:hover{
+            color: $text-color;
+            }
+        }
     }
   }
+  
 }
 
 /* 스크롤 내려오면 고정 */
@@ -59,13 +55,22 @@
 /* 날씨별 색상 */
 
 .header.clear{
-  background: rgba(255, 223, 186, 0.6);
+  background: rgba($sunny, 0.6);
 }
 
 .header.cloud{
-  background: rgba(200, 210, 220, 0.6);
+  background: rgba($clouds, 0.6);
 }
 
 .header.rain{
-  background: rgba(160, 180, 220, 0.6);
+  background: rgba($rain, 0.6);
+}
+.header.thunder{
+  background: rgba($thunder, 0.6);
+}
+.header.snow{
+  background: rgba($snow, 0.6);
+}
+.header.mist{
+  background: rgba($mist, 0.6);
 }

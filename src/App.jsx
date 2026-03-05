@@ -15,10 +15,18 @@ function App() {
     <div className="App">
       <Header />
       <Bg />
-      <Section1 />
-      <Section2 />
-      <Section3 />
-      <Section4 />
+      <section id="home">
+        <Section1 />
+      </section>
+      <section id="today">
+        <Section2 />
+      </section>
+      <section id="weather">
+        <Section3 />
+      </section>
+      <section id="about">
+        <Section4 />
+      </section>
       <Footer />
     </div>
   )
