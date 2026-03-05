@@ -1,220 +1,413 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './Section1.scss';
 import { musicData } from './musicData';
 
-// 아이콘 추가 (날씨 관련 디테일 아이콘)
-import { BiShuffle, BiSkipPrevious, BiPlay, BiSkipNext, BiRepeat, BiListUl, BiX, BiMenu } from "react-icons/bi";
-import { FiMapPin, FiSun, FiImage, FiChevronDown, FiWind, FiDroplet, FiEye, FiActivity } from "react-icons/fi";
-import { MdOutlineEqualizer, MdGrain, MdWaves } from "react-icons/md";
-import { WiDaySunny, WiCloudy, WiRain, WiDayCloudy } from "react-icons/wi"; // 날씨 전용 아이콘
+// React Icons (BiPause 추가됨)
+import { BiShuffle, BiSkipPrevious, BiPlay, BiPause, BiSkipNext, BiRepeat, BiListUl, BiX } from "react-icons/bi";
+import { FiMapPin, FiImage, FiChevronDown, FiWind, FiDroplet, FiEye } from "react-icons/fi";
+import { MdOutlineEqualizer, MdWaves } from "react-icons/md";
+// WeatherIcons
+import { WiDaySunny, WiCloudy, WiRain, WiSnow, WiThunderstorm, WiFog, WiDayCloudy } from "react-icons/wi";
 
 const Section1 = () => {
+  // --- [1. 위젯 & 날씨 상태 관리] ---
   const [isMusicList, setIsMusicList] = useState(false);
   const [isWeatherDetail, setIsWeatherDetail] = useState(false);
-  const [weather, setWeather] = useState(null);
+  
+  const [weather, setWeather] = useState(null); 
+  const [forecast, setForecast] = useState(null); 
+  const [airQuality, setAirQuality] = useState(null); 
+  const [weatherClass, setWeatherClass] = useState('theme-clouds'); 
 
-  const API_KEY = VITE_WEATHER_API_KEY; // API Key 유지
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY; // 본인의 API 키를 입력하세요
 
+  // --- [2. 뮤직 플레이어 상태 관리] ---
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [isRepeat, setIsRepeat] = useState(false);
+
+  const audioRef = useRef(null);
+  const progressBarRef = useRef(null);
+
+  const currentSong = musicData[currentSongIndex];
+
+  // --- [날씨 API 로직 (유지)] ---
   useEffect(() => {
-    const fetchWeather = async () => {
+    const fetchAllWeather = async () => {
       try {
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
-          params: { q: 'Seoul', appid: API_KEY, units: 'metric' }
-        });
-        setWeather(response.data);
+        const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${API_KEY}&units=metric&lang=kr`);
+        setWeather(weatherRes.data);
+        
+        const lat = weatherRes.data.coord.lat;
+        const lon = weatherRes.data.coord.lon;
+
+        const forecastRes = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=kr`);
+        setForecast(forecastRes.data);
+
+        const airRes = await axios.get(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
+        setAirQuality(airRes.data);
+
+        const weatherMain = weatherRes.data.weather[0].main;
+        const themeMap = {
+          'Clear': 'theme-sunny', 'Clouds': 'theme-clouds', 'Rain': 'theme-rain',
+          'Drizzle': 'theme-rain', 'Thunderstorm': 'theme-thunder', 'Snow': 'theme-snow',
+          'Mist': 'theme-mist', 'Fog': 'theme-mist', 'Haze': 'theme-mist'
+        };
+        setWeatherClass(themeMap[weatherMain] || 'theme-clouds');
       } catch (error) {
-        console.error("Weather Error:", error);
+        console.error("Weather API Error:", error);
       }
     };
-    fetchWeather();
+    fetchAllWeather();
   }, []);
 
   const today = new Date();
   const dateString = `${today.getFullYear()} ${(today.getMonth() + 1).toString().padStart(2, '0')} ${today.getDate().toString().padStart(2, '0')}`;
 
-  // --- [디자인 구현용 가짜 데이터] ---
-  // 1. 시간별 예보 데이터
-  const hourlyData = [
-    { time: '현재', icon: <WiDaySunny size={24}/>, temp: '2°' },
-    { time: '4 P.M.', icon: <WiDaySunny size={24}/>, temp: '2°' },
-    { time: '5 P.M.', icon: <WiDaySunny size={24}/>, temp: '2°' },
-    { time: '6 P.M.', icon: <WiDaySunny size={24}/>, temp: '2°' },
-    { time: '7 P.M.', icon: <WiDaySunny size={24}/>, temp: '2°' },
-    { time: '8 P.M.', icon: <WiDaySunny size={24}/>, temp: '2°' },
-    { time: '9 P.M.', icon: <WiDayCloudy size={24}/>, temp: '2°' },
-  ];
+  const getWeatherIcon = (main, size = 24) => {
+    switch (main) {
+      case 'Clear': return <WiDaySunny size={size} />;
+      case 'Clouds': return <WiCloudy size={size} />;
+      case 'Rain': case 'Drizzle': return <WiRain size={size} />;
+      case 'Snow': return <WiSnow size={size} />;
+      case 'Thunderstorm': return <WiThunderstorm size={size} />;
+      case 'Mist': case 'Fog': case 'Haze': return <WiFog size={size} />;
+      default: return <WiDayCloudy size={size} />;
+    }
+  };
 
-  // 2. 주간 예보 데이터
-  const dailyData = [
-    { day: '오늘', icon: <WiDaySunny size={20}/>, min: '-3°', max: '2°' },
-    { day: '목', icon: <WiRain size={20}/>, min: '-3°', max: '2°' },
-    { day: '금', icon: <WiDaySunny size={20}/>, min: '-3°', max: '2°' },
-    { day: '토', icon: <WiWind size={20}/>, min: '-3°', max: '2°' },
-    { day: '일', icon: <WiDaySunny size={20}/>, min: '-3°', max: '2°' },
-    { day: '월', icon: <WiCloudy size={20}/>, min: '-3°', max: '2°' },
-  ];
+  const hourlyData = forecast ? forecast.list.slice(0, 6).map((item) => {
+    const time = new Date(item.dt * 1000).getHours();
+    return {
+      time: `${time > 12 ? time - 12 : time} ${time >= 12 ? 'P.M.' : 'A.M.'}`,
+      icon: getWeatherIcon(item.weather[0].main, 24),
+      temp: `${Math.round(item.main.temp)}°`
+    };
+  }) : Array(6).fill({ time: '-', icon: <WiDaySunny size={24}/>, temp: '-' });
 
-  // 3. 상세 정보 데이터 (아이콘 매칭)
-  const detailData = [
-    { label: '미세먼지', value: '좋음(13µg/m³)', icon: null },
-    { label: '초미세먼지', value: '좋음(4µg/m³)', icon: null },
-    { label: '자외선지수', value: '낮음', icon: <WiDaySunny /> },
-    { label: '습도', value: '36%', icon: <FiDroplet /> },
-    { label: '바람', value: '가벼운 바람(2m/s)', icon: <FiWind /> },
-    { label: '기압', value: '하락 중?(1014.4hPa)', icon: <MdWaves /> },
-    { label: '가시거리', value: '매우 좋음(42.90km)', icon: <FiEye /> },
-  ];
+  if (weather && hourlyData[0]) {
+    hourlyData.unshift({ time: '현재', icon: getWeatherIcon(weather.weather[0].main, 24), temp: `${Math.round(weather.main.temp)}°` });
+    hourlyData.pop(); 
+  }
+
+  const dailyMap = {};
+  if (forecast) {
+    forecast.list.forEach(item => {
+      const date = new Date(item.dt * 1000);
+      const dayStr = date.toLocaleDateString('ko-KR', { weekday: 'short' }); 
+      if (!dailyMap[dayStr]) {
+        dailyMap[dayStr] = { min: item.main.temp_min, max: item.main.temp_max, icon: item.weather[0].main };
+      } else {
+        dailyMap[dayStr].min = Math.min(dailyMap[dayStr].min, item.main.temp_min);
+        dailyMap[dayStr].max = Math.max(dailyMap[dayStr].max, item.main.temp_max);
+      }
+    });
+  }
+  const dailyData = Object.keys(dailyMap).slice(0, 6).map((day, idx) => ({
+    day: idx === 0 ? '오늘' : day, icon: getWeatherIcon(dailyMap[day].icon, 20),
+    min: `${Math.round(dailyMap[day].min)}°`, max: `${Math.round(dailyMap[day].max)}°`
+  }));
+
+  const aqiValue = airQuality?.list[0]?.main?.aqi || 0;
+  const getAqiText = (aqi) => {
+    switch(aqi) { case 1: return '좋음'; case 2: return '보통'; case 3: return '민감군 나쁨'; case 4: return '나쁨'; case 5: return '매우 나쁨'; default: return '-'; }
+  };
+  const detailData = weather ? [
+    { label: '미세먼지', value: `${getAqiText(aqiValue)}(${airQuality?.list[0]?.components?.pm10 || 0}µg/m³)`, icon: null },
+    { label: '초미세먼지', value: `${getAqiText(aqiValue)}(${airQuality?.list[0]?.components?.pm2_5 || 0}µg/m³)`, icon: null },
+    { label: '습도', value: `${weather.main.humidity}%`, icon: <FiDroplet /> },
+    { label: '바람', value: `${weather.wind.speed}m/s`, icon: <FiWind /> },
+    { label: '기압', value: `${weather.main.pressure}hPa`, icon: <MdWaves /> },
+    { label: '가시거리', value: `${(weather.visibility / 1000).toFixed(1)}km`, icon: <FiEye /> },
+  ] : [];
+
+
+  // --- [3. 뮤직 플레이어 컨트롤 로직] ---
+
+  // 곡이 변경될 때 자동 재생 처리
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current.play().catch(e => console.log("재생 오류:", e));
+    }
+  }, [currentSongIndex]);
+
+  // 재생/일시정지 토글
+  const togglePlay = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  // 다음 곡 재생 (셔플 켜져있으면 랜덤)
+  const playNext = () => {
+    if (isShuffle) {
+      let randomIndex = currentSongIndex;
+      while (randomIndex === currentSongIndex) {
+        randomIndex = Math.floor(Math.random() * musicData.length);
+      }
+      setCurrentSongIndex(randomIndex);
+    } else {
+      setCurrentSongIndex((prev) => (prev + 1) % musicData.length);
+    }
+  };
+
+  // 이전 곡 재생
+  const playPrev = () => {
+    setCurrentSongIndex((prev) => (prev - 1 + musicData.length) % musicData.length);
+  };
+
+  // 오디오 메타데이터 로드 시 전체 길이 설정
+  const handleLoadedMetadata = () => {
+    setDuration(audioRef.current.duration);
+  };
+
+  // 시간 업데이트 (진행바용)
+  const handleTimeUpdate = () => {
+    setCurrentTime(audioRef.current.currentTime);
+  };
+
+  // 스크러빙(이동) 기능: 프로그레스 바 클릭 시 해당 위치로 재생 이동
+  const handleScrub = (e) => {
+    if (!progressBarRef.current) return;
+    const progressBar = progressBarRef.current;
+    const clickPosition = e.clientX - progressBar.getBoundingClientRect().left;
+    const clickPercentage = clickPosition / progressBar.offsetWidth;
+    const newTime = clickPercentage * duration;
+    
+    audioRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
+
+  // 곡이 끝났을 때 처리
+  const handleEnded = () => {
+    if (isRepeat) {
+      audioRef.current.play(); // 단일 곡 반복
+    } else {
+      playNext(); // 다음 곡으로 넘어가기
+    }
+  };
+
+  // 시간 포맷팅 함수 (초 -> 분:초)
+  const formatTime = (timeInSeconds) => {
+    if (isNaN(timeInSeconds)) return "0:00";
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  // 플레이리스트에서 직접 곡 클릭 시 재생
+  const selectSongFromList = (index) => {
+    setCurrentSongIndex(index);
+    setIsPlaying(true);
+  };
+
+  // 진행률 계산 (0 ~ 100%)
+  const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
+
 
   return (
-    <section className="hero-container">
-      {/* 1. 중앙 아트워크 */}
-      <div className="center-art">
-        <div className="icon-box"><FiImage size={60} color="white" /></div>
-      </div>
+    <section className={`hero-container ${weatherClass}`}>
+      <div className="inner">
+        
+        {/* 중앙 아트워크 */}
+        <div className="center-art">
+          <div className="icon-box"><FiImage size={60} color="white" /></div>
+        </div>
 
-      {/* 2. 뮤직 위젯 (기존 유지) */}
-      <div className={`music-widget ${isMusicList ? 'expanded' : ''}`}>
-        {!isMusicList ? (
-          <div className="player-view">
-            <div className="progress-area">
-              <span className="time">1:13</span>
-              <div className="progress-bar"><div className="fill"></div><div className="knob"></div></div>
-              <span className="time">3:23</span>
-            </div>
-            <div className="controls">
-              <button className="icon-btn"><BiShuffle size={20} /></button>
-              <button className="icon-btn"><BiSkipPrevious size={28} /></button>
-              <button className="play-btn"><BiPlay size={32} color="white" style={{marginLeft:'2px'}} /></button>
-              <button className="icon-btn"><BiSkipNext size={28} /></button>
-              <button className="icon-btn"><BiRepeat size={20} /></button>
-            </div>
-            <div className="footer-info">
-              <div className="album-mini"><FiImage size={20} color="white" /></div>
-              <div className="track-info"><MdOutlineEqualizer size={20} className="eq-icon"/><span className="title">MUSIC TITLE</span></div>
-              <button className="list-btn" onClick={(e)=>{e.stopPropagation(); setIsMusicList(true)}}><BiListUl size={26}/></button>
-            </div>
-          </div>
-        ) : (
-          <div className="playlist-view">
-             <div className="list-header">
-                <div className="text-group"><h3>PLAYLIST: SUNNY DAY!</h3><span>플레이리스트 한 줄 소개</span></div>
-                <button className="close-btn" onClick={(e)=>{e.stopPropagation(); setIsMusicList(false)}}><BiX size={28}/></button>
-             </div>
-             <div className="list-content">
-               <span className="label">TRACKLIST</span>
-               <div className="scroll-area">
-                  {musicData.map((song)=>(
-                    <div key={song.id} className="song-item">
-                      <div className="left"><div className="mini-art"><FiImage size={16} color="#999"/></div><div className="info"><p className="song-title">{song.title}</p><span className="artist">{song.artist}</span></div></div>
-                      <span className="duration">{song.duration}</span>
-                    </div>
-                  ))}
-               </div>
-             </div>
-          </div>
-        )}
-      </div>
+        {/* --- [뮤직 위젯 UI] --- */}
+        <div className={`music-widget ${isMusicList ? 'expanded' : ''}`}>
+          
+          {/* 눈에 보이지 않는 HTML5 Audio 요소 */}
+          <audio 
+            ref={audioRef}
+            src={currentSong.audioSrc}
+            onLoadedMetadata={handleLoadedMetadata}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={handleEnded}
+          />
 
-      {/* 3. 날씨 위젯 (상세 뷰 대폭 수정) */}
-      <div 
-        className={`weather-widget ${isWeatherDetail ? 'expanded' : ''}`}
-        onClick={() => !isWeatherDetail && setIsWeatherDetail(true)}
-      >
-        {!isWeatherDetail ? (
-          /* 기본 뷰 (요약) */
-          <div className="weather-summary-view">
-            <div className="top-row">
-              <div className="temp-wrap"><span className="temp">{weather?.main ? Math.round(weather.main.temp) : '03'}°</span><WiDaySunny size={36} className="weather-icon" /></div>
-              <FiMapPin size={20} className="loc-icon" />
-            </div>
-            <div className="bottom-row">
-              <div className="date-info"><p className="city">SEOUL</p><span className="date">{dateString}</span></div>
-              <button className="menu-btn"><BiListUl size={24} /></button>
-            </div>
-          </div>
-        ) : (
-          /* 상세 뷰 (확장됨 - 시안 적용) */
-          <div className="weather-detail-view">
-             {/* 상단 헤더: 온도, 위치, 날짜 */}
-             <div className="detail-header">
-                <div className="header-left">
-                  <span className="big-temp">{weather?.main ? Math.round(weather.main.temp) : '03'}°</span>
-                  <WiDaySunny size={40} color="#fff"/>
+          {!isMusicList ? (
+            <div className="player-view">
+              
+              {/* 진행 바 (스크러빙 기능 포함) */}
+              <div className="progress-area">
+                <span className="time">{formatTime(currentTime)}</span>
+                <div 
+                  className="progress-bar" 
+                  ref={progressBarRef} 
+                  onClick={handleScrub}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="fill" style={{ width: `${progressPercentage}%` }}></div>
+                  <div className="knob" style={{ left: `${progressPercentage}%` }}></div>
                 </div>
-                <div className="header-right">
-                  <div className="loc-row"><FiMapPin size={16}/> SEOUL</div>
-                  <span className="date-text">{dateString}</span>
-                </div>
-             </div>
+                <span className="time">{formatTime(duration)}</span>
+              </div>
 
-             {/* 컨텐츠 그리드 */}
-             <div className="detail-content">
-                
-                {/* 1. 시간별 예보 카드 */}
-                <div className="glass-card hourly-card">
-                  <p className="summary-text">맑은 날씨가 이어지겠습니다 등 일기 예보 관련 한 줄</p>
-                  <div className="divider"></div>
-                  <div className="hourly-list">
-                    {hourlyData.map((item, idx) => (
-                      <div key={idx} className="hour-item">
-                        <span className="h-time">{item.time}</span>
-                        <div className="h-icon">{item.icon}</div>
-                        <span className="h-temp">{item.temp}</span>
+              {/* 컨트롤러 */}
+              <div className="controls">
+                {/* 셔플 버튼 */}
+                <button 
+                  className={`icon-btn ${isShuffle ? 'active' : ''}`} 
+                  onClick={() => setIsShuffle(!isShuffle)}
+                >
+                  <BiShuffle size={20} />
+                </button>
+
+                {/* 이전 곡 */}
+                <button className="icon-btn" onClick={playPrev}>
+                  <BiSkipPrevious size={28} />
+                </button>
+
+                {/* 재생 / 일시정지 */}
+                <button className="play-btn" onClick={togglePlay}>
+                  {isPlaying ? (
+                    <BiPause size={36} color="white" />
+                  ) : (
+                    <BiPlay size={36} color="white" style={{ marginLeft: '4px' }} />
+                  )}
+                </button>
+
+                {/* 다음 곡 */}
+                <button className="icon-btn" onClick={playNext}>
+                  <BiSkipNext size={28} />
+                </button>
+
+                {/* 반복 재생 (루프) */}
+                <button 
+                  className={`icon-btn ${isRepeat ? 'active' : ''}`} 
+                  onClick={() => setIsRepeat(!isRepeat)}
+                >
+                  <BiRepeat size={20} />
+                </button>
+              </div>
+
+              {/* 하단 트랙 정보 */}
+              <div className="footer-info">
+                <div className="album-mini">
+                  {/* 앨범 커버 이미지 연동 */}
+                  {currentSong.cover ? (
+                    <img src={currentSong.cover} alt="album cover" />
+                  ) : (
+                    <FiImage size={20} color="white" />
+                  )}
+                </div>
+                <div className="track-info">
+                  <MdOutlineEqualizer size={20} className="eq-icon"/>
+                  <span className="title" style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                    {currentSong.title}
+                  </span>
+                </div>
+                <button className="list-btn" onClick={(e) => { e.stopPropagation(); setIsMusicList(true); }}>
+                  <BiListUl size={26} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            /* --- [플레이리스트 뷰] --- */
+            <div className="playlist-view">
+              <div className="list-header">
+                <div className="text-group">
+                  <h3>PLAYLIST: SUNNY DAY!</h3>
+                  <span>현재 {musicData.length}곡이 있습니다.</span>
+                </div>
+                <button className="close-btn" onClick={(e) => { e.stopPropagation(); setIsMusicList(false); }}><BiX size={28} /></button>
+              </div>
+              <div className="list-content">
+                 <span className="label">TRACKLIST</span>
+                 <div className="scroll-area">
+                    {musicData.map((song, index) => (
+                      <div 
+                        key={song.id} 
+                        className={`song-item ${index === currentSongIndex ? 'playing' : ''}`}
+                        onClick={() => selectSongFromList(index)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="left">
+                          <div className="mini-art">
+                            {song.cover ? <img src={song.cover} alt="cover" /> : <FiImage size={16} color="#999"/>}
+                          </div>
+                          <div className="info">
+                            <p className="song-title">{song.title}</p>
+                            <span className="artist">{song.artist}</span>
+                          </div>
+                        </div>
+                        {/* 현재 재생 중인 곡은 이퀄라이저 아이콘 표시 */}
+                        <span className="duration">
+                          {index === currentSongIndex && isPlaying ? <MdOutlineEqualizer size={16} /> : song.duration}
+                        </span>
                       </div>
                     ))}
+                 </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* --- [날씨 위젯 영역 - 수정 없이 유지] --- */}
+        <div 
+          className={`weather-widget ${isWeatherDetail ? 'expanded' : ''}`}
+          onClick={() => !isWeatherDetail && setIsWeatherDetail(true)}
+        >
+          {!isWeatherDetail ? (
+            <div className="weather-summary-view">
+              <div className="top-row">
+                <div className="temp-wrap"><span className="temp">{weather ? Math.round(weather.main.temp) : '0'}°</span>{weather ? getWeatherIcon(weather.weather[0].main, 36) : <WiDaySunny size={36}/>}</div>
+                <FiMapPin size={20} className="loc-icon" />
+              </div>
+              <div className="bottom-row">
+                <div className="date-info"><p className="city">SEOUL</p><span className="date">{dateString}</span></div>
+                <button className="menu-btn"><BiListUl size={24} /></button>
+              </div>
+            </div>
+          ) : (
+            <div className="weather-detail-view">
+               <div className="detail-header">
+                  <div className="header-left"><span className="big-temp">{weather ? Math.round(weather.main.temp) : '0'}°</span>{weather ? getWeatherIcon(weather.weather[0].main, 40) : <WiDaySunny size={40}/>}</div>
+                  <div className="header-right"><div className="loc-row"><FiMapPin size={16}/> SEOUL</div><span className="date-text">{dateString}</span></div>
+               </div>
+               <div className="detail-content">
+                  <div className="glass-card hourly-card">
+                    <p className="summary-text">{weather?.weather[0].description || '날씨 정보를 불러오는 중입니다.'}</p>
+                    <div className="divider"></div>
+                    <div className="hourly-list">
+                      {hourlyData.map((item, idx) => (<div key={idx} className="hour-item"><span className="h-time">{item.time}</span><div className="h-icon">{item.icon}</div><span className="h-temp">{item.temp}</span></div>))}
+                    </div>
                   </div>
-                </div>
+                  <div className="bottom-cards">
+                     <div className="glass-card daily-card">
+                        <div className="card-title">일기예보</div>
+                        <div className="divider"></div>
+                        <div className="daily-list">
+                          {dailyData.length > 0 ? dailyData.map((day, idx) => (<div key={idx} className="day-row"><span className="d-day">{day.day}</span><div className="d-icons">{day.icon}</div><div className="d-temp"><span className="max">{day.max}</span><span className="min">{day.min}</span></div></div>)) : <p style={{fontSize:'12px', opacity:0.7}}>데이터 로딩 중...</p>}
+                        </div>
+                     </div>
+                     <div className="glass-card detail-info-card">
+                        <div className="card-title">상세 날씨</div>
+                        <div className="divider"></div>
+                        <div className="info-list">
+                          {detailData.length > 0 ? detailData.map((info, idx) => (<div key={idx} className="info-row"><div className="info-label">{info.icon && <span className="i-icon">{info.icon}</span>}<span>{info.label}</span></div><span className="info-value">{info.value}</span></div>)) : <p style={{fontSize:'12px', opacity:0.7}}>데이터 로딩 중...</p>}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <button className="close-btn" onClick={(e) => { e.stopPropagation(); setIsWeatherDetail(false); }}><BiX size={28} /></button>
+            </div>
+          )}
+        </div>
 
-                {/* 하단 2개 카드 영역 */}
-                <div className="bottom-cards">
-                   {/* 2. 주간 예보 */}
-                   <div className="glass-card daily-card">
-                      <div className="card-title">일기예보</div>
-                      <div className="divider"></div>
-                      <div className="daily-list">
-                        {dailyData.map((day, idx) => (
-                          <div key={idx} className="day-row">
-                            <span className="d-day">{day.day}</span>
-                            <div className="d-icons">{day.icon}</div>
-                            <div className="d-temp">
-                              <span className="max">{day.max}</span>
-                              <span className="min">{day.min}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                   </div>
-
-                   {/* 3. 상세 날씨 */}
-                   <div className="glass-card detail-info-card">
-                      <div className="card-title">상세 날씨</div>
-                      <div className="divider"></div>
-                      <div className="info-list">
-                        {detailData.map((info, idx) => (
-                          <div key={idx} className="info-row">
-                            <div className="info-label">
-                              {info.icon && <span className="i-icon">{info.icon}</span>}
-                              <span>{info.label}</span>
-                            </div>
-                            <span className="info-value">{info.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                   </div>
-                </div>
-             </div>
-
-             {/* 닫기 버튼 */}
-             <button className="close-btn" onClick={(e) => { e.stopPropagation(); setIsWeatherDetail(false); }}>
-                <BiX size={28} />
-             </button>
-          </div>
-        )}
-      </div>
-
-      <div className="scroll-indicator">
-        <FiChevronDown size={40} className="arrow first" /><FiChevronDown size={40} className="arrow second" />
+        {/* 화살표 */}
+        <div className="scroll-indicator">
+          <FiChevronDown size={40} className="arrow first" /><FiChevronDown size={40} className="arrow second" />
+        </div>
+        
       </div>
     </section>
   );
