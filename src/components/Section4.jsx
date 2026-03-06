@@ -3,86 +3,68 @@ import { useApi } from "../context/ApiContext";
 
 import "../style/section4.scss";
 
+const images = [
+    "../img/source/Cloud_Source file.png",
+    "../img/source/Fog_Source file.png",
+    "../img/source/Rainy_Source file.png",
+    "../img/source/Snow_Source file.png",
+    "../img/source/Sunny_Source file.png",
+    "../img/source/Thunder_Source file.png"
+];
+
 const Section4 = () => {
 	const { WEATHER_API_KEY } = useApi();
+    const sectionRef = useRef(null);
+    const [currentImg, setCurrentImg] = useState(0);
 
-	const sectionRef = useRef(null); // 수정: section 참조
-	const [currentImg, setCurrentImg] = useState(2); // 수정: 기본 이미지 index
+    useEffect(() => {
+        const handleScroll = () => {
+            /* 1. 기존 fade animation */
+            const elements = document.querySelectorAll(".text, .circle, .top_des");
+            const trigger = window.innerHeight * 0.75;
 
-	// 수정: 이미지 배열
-	const images = [
-		"../img/source/Cloud_Source file.png",
-		"../img/source/Fog_Source file.png",
-		"../img/source/Rainy_Source file.png",
-		"../img/source/Snow_Source file.png",
-		"../img/source/Sunny_Source file.png",
-		"../img/source/Thunder_Source file.png"
-	];
+            elements.forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < trigger && rect.bottom > 0) {
+                    el.classList.add("fade-in");
+                    el.classList.remove("fade-out");
+                } else {
+                    el.classList.remove("fade-in");
+                    el.classList.add("fade-out");
+                }
+            });
 
-	useEffect(() => {
+            /* 2. 이미지 타이밍 수정 (핵심) */
+            const section = sectionRef.current;
+            if (!section) return;
 
-		const handleScroll = () => {
+            const sectionTop = section.offsetTop;
+            const viewportHeight = window.innerHeight;
+            
+            // [수정] 약 250vh 지점(텍스트가 거의 끝나는 지점)까지만 스크롤 영역으로 잡음
+            // 이렇게 하면 .aboutLast(하단 빨간 박스)가 나오기 훨씬 전에 6번의 변화가 끝납니다.
+            const scrollStart = sectionTop; 
+            const scrollEnd = sectionTop + (viewportHeight * 2.2); // 2.2배 지점에서 종료
+            const currentScroll = window.scrollY;
 
-			/* 기존 fade animation */
-			const elements = document.querySelectorAll(
-				".text, .circle, .top_des"
-			);
+            // 진행도 계산 (0 ~ 1)
+            let progress = (currentScroll - scrollStart) / (scrollEnd - scrollStart);
 
-			const trigger = window.innerHeight * 0.75;
+            // 인덱스 계산
+            let index = Math.floor(progress * images.length);
 
-			elements.forEach((el) => {
-				const rect = el.getBoundingClientRect();
+            if (index < 0) index = 0;
+            if (index >= images.length) index = images.length - 1;
 
-				if (rect.top < trigger && rect.bottom > 0) {
-					el.classList.add("fade-in");
-					el.classList.remove("fade-out");
-				} else {
-					el.classList.remove("fade-in");
-					el.classList.add("fade-out");
-				}
-			});
+            // 값이 바뀔 때만 업데이트 (뚝뚝 끊김 방지)
+            setCurrentImg((prev) => (prev !== index ? index : prev));
+        };
 
-			/* ------------------------------ */
-			/* 수정: 중앙 이미지 스크롤 변경 */
-			/* ------------------------------ */
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
 
-			const section = sectionRef.current;
-
-			if (!section) return;
-
-			const rect = section.getBoundingClientRect();
-
-			const sectionHeight = section.offsetHeight;
-
-			const scrollY = window.scrollY + window.innerHeight / 2;
-
-			const sectionTop = section.offsetTop;
-
-			const progress = (scrollY - sectionTop) / sectionHeight;
-
-			let index = Math.floor(progress * 6);
-
-			if (index < 0) index = 0;
-			if (index > 5) index = 5;
-
-			setCurrentImg(index);
-		};
-
-		const scrollListener = () => {
-			requestAnimationFrame(handleScroll);
-		};
-
-		setTimeout(() => {
-			handleScroll();
-		}, 100);
-
-		window.addEventListener("scroll", scrollListener);
-
-		return () => {
-			window.removeEventListener("scroll", scrollListener);
-		};
-
-	}, []);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
   	return (
 		<section className="about" ref={sectionRef}>
