@@ -5,12 +5,31 @@
     padding-top: 50px;
     position: relative;
     height: 400vh;
-    background: #9b9198;
-    //overflow: hidden;
+    background: $sub;
+    overflow-x: clip;
+
+    .text, .circle, .top_des {
+        opacity: 0;
+        transform: translateY(60px);
+        //transition: all 0.8s ease;
+    }
+    .fade-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .fade-out {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity .8s ease, transform .8s ease;
+    }
+    
 
   .top_des {
         padding-top: 40px;
         position: relative;
+        z-index: 2;
 
         h2 {
             display: flex;
@@ -35,13 +54,12 @@
         max-width: 1440px;
         margin: 0 auto;
         position: relative;
-        height: 100%;
-        //background-color: red;
     }
 
   .center-wrapper {
         position: relative;
-        height: 350vh;
+        height: 300vh;
+        padding-top: 50vh; 
         //background: aqua;
     }
 
@@ -49,8 +67,8 @@
         position: sticky;
         top: 52vh;
         transform: translateY(-50%);
-        width: 500px;
-        height: 500px;
+        width: 520px;
+        height: 520px;
         margin: 0 auto;
         border-radius: 50%;
         overflow: hidden;
@@ -67,71 +85,86 @@
     position: absolute;
     top: 0;
     width: 100%;
-    //height: 100%;
     padding: 50px 0;
-    z-index: 2;
-    //background: rgba(0, 128, 0, 0.445);
+    z-index: 5;
+    min-height: 300vh;
 
     p, h3 {
-      color: white;
+      color: $text-color;
       line-height: 1.6;
-      font-size: 24px;
+      font-size: 18px;
       letter-spacing: 3px;
       font-weight: 400;
     }
 
     .text1 { //변화하는 환경 속에서
       position: absolute;
-      top: 50vh;
+      top: 30vh;
       left: 0;
 
       h3{font-size: 30px;}
+      p{font-size: 16px; font-weight: 300; margin-top: 70px;}
     }
 
-    .text2 { //날씨는 우리 일상에~
+    .text2 { //하루의 기분~
         position: absolute;
-        top: 80vh;
+        top: 75vh;
         right: 0;
         text-align: right;
+
+        p{font-size: 16px; font-weight: 300; margin-top: 50px;}
     }
 
-    .text3 { //하루의 분위기 활동방식~
+    .text3 { //이처럼 날씨는~
         position: absolute;
         top: 120vh;
         left: 0;
     }
 
-    .text4 { //날씨는 생활의 리듬을
+    .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
         position: absolute;
-        top: 170vh;
-        left: 0;
-    }
-
-    .text5 { //moodscape는 오늘의 날씨 정보를 기반으로
-        position: absolute;
-        top: 230vh;
+        top: 160vh;
         right: 0;
         text-align: right;
-
-        span{
-            font-family: $font-En;
-        }
+        span{font-family: $font-En; font-size: 24px; font-weight: 500;}
     }
 
-    .bottom-text.text6 { //당신의 환경에 가장 어울리는~
+    .text5 { //단순히
         position: absolute;
-        top: 340vh;
+        top: 175vh;
+        right: 0;
+        text-align: right;
+        p{font-size: 16px; font-weight: 300;}
+    }
+
+    .text6 { //날씨가 만들어내는~
+        position: absolute;
+        top: 205vh;
+        left: 0;
+        p{font-weight: 300;}
+    }
+
+    .bottom-text.text7 { //당신의 환경에 가장 어울리는~
+        position: absolute;
+        top: 283vh;
         width: 100%;
         text-align: center;
+        p{font-size: 24px; font-weight: 500;}
     }
   }
 
   
   /* image circles */
+    .decoCircles{
+        width: 100%;
+        position: absolute;
+        inset: 0;
+    }
     .circle {
         position: absolute;
         border-radius: 50%;
         overflow: hidden;
+        opacity: .7;
 
         img {
             width: 100%;
@@ -144,57 +177,106 @@
     .circle1 {
         width: 120px;
         height: 120px;
-        top: 24vh;
-        right: 180px;
-        z-index: 2;
+        top: 50vh;
+        right: 220px;
     }
 
     .circle2 {
-        width: 140px;
-        height: 140px;
-        top: 450px;
-        left: 80px;
+        width: 250px;
+        height: 250px;
+        top: 85vh;
+        left: 100px;
     }
 
     .circle3 {
-        width: 130px;
-        height: 130px;
-        background: aqua;
-        top: 780px;
-        right: 100px;
+        width: 100px;
+        height: 100px;
+        top: 125vh;
+        right: 480px;
     }
 
     .circle4 {
-        width: 110px;
-        height: 110px;
-        top: 300vh;
-        left: 120px;
+        width: 220px;
+        height: 220px;
+        top: 180vh;
+        left: -50px;
     }
 
-  /* decorative circles */
+    .circle5 {
+        width: 100px;
+        height: 100px;
+        background: #ddd;
+        top: 197vh;
+        left: 110px;
+    }
 
-  .deco1 {
-    width: 70px;
-    height: 70px;
-    background: #ddd;
-    top: 650px;
-    left: 350px;
-  }
+    .circle6 {
+        width: 200px;
+        height: 200px;
+        background: #ddd;
+        top: 21vh;
+        right: -60px;
+    }
 
-  .deco2 {
-    width: 140px;
-    height: 140px;
-    background: #ddd;
-    top: 20vh;
-    right: 80px;
-  }
+    .circle7 {
+        width: 170px;
+        height: 170px;
+        background: #ddd;
+        top: 220vh;
+        right: 240px;
+    }
+    .circle8 {
+        width: 240px;
+        height: 240px;
+        background: #ddd;
+        top: 150vh;
+        right: -40px;
+    }
 
-  .deco3 {
-    width: 70px;
-    height: 70px;
-    background: #ddd;
-    top: 340vh;
-    right: 40px;
-  }
+    
+
+    .aboutLast{
+        width: 100%;
+        height: 70vh;
+        background: red;
+        position: absolute;
+        bottom: 0;
+
+        .lastTextBox{
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, .4);
+            color: #fff;
+            position: absolute;
+            left: 0; top: 0;
+
+            .texts{
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                h2{
+                    font-size: 40px; 
+                    font-family: $font-En; 
+                    letter-spacing: 5px;
+                    margin-bottom: 30px;
+                }
+                p{letter-spacing: 1px;}
+            }
+        }
+        .aboutImgBox{
+            display: flex;
+
+            img{
+                display: block;
+                width: 25%;
+                height: 70vh;
+                object-fit: cover;
+            }
+        }
+    }
 }
 
