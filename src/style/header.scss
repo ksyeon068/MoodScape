@@ -3,6 +3,7 @@ body {
   font-family: $font-Kr;
 }
 .header {
+    z-index: 1000;
     position: absolute;
     top: 20px;
     left: 20px;
@@ -11,7 +12,8 @@ body {
     height: 70px;
     backdrop-filter: blur(5px);
     border-radius: 20px;
-    transition: all 0.3s ease;
+    transform: translateY(0);
+    transition: transform 0.3s ease, background 0.3s ease;
   .header-inner{
         max-width: 1440px;
         margin: auto;
@@ -19,10 +21,10 @@ body {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 30px;
     .logo{
-        font-size: 20px;
-        font-weight: 600;
+        img{
+          width: 120px;
+        }
         cursor: pointer;
     }
     .menu{
@@ -33,7 +35,7 @@ body {
         background: none;
         border: none;
         font-size: 15px;
-        color: #fff;
+        color: $text-color;
         font-weight: 500;
         cursor: pointer;
 
@@ -49,13 +51,16 @@ body {
 /* 스크롤 내려오면 고정 */
 .header.fixed{
   position: fixed;
-  top: 20px;
+  top: -100px; 
+  transform: translateY(120px);
+  transition: transform 0.3s ease;
 }
 
 /* 날씨별 색상 */
 
 .header.clear{
-  background: rgba($sunny, 0.6);
+  background: $sunny;
+  opacity: .6;
 }
 
 .header.cloud{
