@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const ApiContext = createContext();
 
@@ -6,7 +6,8 @@ export const ApiProvider = ({ children }) => {
 
   const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-  // ⭐ API 날씨 → 우리가 사용할 날씨로 변환
+  const [weather, setWeather] = useState("sunny"); // ⭐ 여기 추가
+
   const getWeatherType = (apiWeather) => {
 
     const weatherMap = {
@@ -31,8 +32,30 @@ export const ApiProvider = ({ children }) => {
     return weatherMap[apiWeather] || "sunny";
   };
 
+  // ⭐ 여기서 날씨 API 한번만 호출
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+
+          const apiWeather = data.weather[0].main;
+          const type = getWeatherType(apiWeather);
+
+          setWeather(type);
+        });
+
+    });
+  }, []);
+
   return (
-    <ApiContext.Provider value={{ WEATHER_API_KEY, getWeatherType }}>
+    <ApiContext.Provider value={{ WEATHER_API_KEY, getWeatherType, weather }}>
       {children}
     </ApiContext.Provider>
   );

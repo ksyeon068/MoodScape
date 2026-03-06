@@ -53,7 +53,7 @@ function Section3() {
           >
             유튜브 채널 가기
           </a>
-          <FaPlayCircle size={50} color="$text-color;"
+          <FaPlayCircle size={50} color="$text-color"
           onClick={() => window.open("https://www.youtube.com/@MoodScape_201", "_blank")}/>
         </div>
 
