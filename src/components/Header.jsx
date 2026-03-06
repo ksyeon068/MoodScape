@@ -52,7 +52,7 @@ function Header() {
     <header className={`header ${isFixed ? "fixed" : ""} ${weather || ""}`}>
       <div className="header-inner">
         <div className="logo">
-          MoodScape
+          <img src="/img/Logo_D.png" alt="logo" />
         </div>
         <nav className="menu">
           <button onClick={() => scrollToSection("home")}>HOME</button>

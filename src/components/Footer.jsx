@@ -22,7 +22,7 @@ function Footer() {
         <div className="footer-inner">
 
           <div className="footer-left">
-            <h2 className="logo">MoodScape</h2>
+            <h2 className="logo"><img src="/img/Logo_D.png" alt="logo" /></h2>
 
             <p>사업자번호:1234-567890</p>
             <p>주소 : 서울특별시 관악구 신림동 무드 빌딩 201호</p>

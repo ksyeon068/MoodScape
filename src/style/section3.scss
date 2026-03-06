@@ -43,6 +43,7 @@ body{
       animation:rightFade 1s ease forwards;
       display: flex;
       align-items: center;
+      cursor: pointer;
       .youtube-btn{
           background:$text-color;
           padding:14px 30px;
