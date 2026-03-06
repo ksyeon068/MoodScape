@@ -217,7 +217,7 @@ const Section2 = () => {
             <SwiperSlide key={item} style={{width:"160px"}}>
 
               <div
-                className="detail-card"
+                className={`detail-card ${trackIndex === item-1 ? "active" : ""}`}
                 onClick={()=>setTrackIndex(item-1)}
               >
 
