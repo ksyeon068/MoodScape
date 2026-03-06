@@ -33,11 +33,9 @@ function Header() {
   return (
     <header className={`header ${isFixed ? "fixed" : ""} ${weather}`}>
       <div className="header-inner">
-
         <div className="logo">
           MoodScape
         </div>
-
         <nav className="menu">
           <button onClick={() => scrollToSection("home")}>HOME</button>
           <button onClick={() => scrollToSection("today")}>TODAYPLI</button>
