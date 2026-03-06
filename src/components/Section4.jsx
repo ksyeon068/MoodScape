@@ -96,13 +96,16 @@ const Section4 = () => {
 
 				<div className="center-wrapper">
 					<div className="sticky-circle">
-						{/* 수정: 이미지 동적 변경 */}
-						<img
-							key={currentImg}                 // 이미지 변경 시 React가 새로 렌더링
-							className="fade-change"          // reveal 애니메이션 실행
-							src={images[currentImg]}         // 이미지 변경
-							alt="centerImg"
-						/>
+						{/* 수정: 6개 이미지를 미리 다 렌더링해서 겹쳐둠 */}
+						{images.map((src, idx) => (
+							<img
+								key={idx}
+								src={src}
+								alt={`weather-${idx}`}
+								// 현재 인덱스인 이미지만 클래스 활성화
+								className={currentImg === idx ? "active" : ""}
+							/>
+						))}
 					</div>
 				</div>
 
