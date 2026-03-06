@@ -3,9 +3,10 @@ import { useApi } from "../context/ApiContext";
 import '../style/header.scss';
 
 function Header() {
-  const { WEATHER_API_KEY } = useApi();
+  const { WEATHER_API_KEY, getWeatherType } = useApi();
   const [isFixed, setIsFixed] = useState(false);
   const [weather, setWeather] = useState(null);
+  
 
   //날씨 API연동
   useEffect(() => {
@@ -17,8 +18,9 @@ function Header() {
       fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`)
         .then((res) => res.json())
         .then((data) => {
-          const weatherMain = data.weather[0].main.toLowerCase();
-          setWeather(weatherMain);
+          const apiWeather = data.weather[0].main;
+          const weatherType = getWeatherType(apiWeather);
+          setWeather(weatherType);;
         });
 
     });
