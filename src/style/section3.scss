@@ -1,8 +1,11 @@
 @use './variables' as *;
-body{font-family: $font-Kr;}
+body{
+  font-family: $font-Kr;
+  color: $text-color;
+}
 .weather-section{
   width:100%;
-  height:100vh;
+  height:100%;
   position:relative;
 
   display:flex;
@@ -14,49 +17,64 @@ body{font-family: $font-Kr;}
 }
 
 .section-head{
-  position:absolute;
   top:80px;
   left:60px;
   right:60px;
-
   display:flex;
   justify-content:space-between;
-}
-
-/* 왼쪽 텍스트 */
-.left{
-
-  animation:leftFade 1s ease forwards;
-
-  h2{
-    font-size:32px;
-    margin-bottom:10px;
+  margin-bottom: 60;
+  width: 100%;
+  max-width: 1440px;
+  margin: 80px auto 80px;
+  height: 120px;
+ //왼쪽텍스트
+  .left{
+    animation:leftFade 1s ease forwards;
+    h2{
+      font-size:32px;
+      margin-bottom:20px;
+    }
+    p{
+      opacity:.6;
+    }
+  }
+  //유튜브버튼
+  .right{
+      animation:rightFade 1s ease forwards;
+      display: flex;
+      align-items: center;
+      .youtube-btn{
+          background:$text-color;
+          padding:14px 30px;
+          border-radius:20px;
+          color:white;
+          text-decoration:none;
+          margin-right: 10px;
+          }
   }
 
+}
+
+.pick-label{
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span{
+    display: inline-block;
+    background: #333; color: #fff;
+    padding: 4px 18px; border-radius: 20px;
+    font-size: 13px; margin-bottom: 10px;
+  }
   p{
-    opacity:.6;
+    font-size: 12px;
   }
-
 }
 
-/* 유튜브 버튼 */
-.right{
-    animation:rightFade 1s ease forwards;
-    .youtube-btn{
-        background:#2e2e2e;
-        padding:14px 30px;
-        border-radius:20px;
-        color:white;
-        text-decoration:none;
-        
-        }
-}
-
-
-/* 날씨 버튼 */
+//날씨버튼
 .weather-filter{
 
-  margin-bottom:60px;
+  margin-bottom:70px;
   display:flex;
   gap:20px;
 
@@ -128,35 +146,53 @@ body{font-family: $font-Kr;}
 }
 
 
-/* 스와이퍼 영역 */
-.swiper-area{
-  width:1200px;
-}
+//스와이퍼영역
+.swiper-area {
+    width: 100%;
+    height: 600px;
+    /* max-width: 1400px; */
+    perspective: 1200px; // 입체감 베이스
 
-.swiper-slide{
+    .swiper-slide {
+      transition: 0.6s ease;
+      opacity: 0.3; // 기본적으로 흐리게
+      transform: scale(0.8);
 
-  transition:.4s;
+      .slide-content {
+        position: relative;
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        
+        img { width: 100%; display: block; }
+        
+        .overlay {
+          position: absolute; inset: 0;
+          display: flex; flex-direction: column;
+          align-items: center; justify-content: center;
+          background: rgba(0,0,0,0.1);
+          color: #fff;
+          
+        }
+      }
+    }
 
-  img{
-    width:100%;
-    border-radius:10px;
+    // 가운데 활성화된 슬라이드
+    .swiper-slide-active {
+      opacity: 1;
+      transform: scale(1.15); // 더 크게 강조
+      z-index: 5;
+    }
+    
+    // 양옆 슬라이드 투명도 조절
+    .swiper-slide-prev, .swiper-slide-next {
+      opacity: 0.5;
+    }
   }
 
-}
 
-/* 양옆 슬라이드 */
-.swiper-slide-prev,
-.swiper-slide-next{
-  opacity:.4;
-  transform:scale(.8);
-}
 
-/* 가운데 슬라이드 */
-.swiper-slide-active{
-  transform:scale(1.1);
-}
-
-/* 날씨 버튼 애니메이션 */
+//날씨버튼애니메이션
 .weather-filter button{
   opacity:0;
   transform:translateY(-30px);
@@ -171,7 +207,7 @@ body{font-family: $font-Kr;}
 .weather-filter button:nth-child(6){animation-delay:.6s}
 
 
-/* 애니메이션 */
+//애니메이션
 
 @keyframes fadeDown{
 
@@ -214,3 +250,4 @@ body{font-family: $font-Kr;}
   }
 
 }
+

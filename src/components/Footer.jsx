@@ -28,7 +28,7 @@ function Footer() {
             <p>주소 : 서울특별시 관악구 신림동 무드 빌딩 201호</p>
 
             <p className="desc">
-              MoodScape는 날씨와 감정을 기반으로 음악을 추천하는 감성 플랫폼입니다<div className="br"></div>
+              MoodScape는 날씨와 감정을 기반으로 음악을 추천하는 감성 플랫폼입니다<br />
               날씨에 어울리는 음악을 통해 하루의 분위기를 더욱 특별하게 만들어보세요.
             </p>
           </div>
@@ -51,7 +51,7 @@ function Footer() {
 
                 <li>
                   <a 
-                    href="https://youtube.com" 
+                    href="https://www.youtube.com/@MoodScape_201" 
                     target="_blank"
                     rel="noopener noreferrer"
                   >

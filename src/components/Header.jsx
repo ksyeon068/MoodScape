@@ -1,10 +1,28 @@
 import { useEffect, useState } from 'react';
+import { useApi } from "../context/ApiContext";
 import '../style/header.scss';
 
 function Header() {
-
+  const { WEATHER_API_KEY } = useApi();
   const [isFixed, setIsFixed] = useState(false);
-  const [weather, setWeather] = useState("clear");
+  const [weather, setWeather] = useState(null);
+
+  //날씨 API연동
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`)
+        .then((res) => res.json())
+        .then((data) => {
+          const weatherMain = data.weather[0].main.toLowerCase();
+          setWeather(weatherMain);
+        });
+
+    });
+  }, []);
 
   // 스크롤 감지
   useEffect(() => {
@@ -31,7 +49,7 @@ function Header() {
   };
 
   return (
-    <header className={`header ${isFixed ? "fixed" : ""} ${weather}`}>
+    <header className={`header ${isFixed ? "fixed" : ""} ${weather || ""}`}>
       <div className="header-inner">
         <div className="logo">
           MoodScape
