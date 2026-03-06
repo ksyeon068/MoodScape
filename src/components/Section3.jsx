@@ -82,12 +82,27 @@ function Section3() {
         <Swiper
           ref={swiperRef}
           modules={[EffectCoverflow, Autoplay]}
+          autoplay={true}
           effect={"coverflow"}
           centeredSlides={true}
           loop={true}
           slidesPerView={1.8} // 양옆 슬라이드가 살짝 보이게 조절
           spaceBetween={400}
           grabCursor={true}
+          onClick={(swiper) => {
+            const clickedIndex = swiper.clickedIndex;
+            const activeIndex = swiper.activeIndex;
+
+            // 가운데 슬라이드 클릭 → 유튜브 이동
+            if (clickedIndex === activeIndex) {
+              const slide = weatherSlides[swiper.realIndex];
+              window.open(slide.youtube, "_blank");
+            } 
+            // 옆 슬라이드 클릭 → 가운데로 이동
+            else {
+              swiper.slideTo(clickedIndex);
+            }
+          }}
           coverflowEffect={{
             rotate: 40,      // 이미지처럼 팍 꺾이게
             stretch: 0,    // 슬라이드들이 서로 겹치는 정도
@@ -99,16 +114,9 @@ function Section3() {
         >
           {weatherSlides.map((item, index) => (
             <SwiperSlide key={index}>
-              {/* a 태그로 감싸서 링크 연결 */}
-              <a 
-                href={item.youtube} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="slide-content"
-                style={{ display: 'block' }} 
-              >
+              <div className="slide-content">
                 <img src={item.img} alt={item.name} />
-              </a>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
