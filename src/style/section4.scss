@@ -2,11 +2,13 @@
 @use './variables' as *;
 
 .about {
+    width: 100%;
     padding-top: 50px;
     position: relative;
-    height: 400vh;
+    height: 420vh;
     background: $sub;
     overflow-x: clip;
+    margin: 0 auto;
 
     .text, .circle, .top_des {
         opacity: 0;
@@ -27,8 +29,10 @@
     
 
   .top_des {
+        width: 100%;
         padding-top: 40px;
-        position: relative;
+        position: absolute;
+        top: 0;
         z-index: 2;
 
         h2 {
@@ -51,6 +55,8 @@
     }
 
   .inner {
+    //height: 100%;
+    width: 100%;
         max-width: 1440px;
         margin: 0 auto;
         position: relative;
@@ -59,27 +65,21 @@
   .center-wrapper {
         position: relative;
         height: 300vh;
-        padding-top: 40vh; 
-        //background: aqua;
+        padding-top: 15vh; 
     }
 
   .sticky-circle {
         position: sticky;
-        top: 52vh;
+        top: 50vh;
         transform: translateY(-50%);
         width: 520px;
         height: 520px;
         margin: 0 auto;
         border-radius: 50%;
         overflow: hidden;
-        z-index: 2;
+        z-index: 5;
         box-shadow: 1px 8px 10px #888;
 
-        /* img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        } */
          img {
             position: absolute; // 1. 모든 이미지를 한곳에 겹침
             top: 0;
@@ -99,12 +99,12 @@
     }
 
   .scroll-content {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 50px 0;
-    z-index: 5;
-    min-height: 300vh;
+    position: absolute; 
+    top: 0; 
+    width: 100%; 
+    padding: 50px 0; 
+    z-index: 2; 
+    min-height: 250vh;
 
     p, h3 {
       color: $text-color;
@@ -120,7 +120,7 @@
       left: 0;
 
       h3{font-size: 30px;}
-      p{font-size: 16px; font-weight: 300; margin-top: 70px;}
+      p{font-size: 16px; font-weight: 300; margin-top: 50px;}
     }
 
     .text2 { //하루의 기분~
@@ -140,7 +140,7 @@
 
     .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
         position: absolute;
-        top: 160vh;
+        top: 170vh;
         right: 0;
         text-align: right;
         span{font-family: $font-En; font-size: 24px; font-weight: 500;}
@@ -148,7 +148,7 @@
 
     .text5 { //단순히
         position: absolute;
-        top: 175vh;
+        top: 185vh;
         right: 0;
         text-align: right;
         p{font-size: 16px; font-weight: 300;}
@@ -163,7 +163,7 @@
 
     .bottom-text.text7 { //당신의 환경에 가장 어울리는~
         position: absolute;
-        top: 283vh;
+        top: 280vh;
         width: 100%;
         text-align: center;
         p{font-size: 24px; font-weight: 500;}
@@ -239,7 +239,7 @@
         width: 170px;
         height: 170px;
         background: #ddd;
-        top: 220vh;
+        top: 200vh;
         right: 240px;
     }
     .circle8 {
@@ -254,8 +254,7 @@
 
     .aboutLast{
         width: 100%;
-        height: 70vh;
-        background: red;
+        height: 60vh;
         position: absolute;
         bottom: 0;
 
@@ -290,7 +289,7 @@
             img{
                 display: block;
                 width: 25%;
-                height: 70vh;
+                height: 60vh;
                 object-fit: cover;
             }
         }
