@@ -1,22 +1,36 @@
-import {useEffect} from "react";
+import { useEffect,useRef, useState } from "react";
 import { useApi } from "../context/ApiContext";
+
 import "../style/section4.scss";
 
 const Section4 = () => {
 	const { WEATHER_API_KEY } = useApi();
 
+	const sectionRef = useRef(null); // 수정: section 참조
+	const [currentImg, setCurrentImg] = useState(2); // 수정: 기본 이미지 index
+
+	// 수정: 이미지 배열
+	const images = [
+		"../img/source/Cloud_Source file.png",
+		"../img/source/Fog_Source file.png",
+		"../img/source/Rainy_Source file.png",
+		"../img/source/Snow_Source file.png",
+		"../img/source/Sunny_Source file.png",
+		"../img/source/Thunder_Source file.png"
+	];
+
 	useEffect(() => {
 
 		const handleScroll = () => {
 
+			/* 기존 fade animation */
 			const elements = document.querySelectorAll(
-				".text, .circle, .top_des" // 수정: scroll-content > div 제거
+				".text, .circle, .top_des"
 			);
 
 			const trigger = window.innerHeight * 0.75;
 
 			elements.forEach((el) => {
-
 				const rect = el.getBoundingClientRect();
 
 				if (rect.top < trigger && rect.bottom > 0) {
@@ -26,8 +40,32 @@ const Section4 = () => {
 					el.classList.remove("fade-in");
 					el.classList.add("fade-out");
 				}
-
 			});
+
+			/* ------------------------------ */
+			/* 수정: 중앙 이미지 스크롤 변경 */
+			/* ------------------------------ */
+
+			const section = sectionRef.current;
+
+			if (!section) return;
+
+			const rect = section.getBoundingClientRect();
+
+			const sectionHeight = section.offsetHeight;
+
+			const scrollY = window.scrollY + window.innerHeight / 2;
+
+			const sectionTop = section.offsetTop;
+
+			const progress = (scrollY - sectionTop) / sectionHeight;
+
+			let index = Math.floor(progress * 6);
+
+			if (index < 0) index = 0;
+			if (index > 5) index = 5;
+
+			setCurrentImg(index);
 		};
 
 		const scrollListener = () => {
@@ -46,8 +84,8 @@ const Section4 = () => {
 
 	}, []);
 
-  return (
-		<section className="about">
+  	return (
+		<section className="about" ref={sectionRef}>
 
 			<div className="top_des">
 				<h2 className="left_des">An atmosphere shaped</h2>
@@ -58,7 +96,13 @@ const Section4 = () => {
 
 				<div className="center-wrapper">
 					<div className="sticky-circle">
-						<img src="../img/source/Rainy_Source file.png" alt="centerImg" />
+						{/* 수정: 이미지 동적 변경 */}
+						<img
+							key={currentImg}                 // 이미지 변경 시 React가 새로 렌더링
+							className="fade-change"          // reveal 애니메이션 실행
+							src={images[currentImg]}         // 이미지 변경
+							alt="centerImg"
+						/>
 					</div>
 				</div>
 
