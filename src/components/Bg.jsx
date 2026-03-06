@@ -1,11 +1,30 @@
-import React from 'react';
+import { useContext } from "react";
+import ApiContext from "../context/ApiContext";
+import "../style/bg.scss";
 
-const Bg = () => {
-    return (
-        <div>
-            배경영상들어갈 곳
-        </div>
-    );
-};
+function Bg() {
+
+  const { weather } = useContext(ApiContext); // ⭐ weather 가져오기
+  console.log("weather:", weather);
+
+  const videoMap = {
+    sunny: "/Project_Video/Sunny.mp4",
+    cloudy: "/Project_Video/Cloud.mp4",
+    rainy: "/Project_Video/Rainy.mp4",
+    snowy: "/Project_Video/Snow.mp4",
+    stormy: "/Project_Video/Thunder.mp4",
+    misty: "/Project_Video/Fog.mp4"
+  };
+
+  const videoSrc = videoMap[weather] || "/Project_Video/Sunny.mp4";
+
+  return (
+    <div className="bg-video">
+      <video autoPlay loop muted playsInline key={videoSrc}>
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+    </div>
+  );
+}
 
 export default Bg;
