@@ -4,7 +4,7 @@
 .about {
     padding-top: 50px;
     position: relative;
-    height: 400vh;
+    height: 420vh;
     background: #9b9198;
     //overflow: hidden;
 
@@ -73,9 +73,9 @@
     //background: rgba(0, 128, 0, 0.445);
 
     p, h3 {
-      color: white;
+      color: $sub;
       line-height: 1.6;
-      font-size: 24px;
+      font-size: 18px;
       letter-spacing: 3px;
       font-weight: 400;
     }
@@ -86,16 +86,19 @@
       left: 0;
 
       h3{font-size: 30px;}
+      p{font-size: 16px; font-weight: 300; margin-top: 50px;}
     }
 
-    .text2 { //날씨는 우리 일상에~
+    .text2 { //하루의 기분~
         position: absolute;
-        top: 80vh;
+        top: 85vh;
         right: 0;
         text-align: right;
+
+        p{font-size: 16px; font-weight: 300; margin-top: 50px;}
     }
 
-    .text3 { //하루의 분위기 활동방식~
+    .text3 { //이처럼 날씨는~
         position: absolute;
         top: 120vh;
         left: 0;
@@ -104,25 +107,32 @@
     .text4 { //날씨는 생활의 리듬을
         position: absolute;
         top: 170vh;
-        left: 0;
+        right: 0;
+        text-align: right;
+        span{font-family: $font-En; font-size: 24px; font-weight: 500;}
     }
 
     .text5 { //moodscape는 오늘의 날씨 정보를 기반으로
         position: absolute;
-        top: 230vh;
+        top: 190vh;
         right: 0;
         text-align: right;
-
-        span{
-            font-family: $font-En;
-        }
+        p{font-size: 16px; font-weight: 300;}
     }
 
-    .bottom-text.text6 { //당신의 환경에 가장 어울리는~
+    .text6 { //이처럼 날씨는~
         position: absolute;
-        top: 340vh;
+        top: 220vh;
+        left: 0;
+        p{font-weight: 300;}
+    }
+
+    .bottom-text.text7 { //당신의 환경에 가장 어울리는~
+        position: absolute;
+        top: 280vh;
         width: 100%;
         text-align: center;
+        p{font-size: 24px; font-weight: 500;}
     }
   }
 
