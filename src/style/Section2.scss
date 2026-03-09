@@ -6,8 +6,8 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: #ffffff;
   padding: 160px 0;
+  display: block;
 
   .section2-inner {
     max-width: 1440px;
@@ -97,7 +97,7 @@
         flex: 1;
 
         .progress-bar {
-          width: 68%;
+          width: 64%;
           height: 4px;
           background: #ccc;
           margin: 30px 0;
@@ -147,7 +147,22 @@
     .detail-swiper .swiper-slide {
       opacity: 1 !important;
     }
-    .detail-card {
+    .detail-swiper {
+      overflow: visible;
+
+      .swiper {
+        overflow: visible;
+      }
+
+      .swiper-wrapper {
+        overflow: visible;
+      }
+
+      .swiper-slide {
+        overflow: visible;
+      }
+    }
+        .detail-card {
       width: 140px;
       flex-shrink: 0;
       cursor: pointer;
