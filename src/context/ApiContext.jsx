@@ -1,22 +1,75 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-// 1. Context(창고) 생성
 const ApiContext = createContext();
 
-// 2. Provider(창고 관리자) 컴포넌트 생성
 export const ApiProvider = ({ children }) => {
-  // Vite 환경에서 .env 파일의 변수를 불러오는 방법입니다.
+
   const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
+  const [weather, setWeather] = useState("sunny"); // ⭐ 여기 추가
+
+  const getWeatherType = (apiWeather) => {
+
+    const weatherMap = {
+      Clear: "sunny",
+
+      Clouds: "cloudy",
+      "Few Clouds": "cloudy",
+      Overcast: "cloudy",
+
+      Rain: "rainy",
+      Drizzle: "rainy",
+
+      Thunderstorm: "stormy",
+
+      Snow: "snowy",
+
+      Mist: "misty",
+      Fog: "misty",
+      Haze: "misty"
+    };
+
+    return weatherMap[apiWeather] || "sunny";
+  };
+
+  // ⭐ 여기서 날씨 API 한번만 호출
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+
+          const apiWeather = data.weather[0].main;
+          const type = getWeatherType(apiWeather);
+
+          setWeather(type);
+        });
+
+    });
+  }, []);
+
   return (
-    // 하위 컴포넌트들에게 WEATHER_API_KEY를 공유합니다.
-    <ApiContext.Provider value={{ WEATHER_API_KEY }}>
+    <ApiContext.Provider value={{ WEATHER_API_KEY, getWeatherType, weather }}>
       {children}
     </ApiContext.Provider>
   );
 };
 
+<<<<<<< HEAD
 // 3. 쉽게 가져다 쓸 수 있도록 커스텀 훅 만들기
 export const useApi = () => {
   return useContext(ApiContext);
 };
+=======
+export const useApi = () => {
+  return useContext(ApiContext);
+};
+
+export default ApiContext;
+>>>>>>> 7bea2f5fa69ceaa66853c2e6dbe7e2b4637fbc21

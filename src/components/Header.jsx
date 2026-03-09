@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useApi } from "../context/ApiContext";
 import '../style/header.scss';
 
 function Header() {
 
+  const { weather } = useApi(); // ⭐ 여기만 바뀜
   const [isFixed, setIsFixed] = useState(false);
-  const [weather, setWeather] = useState("clear");
 
   // 스크롤 감지
   useEffect(() => {
+
     const handleScroll = () => {
       if (window.scrollY > 100) {
         setIsFixed(true);
@@ -18,24 +20,27 @@ function Header() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+
   }, []);
 
   // 메뉴 클릭시 스크롤 이동
   const scrollToSection = (id) => {
+
     const el = document.getElementById(id);
     if (!el) return;
 
     el.scrollIntoView({
       behavior: "smooth"
     });
+
   };
 
   return (
-    <header className={`header ${isFixed ? "fixed" : ""} ${weather}`}>
+    <header className={`header ${isFixed ? "fixed" : ""} ${weather || ""}`}>
       <div className="header-inner">
 
         <div className="logo">
-          MoodScape
+          <img src="/img/Logo_D.png" alt="logo" />
         </div>
 
         <nav className="menu">
