@@ -7,7 +7,7 @@
     position: relative;
     height: 420vh;
     background: $sub;
-    overflow-x: clip;
+    //overflow-x: clip;
     margin: 0 auto;
 
 
@@ -92,22 +92,25 @@
             letter-spacing: 5px;
             font-size: 60px;
             color: $text-color;
+            
         }
 
         .left_des {
             justify-content: flex-start;
+            width: 100%;
+            white-space: nowrap;
             //padding-bottom: 20px;
         }
 
         .right_des {
             justify-content: flex-end;
+            width: 100%;
+            white-space: nowrap;
         }
     }
 
   .inner {
-    //height: 100%;
-    width: 100%;
-        max-width: 1440px;
+        width: 100%;
         margin: 0 auto;
         position: relative;
     }
@@ -128,6 +131,7 @@
         border-radius: 50%;
         overflow: hidden;
         z-index: 5;
+        opacity: .8;
         box-shadow: 1px 8px 10px #888;
 
          img {
@@ -164,10 +168,12 @@
       font-weight: 400;
     }
 
+    .left-content{left: 0;}
+    .right-content{right: 0;}
+
     .text1 { //변화하는 환경 속에서
       position: absolute;
       top: 30vh;
-      left: 0;
 
       h3{font-size: 30px;}
       p{font-size: 16px; font-weight: 300; margin-top: 50px;}
@@ -176,7 +182,6 @@
     .text2 { //하루의 기분~
         position: absolute;
         top: 75vh;
-        right: 0;
         text-align: right;
 
         p{font-size: 16px; font-weight: 300; margin-top: 50px;}
@@ -185,13 +190,11 @@
     .text3 { //이처럼 날씨는~
         position: absolute;
         top: 120vh;
-        left: 0;
     }
 
     .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
         position: absolute;
         top: 170vh;
-        right: 0;
         text-align: right;
         span{font-family: $font-En; font-size: 24px; font-weight: 500;}
     }
@@ -199,7 +202,6 @@
     .text5 { //단순히
         position: absolute;
         top: 185vh;
-        right: 0;
         text-align: right;
         p{font-size: 16px; font-weight: 300;}
     }
@@ -207,7 +209,6 @@
     .text6 { //날씨가 만들어내는~
         position: absolute;
         top: 205vh;
-        left: 0;
         p{font-weight: 300;}
     }
 
@@ -313,7 +314,7 @@
             height: 100%;
             text-align: center;
             background: rgba(0, 0, 0, .4);
-            color: #fff;
+            color: $sub;
             position: absolute;
             left: 0; top: 0;
 
@@ -330,7 +331,17 @@
                     letter-spacing: 5px;
                     margin-bottom: 30px;
                 }
-                p{letter-spacing: 1px;}
+                p{
+                    letter-spacing: 1px;
+                    font-weight: 300;
+
+                    span{
+                        font-weight: 500;
+                        font-size: 20px;
+                        display: inline-block;
+                        margin-bottom: 10px;
+                    }
+                }
             }
         }
         .aboutImgBox{
@@ -366,6 +377,795 @@
             rgba(0,0,0,0.6) 85%,
             rgba(0,0,0,0) 100%
         );
+    }
+
+
+
+    @media screen and (max-width: 1440px) {
+        .center-wrapper {
+            height: 300vh;
+            padding-top: 15vh; 
+        }
+
+        .sticky-circle {
+            top: 50vh;
+            width: 420px;
+            height: 420px;
+        }
+
+        .scroll-content {
+            top: 0; 
+            width: 100%; 
+            padding: 50px 0; 
+            min-height: 250vh;
+
+            p, h3 {
+                line-height: 1.6;
+                font-size: 16px;
+                letter-spacing: 3px;
+                font-weight: 400;
+            }
+
+            .left-content{left: 50px;}
+            .right-content{right: 50px;}
+
+            .text1 { //변화하는 환경 속에서
+                top: 30vh;
+
+                h3{font-size: 26px;}
+                p{font-size: 16px; font-weight: 300; margin-top: 30px;}
+            }
+
+            .text2 { //하루의 기분~
+                top: 75vh;
+
+                p{font-size: 15px; font-weight: 300; margin-top: 50px;}
+            }
+
+            .text3 { //이처럼 날씨는~
+                top: 120vh;
+                span{display: block;}
+            }
+
+            .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
+                top: 170vh;
+                span{font-family: $font-En; font-size: 22px; font-weight: 500;}
+            }
+
+            .text5 { //단순히
+                top: 185vh;
+                p{font-size: 15px; font-weight: 300;}
+            }
+
+            .text6 { //날씨가 만들어내는~
+                top: 205vh;
+                p{font-weight: 300;}
+            }
+
+            .bottom-text.text7 { //당신의 환경에 가장 어울리는~
+                top: 283vh;
+                p{font-size: 22px; font-weight: 500;}
+            }
+        }
+
+        /* image circles */
+        .circle1 {
+            width: 120px;
+            height: 120px;
+            top: 50vh;
+            right: 220px;
+        }
+
+        .circle2 {
+            width: 250px;
+            height: 250px;
+            top: 85vh;
+            left: -20px;
+        }
+
+        .circle3 {
+            display: none;
+        }
+
+        .circle4 {
+            width: 220px;
+            height: 220px;
+            top: 180vh;
+            left: -50px;
+        }
+
+        .circle5 {
+            display: none;
+        }
+
+        .circle6 {
+            width: 200px;
+            height: 200px;
+            top: 21vh;
+            right: -60px;
+        }
+
+        .circle7 {
+            width: 140px;
+            height: 140px;
+            top: 200vh;
+            right: 200px;
+        }
+        .circle8 {
+            width: 240px;
+            height: 240px;
+            top: 150vh;
+            right: -40px;
+        }
+
+
+    }
+
+    @media screen and (max-width: 1280px) {
+        .top_des {
+            width: 100%;
+            padding-top: 50px;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+
+            h2 {
+                display: flex;
+                font-family: $font-En;
+                font-weight: 700;
+                letter-spacing: 5px;
+                font-size: 50px;
+                color: $text-color;
+                
+            }
+
+            .left_des {
+                justify-content: flex-start;
+                width: 100%;
+                white-space: nowrap;
+                //padding-bottom: 20px;
+            }
+
+            .right_des {
+                justify-content: flex-end;
+                width: 100%;
+                white-space: nowrap;
+            }
+        }
+
+        .center-wrapper {
+            height: 300vh;
+            padding-top: 15vh; 
+        }
+
+        .sticky-circle {
+            top: 50vh;
+            width: 350px;
+            height: 350px;
+        }
+
+        .scroll-content {
+            top: 0; 
+            width: 100%; 
+            padding: 50px 0; 
+            min-height: 250vh;
+
+            p, h3 {
+                line-height: 1.6;
+                font-size: 15px;
+                letter-spacing: 2.5px;
+                font-weight: 400;
+            }
+
+            .left-content{left: 40px;}
+            .right-content{right: 40px;}
+
+            .text1 { //변화하는 환경 속에서
+                top: 30vh;
+
+                h3{font-size: 25px;}
+                p{font-size: 15px; font-weight: 300; margin-top: 30px;}
+            }
+
+            .text2 { //하루의 기분~
+                top: 75vh;
+
+                p{font-size: 14px; font-weight: 300; margin-top: 50px;}
+            }
+
+            .text3 { //이처럼 날씨는~
+                top: 120vh;
+                span{display: block;}
+            }
+
+            .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
+                top: 170vh;
+                span{font-family: $font-En; font-size: 20px; font-weight: 500;}
+            }
+
+            .text5 { //단순히
+                top: 185vh;
+                p{font-size: 14px; font-weight: 300;}
+            }
+
+            .text6 { //날씨가 만들어내는~
+                top: 225vh;
+                p{font-weight: 300; font-size: 14px;}
+            }
+
+            .bottom-text.text7 { //당신의 환경에 가장 어울리는~
+                top: 285vh;
+                p{font-size: 20px; font-weight: 500;}
+            }
+        }
+
+        /* image circles */
+        .circle1 {
+            width: 100px;
+            height: 100px;
+            top: 110vh;
+            right: 180px;
+        }
+
+        .circle2 {
+            width: 250px;
+            height: 250px;
+            top: 85vh;
+            left: -20px;
+        }
+
+        .circle3 {
+            display: none;
+        }
+
+        .circle4 {
+            width: 220px;
+            height: 220px;
+            top: 180vh;
+            left: -50px;
+        }
+
+        .circle5 {
+            display: none;
+        }
+
+        .circle6 {
+            width: 200px;
+            height: 200px;
+            top: 26vh;
+            right: -60px;
+        }
+
+        .circle7 {
+            width: 140px;
+            height: 140px;
+            top: 260vh;
+            right: 180px;
+        }
+
+        .circle8 {
+            width: 240px;
+            height: 240px;
+            top: 150vh;
+            right: -40px;
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        .top_des {
+            width: 100%;
+            padding-top: 50px;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+
+            h2 {
+                display: flex;
+                font-family: $font-En;
+                font-weight: 700;
+                letter-spacing: 5px;
+                font-size: 45px;
+                color: $text-color;
+            }
+
+            .left_des {
+                justify-content: flex-start;
+                width: 100%;
+                white-space: nowrap;
+                //padding-bottom: 20px;
+            }
+
+            .right_des {
+                justify-content: flex-end;
+                width: 100%;
+                white-space: nowrap;
+            }
+        }
+
+        .center-wrapper {
+            height: 290vh;
+            padding-top: 5vh; 
+        }
+
+        .sticky-circle {
+            top: 50vh;
+            width: 300px;
+            height: 300px;
+        }
+
+        .scroll-content {
+            top: 0; 
+            width: 100%; 
+            padding: 50px 0; 
+            min-height: 250vh;
+
+            p, h3 {
+                line-height: 1.6;
+                font-size: 15px;
+                letter-spacing: 2.5px;
+                font-weight: 400;
+            }
+
+            .left-content{left: 40px;}
+            .right-content{right: 40px;}
+
+            .text1 { //변화하는 환경 속에서
+                top: 30vh;
+
+                h3{font-size: 23px;}
+                p{font-size: 15px; font-weight: 300; margin-top: 20px;}
+            }
+
+            .text2 { //하루의 기분~
+                top: 75vh;
+
+                p{font-size: 14px; font-weight: 300; margin-top: 50px;}
+            }
+
+            .text3 { //이처럼 날씨는~
+                top: 120vh;
+                span{display: block;}
+            }
+
+            .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
+                top: 170vh;
+                span{font-family: $font-En; font-size: 20px; font-weight: 500;}
+            }
+
+            .text5 { //단순히
+                top: 185vh;
+                p{font-size: 14px; font-weight: 300;}
+            }
+
+            .text6 { //날씨가 만들어내는~
+                top: 225vh;
+                p{font-weight: 300; font-size: 14px;}
+            }
+
+            .bottom-text.text7 { //당신의 환경에 가장 어울리는~
+                top: 280vh;
+                p{font-size: 18px; font-weight: 500;}
+            }
+        }
+
+        /* image circles */
+        .circle1 {
+            display: none;
+        }
+
+        .circle2 {
+            width: 250px;
+            height: 250px;
+            top: 85vh;
+            left: -20px;
+        }
+
+        .circle3 {
+            display: none;
+        }
+
+        .circle4 {
+            width: 220px;
+            height: 220px;
+            top: 180vh;
+            left: -50px;
+        }
+
+        .circle5 {
+            display: none;
+        }
+
+        .circle6 {
+            width: 180px;
+            height: 180px;
+            top: 26vh;
+            right: -30px;
+        }
+
+        .circle7 {
+            width: 100px;
+            height: 100px;
+            top: 270vh;
+            right: 180px;
+        }
+
+        .circle8 {
+            width: 180px;
+            height: 180px;
+            top: 150vh;
+            right: -40px;
+        }
+    }
+    @media screen and (max-width: 960px) {
+        .top_des {
+            width: 100%;
+            padding-top: 50px;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+
+            h2 {
+                display: flex;
+                font-family: $font-En;
+                font-weight: 700;
+                letter-spacing: 5px;
+                font-size: 38px;
+                color: $text-color;
+            }
+
+            .left_des {
+                justify-content: flex-start;
+                width: 100%;
+                white-space: nowrap;
+                padding-bottom: 20px;
+            }
+
+            .right_des {
+                justify-content: flex-end;
+                width: 100%;
+                white-space: nowrap;
+            }
+        }
+
+        .center-wrapper {
+            height: 300vh;
+            padding-top: 0vh; 
+        }
+
+        .sticky-circle {
+            top: 50vh;
+            width: 350px;
+            height: 350px;
+            opacity: .7;
+        }
+
+        .scroll-content {
+            top: 0; 
+            width: 100%; 
+            padding: 50px 0; 
+            min-height: 250vh;
+            z-index: 6;
+
+            p, h3 {
+                line-height: 1.5;
+                font-size: 15px;
+                letter-spacing: 2.5px;
+                font-weight: 400;
+            }
+
+            .left-content{left: 50%; transform: translateX(-50%); text-align: center; width: 100%;}
+            .right-content{right: 0; transform: translateX(0%); text-align: center; width: 100%;}
+
+            .text1 { //변화하는 환경 속에서
+                top: 30vh;
+
+                h3{font-size: 23px;}
+                p{font-size: 15px; font-weight: 400; margin-top: 20px;}
+            }
+
+            .text2 { //하루의 기분~
+                top: 75vh;
+
+                p{font-size: 15px; font-weight: 400; margin-top: 50px;}
+            }
+
+            .text3 { //이처럼 날씨는~
+                top: 120vh;
+                span{display: block;}
+            }
+
+            .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
+                top: 160vh;
+                span{font-family: $font-En; font-size: 20px; font-weight: 500;}
+            }
+
+            .text5 { //단순히
+                top: 185vh;
+                p{font-size: 15px; font-weight: 400;}
+            }
+
+            .text6 { //날씨가 만들어내는~
+                top: 230vh;
+                p{font-weight: 400; font-size: 15px;}
+            }
+
+            .bottom-text.text7 { //당신의 환경에 가장 어울리는~
+                top: 290vh;
+                p{font-size: 18px; font-weight: 500;}
+            }
+        }
+
+        /* image circles */
+        .circle1 {
+            display: none;
+        }
+
+        .circle2 {
+            width: 150px;
+            height: 150px;
+            top: 85vh;
+            left: -20px;
+        }
+
+        .circle3 {
+            display: none;
+        }
+
+        .circle4 {
+            width: 160px;
+            height: 160px;
+            top: 230vh;
+            left: -50px;
+        }
+
+        .circle5 {
+            display: none;
+        }
+
+        .circle6 {
+            width: 180px;
+            height: 180px;
+            top: 26vh;
+            right: -30px;
+        }
+
+        .circle7 {
+            display: none;
+        }
+
+        .circle8 {
+            width: 180px;
+            height: 180px;
+            top: 150vh;
+            right: -40px;
+        }
+
+
+        .aboutLast{
+            height: 50vh;
+
+            .lastTextBox{
+
+                .texts{
+
+                    h2{
+                        font-size: 35px; 
+                        letter-spacing: 5px;
+                        margin-bottom: 30px;
+                    }
+                    p{
+                        letter-spacing: 1px;
+                        font-weight: 300;
+                        font-size: 14px;
+
+                        span{
+                            font-weight: 500;
+                            font-size: 16px;
+                            display: inline-block;
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+            }
+            .aboutImgBox{
+                display: flex;
+
+                img{
+                    width: 25%;
+                    height: 50vh;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 720px) {
+        .top_des {
+            width: 100%;
+            padding-top: 50px;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+
+            h2 {
+                display: flex;
+                font-family: $font-En;
+                font-weight: 700;
+                letter-spacing: 5px;
+                font-size: 34px;
+                color: $text-color;
+            }
+
+            .left_des {
+                justify-content: flex-start;
+                width: 100%;
+                white-space: nowrap;
+                padding-bottom: 20px;
+            }
+
+            .right_des {
+                justify-content: flex-end;
+                width: 100%;
+                white-space: nowrap;
+            }
+        }
+
+        .center-wrapper {
+            height: 300vh;
+            padding-top: 0vh; 
+        }
+
+        .sticky-circle {
+            top: 50vh;
+            width: 350px;
+            height: 350px;
+            opacity: .7;
+        }
+
+        .scroll-content {
+            top: 0; 
+            width: 100%; 
+            padding: 50px 0; 
+            min-height: 250vh;
+            z-index: 6;
+
+            p, h3 {
+                line-height: 1.5;
+                font-size: 15px;
+                letter-spacing: 2.5px;
+                font-weight: 400;
+            }
+
+            .left-content{left: 50%; transform: translateX(-50%); text-align: center; width: 100%;}
+            .right-content{right: 0; transform: translateX(0%); text-align: center; width: 100%;}
+
+            .text1 { //변화하는 환경 속에서
+                top: 30vh;
+
+                h3{font-size: 23px;}
+                p{font-size: 15px; font-weight: 400; margin-top: 20px;}
+            }
+
+            .text2 { //하루의 기분~
+                top: 75vh;
+
+                p{font-size: 15px; font-weight: 400; margin-top: 50px;}
+            }
+
+            .text3 { //이처럼 날씨는~
+                top: 120vh;
+                span{display: block;}
+            }
+
+            .text4 { //moodscape는 오늘의 날씨 정보를 기반으로
+                top: 160vh;
+                span{font-family: $font-En; font-size: 20px; font-weight: 500;}
+            }
+
+            .text5 { //단순히
+                top: 185vh;
+                p{font-size: 15px; font-weight: 400;}
+            }
+
+            .text6 { //날씨가 만들어내는~
+                top: 230vh;
+                p{font-weight: 400; font-size: 15px;}
+            }
+
+            .bottom-text.text7 { //당신의 환경에 가장 어울리는~
+                top: 290vh;
+                p{font-size: 18px; font-weight: 500;}
+            }
+        }
+
+        /* image circles */
+        .circle1 {
+            display: none;
+        }
+
+        .circle2 {
+            width: 150px;
+            height: 150px;
+            top: 85vh;
+            left: -20px;
+        }
+
+        .circle3 {
+            display: none;
+        }
+
+        .circle4 {
+            width: 160px;
+            height: 160px;
+            top: 230vh;
+            left: -50px;
+        }
+
+        .circle5 {
+            display: none;
+        }
+
+        .circle6 {
+            width: 180px;
+            height: 180px;
+            top: 26vh;
+            right: -30px;
+        }
+
+        .circle7 {
+            display: none;
+        }
+
+        .circle8 {
+            width: 180px;
+            height: 180px;
+            top: 150vh;
+            right: -40px;
+        }
+
+
+        .aboutLast{
+            height: 50vh;
+
+            .lastTextBox{
+
+                .texts{
+
+                    h2{
+                        font-size: 35px; 
+                        letter-spacing: 5px;
+                        margin-bottom: 30px;
+                    }
+                    p{
+                        letter-spacing: 1px;
+                        font-weight: 300;
+                        font-size: 14px;
+
+                        span{
+                            font-weight: 500;
+                            font-size: 16px;
+                            display: inline-block;
+                            margin-bottom: 10px;
+                        }
+                    }
+                }
+            }
+            .aboutImgBox{
+                display: flex;
+
+                img{
+                    width: 25%;
+                    height: 50vh;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 568px) {
+        
+    }
+    
+    @media screen and (max-width: 480px) {
+        
     }
 }
 

@@ -102,16 +102,16 @@ const Section4 = () => {
 					{/* right text 1 */}
 					<div className="right-content text2 text">
 						<p>
-							하루의 기분, <br />활동 방식, <br />집중과 휴식의 흐름까지 <br />
-							날씨는 자연스럽게 삶의 리듬을 만들어 냅니다.
+							하루의 기분, 활동 방식, <br />집중과 휴식의 흐름까지 날씨는<br />
+							자연스럽게 삶의 리듬을 만들어 냅니다.
 						</p>
 					</div>
 
 					{/* left text 2 */}
 					<div className="left-content text3 text">
 						<p>
-							이처럼 날씨는 단순한 자연 현상을 넘어 <br />
-							우리의 감정과 분위기에 깊게 연결되어 있습니다.
+							이처럼 날씨는 자연 현상을 넘어 <br />
+							우리의 감정과 분위기에 <span>깊게 연결되어 있습니다.</span>
 						</p>
 					</div>
 
@@ -120,7 +120,7 @@ const Section4 = () => {
 						<p>
 							<span>MoodScape</span>는 <br />
 							날씨의 변화를 바탕으로<br />
-							순간의 분위기에 어울리는 음악을 추천합니다.
+							어울리는 음악을 추천합니다.
 						</p>
 					</div>
 
@@ -185,16 +185,16 @@ const Section4 = () => {
 				<div className="lastTextBox">
 					<div className="texts">
 						<h2>MOODSCAPE</h2>
-						<p>	실시간 기상 데이터를 분석하여 상황에 적합한 사운드를 연결하고<br />
-							사용자가 별도의 탐색 없이도 자연스럽게 음악을 선택할 수 있도록 돕습니다.<br />
-							날씨와 음악을 하나의 흐름으로 연결한 새로운 방식의 추천 서비스<br />
+						<p>	<span>날씨와 음악을 하나의 흐름으로 연결한 새로운 방식의 추천 서비스</span><br />
+							실시간 기상 데이터를 분석하여 상황에 적합한 사운드를 연결하고<br />
+							사용자가 별도의 탐색 없이도 자연스럽게 음악을 선택할 수 있도록 돕습니다.
 						</p>
 					</div>
 				</div>
 				<div className="aboutImgBox">
 					<div className="aboutBg"></div>
-					<img src="../img/source/about_b 1.jpg" alt="imgBox1" />
-					<img src="../img/source/about_b 2.jpg" alt="imgBox2" />
+					<img src="../img/source/about_b 2.jpg" alt="imgBox1" />
+					<img src="../img/source/about_b 1.jpg" alt="imgBox2" />
 					<img src="../img/source/about_b 3.jpg" alt="imgBox3" />
 					<img src="../img/source/about_b 4.jpg" alt="imgBox4" />
 				</div>
