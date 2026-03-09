@@ -1,19 +1,15 @@
 @use "sass:color";
-@use "../../style/variables" as *; 
-@use "../../style/layout" as *; 
+@use "../style/variables" as *;
+@use "../style/layout" as *;
 
 @mixin apply-theme($light, $dark) {
   background-color: $light; 
 
-  .music-widget {
-    background-color: $light; 
-    &.expanded { background-color: color.adjust($light, $lightness: -5%); }
-  }
+  .music-widget { background-color: $light; }
+  .playlist-overlay { background-color: color.adjust($light, $lightness: -5%); }
 
-  .weather-widget {
-    background-color: rgba($dark, 0.4); 
-    &.expanded { background-color: rgba($dark, 0.85); }
-  }
+  .weather-widget { background-color: rgba($dark, 0.4); }
+  .weather-overlay { background-color: rgba($dark, 0.85); }
 }
 
 .hero-container {
@@ -23,7 +19,6 @@
   overflow: hidden;
   color: $text-color; 
 
-  // --- [Dynamic weather theming] ---
   &.theme-sunny { @include apply-theme($sunny, $sunny-dark); }
   &.theme-clouds { @include apply-theme($clouds, $clouds-dark); }
   &.theme-rain { @include apply-theme($rain, $rain-dark); }
@@ -35,67 +30,55 @@
 
   .inner {
     position: relative; height: 100%; width: 100%;
-
-    .music-widget, .weather-widget {
-      position: absolute; bottom: 60px; height: 180px; border-radius: 20px; padding: 24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; box-sizing: border-box;
+    
+    // --- 공통 위젯 스타일 (명시적인 transition 부여) ---
+    .music-widget, .weather-widget, .playlist-overlay, .weather-overlay {
+      position: absolute; bottom: 60px; padding: 24px; border-radius: 20px;
+      box-sizing: border-box; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+      /* 수정: transition을 opacity와 transform에 0.4초 동안 부드럽게 걸도록 명시 */
+      transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.4s ease;
     }
 
-    /* --- 뮤직 위젯 --- */
+    /* --- [1] 기본 뮤직 위젯 --- */
     .music-widget {
-      left: 80px; width: 380px; z-index: 10; color: $text-color;
-
-      &.expanded {
-        height: 450px; color: $text-color;
-        .playlist-view { animation: fadeIn 0.3s ease-in-out; }
-      }
+      left: 80px; width: 380px; height: 180px; z-index: 10; color: $text-color;
+      // 수정: 리스트 열릴 때 부드럽게 투명해지고 클릭 안 되게 처리
+      &.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
 
       .player-view {
         display: flex; flex-direction: column; justify-content: space-between; height: 100%;
-        
         .progress-area {
           display: flex; align-items: center; gap: 10px; font-size: 11px; color: rgba($text-color, 0.7); font-weight: 500;
-          
           .progress-bar { 
-            flex: 1; height: 4px; background: rgba(0,0,0,0.1); position: relative; border-radius: 2px;
-            
-            .fill { 
-              width: 0%; height: 100%; background: rgba($text-color, 0.7); position: absolute; top: 0; left: 0; border-radius: 2px;
-            } 
-            .knob { 
-              position: absolute; left: 0%; top: 0; width: 4px; height: 100%; background: $text-color; transform: translateX(-50%); border-radius: 2px;
-            } 
+            flex: 1; height: 4px; background: rgba(0,0,0,0.1); position: relative; border-radius: 2px; cursor: pointer;
+            .fill { width: 0%; height: 100%; background: rgba($text-color, 0.7); position: absolute; top: 0; left: 0; border-radius: 2px;} 
+            .knob { position: absolute; left: 0%; top: 0; width: 4px; height: 100%; background: $text-color; transform: translateX(-50%); border-radius: 2px;} 
           }
         }
-        
         .controls {
           display: flex; justify-content: space-around; align-items: center;
-          .icon-btn { 
-             background: none; border: none; cursor: pointer; color: rgba($text-color, 0.6); transition: color 0.2s; 
-             &:hover{ color: rgba($text-color, 0.9); } 
-             &.active { color: $text-color; font-weight: bold; transform: scale(1.1); }
-          }
-          .play-btn { width: 64px; height: 64px; border-radius: 50%; background: rgba(0,0,0,0.05); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; &:hover { background: rgba(0,0,0,0.1); } }
+          .icon-btn { background: none; border: none; cursor: pointer; color: rgba($text-color, 0.6); transition: color 0.2s; &:hover{ color: rgba($text-color, 0.9); } &.active { color: $text-color; font-weight: bold; transform: scale(1.1); } }
+          .play-btn { width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 0, 0, 0.05); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; &:hover { background: rgba(0,0,0,0.1); } }
         }
         .footer-info {
           display: flex; align-items: center; gap: 12px;
-          .album-mini { 
-            width: 40px; height: 40px; background: rgba(0,0,0,0.1); border-radius: 6px; display: flex; justify-content: center; align-items: center;
-            overflow: hidden; 
-            img { width: 100%; height: 100%; object-fit: cover; } 
-          }
-          .track-info { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: rgba($text-color, 0.8); .eq-icon { color: rgba($text-color, 0.6); } }
+          .album-mini { width: 40px; height: 40px; background: rgba(0,0,0,0.1); border-radius: 6px; display: flex; justify-content: center; align-items: center; overflow: hidden; img { width: 100%; height: 100%; object-fit: cover; } }
+          .track-info { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: rgba($text-color, 0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; .eq-icon { color: rgba($text-color, 0.6); } }
           .list-btn { background: none; border: none; cursor: pointer; color: rgba($text-color, 0.6); &:hover{ color: rgba($text-color, 0.9); } }
         }
       }
+    }
+
+    /* --- [2] 플레이리스트 오버레이 --- */
+    .playlist-overlay {
+      left: 80px; width: 380px; height: 450px; z-index: 20; color: $text-color;
+      /* 수정: visibility 속성 제거 및 pointer-events로 대체하여 부드러운 애니메이션 보장 */
+      opacity: 0; pointer-events: none; transform: translateY(10px);
+      &.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
       .playlist-view {
         display: flex; flex-direction: column; height: 100%;
-        .list-header {
-          display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;
-          .text-group { h3 { font-size: 16px; margin: 0 0 4px 0; font-weight: 600; } span { font-size: 12px; color: rgba($text-color, 0.6); } }
-          .close-btn { background: none; border: none; cursor: pointer; color: rgba($text-color, 0.8); }
-        }
+        .list-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; .text-group { h3 { font-size: 16px; margin: 0 0 4px 0; font-weight: 600; } span { font-size: 12px; color: rgba($text-color, 0.6); } } .close-btn { background: none; border: none; cursor: pointer; color: rgba($text-color, 0.8); transition: opacity 0.2s; &:hover{opacity:0.6;} } }
         .list-content {
           flex: 1; overflow: hidden; display: flex; flex-direction: column;
           .label { font-size: 10px; color: rgba($text-color, 0.6); margin-bottom: 10px; letter-spacing: 1px; }
@@ -103,15 +86,10 @@
             flex: 1; overflow-y: auto; padding-right: 5px;
             &::-webkit-scrollbar { width: 4px; } &::-webkit-scrollbar-thumb { background: rgba(0,0,0, 0.1); border-radius: 4px; }
             .song-item {
-              display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba($text-color, 0.05); transition: background 0.2s;
-              &:last-child { border-bottom: none; }
-              &:hover { background: rgba(255,255,255,0.2); border-radius: 8px; } 
+              display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba($text-color, 0.05); transition: background 0.2s; cursor: pointer;
+              &:last-child { border-bottom: none; } &:hover { background: rgba(255,255,255,0.2); border-radius: 8px; } 
               &.playing { .song-title { color: $text-color; font-weight: 700; } } 
-              .left { 
-                 display: flex; align-items: center; gap: 12px; 
-                 .mini-art { width: 36px; height: 36px; background: rgba(0,0,0, 0.1); border-radius: 4px; display: flex; justify-content: center; align-items: center; overflow: hidden; img { width: 100%; height: 100%; object-fit: cover;} } 
-                 .info { .song-title { font-size: 14px; margin: 0; font-weight: 500; } .artist { font-size: 11px; color: rgba($text-color, 0.6); } } 
-              }
+              .left { display: flex; align-items: center; gap: 12px; .mini-art { width: 36px; height: 36px; background: rgba(0,0,0, 0.1); border-radius: 4px; display: flex; justify-content: center; align-items: center; overflow: hidden; img { width: 100%; height: 100%; object-fit: cover;} } .info { .song-title { font-size: 14px; margin: 0; font-weight: 500; } .artist { font-size: 11px; color: rgba($text-color, 0.6); } } }
               .duration { font-size: 12px; color: rgba($text-color, 0.6); display: flex; align-items: center; }
             }
           }
@@ -119,69 +97,44 @@
       }
     }
 
-    /* --- 날씨 위젯 --- */
+    /* --- [3] 기본 날씨 위젯 --- */
     .weather-widget {
-      right: 80px; width: 380px;
-      backdrop-filter: blur(15px); border-radius: 20px; padding: 24px; border: 1px solid rgba(255,255,255, 0.1); color: rgba(255,255,255, 0.9);
-
-      &.expanded {
-        width: 740px; height: 650px; right: 80px; bottom: 60px; z-index: 20; cursor: default;
-      }
+      right: 80px; width: 380px; height: 180px; z-index: 10; cursor: pointer;
+      backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255, 0.1); color: rgba(255,255,255, 0.9);
+      // 오버레이 켜질 때 부드럽게 숨김
+      &.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
 
       .weather-summary-view {
         display: flex; flex-direction: column; justify-content: space-between; height: 100%;
         .top-row { display: flex; justify-content: space-between; align-items: flex-start; .temp-wrap { display: flex; align-items: center; gap: 10px; .temp{font-size:64px; font-weight:300; line-height:1;} .weather-icon{color:rgba(255,255,255, 0.9);} } .loc-icon{color:rgba(255,255,255, 0.9);} }
         .bottom-row { display: flex; justify-content: space-between; align-items: flex-end; .date-info { .city{font-size:20px; margin:0;} .date{font-size:13px; color:rgba(255,255,255, 0.7);} } .menu-btn{background:none; border:none; color:rgba(255,255,255, 0.9);} }
       }
+    }
+
+    /* --- [4] 상세 날씨 오버레이 --- */
+    .weather-overlay {
+      right: 80px; width: 740px; height: 650px; z-index: 20; 
+      backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255, 0.2); color: rgba(255,255,255, 0.9);
+      /* 수정: visibility 속성 제거 및 pointer-events로 대체 */
+      opacity: 0; pointer-events: none; transform: translateY(10px);
+      &.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
       .weather-detail-view {
         position: relative; height: 100%; display: flex; flex-direction: column;
-        
-        .close-btn { position: absolute; top: 0; right: 0; background: none; border: none; color: rgba(255,255,255, 0.9); cursor: pointer; opacity: 0.7; &:hover{opacity:1;} }
-        
+        .close-btn { position: absolute; top: 0; right: 0; background: none; border: none; color: rgba(255,255,255, 0.9); cursor: pointer; opacity: 0.7; transition: opacity 0.2s; &:hover{opacity:1;} }
         .detail-header {
           display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 0 10px;
-          
-          /* 수정: 왼쪽 영역에 마진 20px 추가 */
           .header-left { display: flex; align-items: center; gap: 16px; margin-left: 20px; .big-temp { font-size: 80px; font-weight: 300; line-height: 1; } }
           .header-right { text-align: right; margin-right: 36px; .loc-row { display: flex; align-items: center; justify-content: flex-end; gap: 6px; font-size: 32px; font-weight: 300; margin-bottom: 4px; } .date-text { font-size: 16px; opacity: 0.8; } }
         }
-
         .detail-content {
           flex: 1; display: flex; flex-direction: column; gap: 20px;
-          
-          .glass-card {
-            background: rgba(255,255,255, 0.15); border-radius: 24px; padding: 36px; display: flex; flex-direction: column;
-            .card-title { font-size: 14px; margin-bottom: 8px; opacity: 0.8; padding: 0 20px; }
-            .divider { height: 1px; background: rgba(255,255,255, 0.3); margin-bottom: 16px; width: 100%; }
-          }
-
-          .hourly-card {
-            flex: 0 0 auto;
-            .summary-text { font-size: 14px; margin-bottom: 12px; margin-top: -4px; opacity: 0.9; padding: 0 20px; }
-            .hourly-list {
-              display: flex; justify-content: space-between; padding: 0 20px;
-              
-              /* 아이콘 크기가 커져도 정렬이 유지되도록 h-icon 스타일 추가 */
-              .hour-item { 
-                display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 14px; 
-                .h-time { opacity: 0.7; font-size: 12px; } 
-                .h-icon { display: flex; justify-content: center; align-items: center; height: 32px; }
-                .h-temp { font-weight: 500; } 
-              }
-            }
-          }
-
+          .glass-card { background: rgba(255,255,255, 0.15); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; .card-title { font-size: 14px; margin-bottom: 8px; opacity: 0.8; padding: 0 20px; } .divider { height: 1px; background: rgba(255,255,255, 0.3); margin-bottom: 16px; width: 100%; } }
+          .hourly-card { flex: 0 0 auto; .summary-text { font-size: 14px; margin-bottom: 12px; margin-top: -4px; opacity: 0.9; padding: 0 20px; } .hourly-list { display: flex; justify-content: space-between; padding: 0 20px; .hour-item { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 14px; .h-time { opacity: 0.7; font-size: 12px; } .h-icon { display: flex; justify-content: center; align-items: center; height: 40px; } .h-temp { font-weight: 500; } } } }
           .bottom-cards {
             flex: 1; display: flex; gap: 20px;
-            .daily-card {
-               flex: 1;
-               .daily-list { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 0 20px; .day-row { display: flex; align-items: center; justify-content: space-between; font-size: 14px; .d-day { width: 40px; opacity: 0.8; } .d-icons { flex: 1; text-align: left; padding-left: 20px; } .d-temp { display: flex; gap: 12px; .max { opacity: 1; } .min { opacity: 0.6; } } } }
-            }
-            .detail-info-card {
-              flex: 1;
-              .info-list { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 0 20px; .info-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; .info-label { display: flex; align-items: center; gap: 8px; opacity: 0.8; .i-icon{ font-size: 16px; } } .info-value { font-weight: 500; } } }
-            }
+            .daily-card { flex: 1; .daily-list { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 0 20px; .day-row { display: flex; align-items: center; justify-content: space-between; font-size: 14px; .d-day { width: 40px; opacity: 0.8; } .d-icons { flex: 1; text-align: left; padding-left: 20px; } .d-temp { display: flex; gap: 12px; .max { opacity: 1; } .min { opacity: 0.6; } } } } }
+            .detail-info-card { flex: 1; .info-list { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 0 20px; .info-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; .info-label { display: flex; align-items: center; gap: 8px; opacity: 0.8; .i-icon{ font-size: 16px; } } .info-value { font-weight: 500; } } } }
           }
         }
       }
@@ -189,7 +142,7 @@
 
     .scroll-indicator {
       position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; opacity: 0.7;
-      .arrow { color: white; stroke-width: 1.5; } .second { margin-top: -25px; animation: bounce 2s infinite; }
+      .arrow { color: white; stroke-width: 1.5; margin-top: -25px; animation: bounce 2s infinite; }
     }
   }
 }
