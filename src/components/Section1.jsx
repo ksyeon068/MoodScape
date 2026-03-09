@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import './Section1.scss';
-// 수정: 개별 musicData 대신 묶음인 musicLibrary를 불러옵니다.
+import '../style/section1.scss';
 import { musicLibrary } from './musicData'; 
 import { useApi } from '../context/ApiContext'; 
-
-// React Icons
 import { BiShuffle, BiSkipPrevious, BiPlay, BiPause, BiSkipNext, BiRepeat, BiListUl, BiX } from "react-icons/bi";
 import { FiMapPin, FiImage, FiChevronDown, FiWind, FiDroplet, FiEye } from "react-icons/fi";
 import { MdOutlineEqualizer, MdWaves } from "react-icons/md";
@@ -23,9 +20,8 @@ const Section1 = () => {
   const [airQuality, setAirQuality] = useState(null); 
   const [weatherClass, setWeatherClass] = useState('theme-clouds'); 
 
-  // --- [새로 추가된 상태: 현재 날씨에 맞는 플레이리스트 키값] ---
-  const [activePlaylistKey, setActivePlaylistKey] = useState('sunshine'); // 기본값
-  const [playlist, setPlaylist] = useState([]); // 빈 배열로 시작
+  const [activePlaylistKey, setActivePlaylistKey] = useState('sunshine'); 
+  const [playlist, setPlaylist] = useState([]); 
   
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,17 +35,15 @@ const Section1 = () => {
 
   const currentSong = playlist[currentSongIndex];
 
-  // --- [날씨에 따른 플레이리스트 타이틀 매핑] ---
   const playlistTitleMap = {
-    'sunshine': 'SUNSHINE SCENE',
+    'sunny': 'SUNSHINE SCENE', 
     'cloudy': 'CLOUDY MOOD',
-    'rain': 'RAIN SCENE',
-    'thunder': 'THUNDER NIGHT',
-    'snow': 'SNOW SCENE'
+    'rainy': 'RAIN SCENE',
+    'stormy': 'THUNDER NIGHT',
+    'snowy': 'SNOW SCENE',
+    'misty': 'FOGGY DAWN'
   };
 
-  // --- [음악 파일 자동 길이 추출 및 플레이리스트 설정 로직] ---
-  // 날씨가 바뀌어 activePlaylistKey가 변경될 때마다 이 useEffect가 실행됩니다.
   useEffect(() => {
     const fetchDurations = async () => {
       const currentArray = musicLibrary[activePlaylistKey] || musicLibrary['sunshine'];
@@ -70,7 +64,6 @@ const Section1 = () => {
       );
       
       setPlaylist(updatedPlaylist);
-      // 플레이리스트가 바뀌면 첫 번째 곡으로 초기화하고 일시정지 상태로 만듭니다.
       setCurrentSongIndex(0); 
       setIsPlaying(false);
       setCurrentTime(0);
@@ -79,7 +72,6 @@ const Section1 = () => {
     fetchDurations();
   }, [activePlaylistKey]);
 
-  // --- [날씨 API 로직] ---
   useEffect(() => {
     if (!WEATHER_API_KEY) {
       console.warn("API 키가 없습니다. .env 파일을 확인해주세요.");
@@ -102,7 +94,6 @@ const Section1 = () => {
 
         const weatherMain = weatherRes.data.weather[0].main;
         
-        // 1. 테마 색상용 매핑
         const themeMap = {
           'Clear': 'theme-sunny', 'Clouds': 'theme-clouds', 'Rain': 'theme-rain',
           'Drizzle': 'theme-rain', 'Thunderstorm': 'theme-thunder', 'Snow': 'theme-snow',
@@ -110,13 +101,12 @@ const Section1 = () => {
         };
         setWeatherClass(themeMap[weatherMain] || 'theme-clouds');
 
-        // 2. 플레이리스트용 매핑 (Mist, Fog 등은 cloudy로 대체)
         const playlistMap = {
-          'Clear': 'sunshine', 'Clouds': 'cloudy', 'Rain': 'rain',
-          'Drizzle': 'rain', 'Thunderstorm': 'thunder', 'Snow': 'snow',
-          'Mist': 'cloudy', 'Fog': 'cloudy', 'Haze': 'cloudy' 
+          'Clear': 'sunny', 'Clouds': 'cloudy', 'Rain': 'rainy',
+          'Drizzle': 'rainy', 'Thunderstorm': 'stormy', 'Snow': 'snowy',
+          'Mist': 'misty', 'Fog': 'misty', 'Haze': 'misty' 
         };
-        setActivePlaylistKey(playlistMap[weatherMain] || 'cloudy');
+        setActivePlaylistKey(playlistMap[weatherMain] || 'sunny');
 
       } catch (error) {
         console.error("Weather API Error:", error);
@@ -225,7 +215,7 @@ const Section1 = () => {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const selectSongFromList = (index) => { setCurrentSongIndex(index); setIsPlaying(true); };
+  const selectSongFromList = (index) => { setCurrentSongIndex(index); setIsPlaying(true); setIsMusicList(false);};
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
 
   return (
@@ -237,8 +227,7 @@ const Section1 = () => {
           onLoadedMetadata={handleLoadedMetadata} onTimeUpdate={handleTimeUpdate} onEnded={handleEnded}
         />
 
-        {/* --- [뮤직 영역] --- */}
-        {/* 1. 기본 플레이어 위젯 */}
+        {/* --- [1] 기본 플레이어 위젯 --- */}
         <div className={`music-widget ${isMusicList ? 'hidden' : ''}`}>
           <div className="player-view">
             <div className="progress-area">
@@ -263,7 +252,12 @@ const Section1 = () => {
                 {currentSong?.cover ? <img src={currentSong.cover} alt="album cover" /> : <FiImage size={20} color="white" />}
               </div>
               <div className="track-info">
-                <MdOutlineEqualizer size={20} className="eq-icon"/>
+                <div className={`animated-eq ${isPlaying ? 'playing' : ''}`}>
+                  <span className="bar bar1"></span>
+                  <span className="bar bar2"></span>
+                  <span className="bar bar3"></span>
+                </div>
+                
                 <span className="title">{currentSong?.title || "Loading..."}</span>
               </div>
               <button className="list-btn" onClick={(e) => { e.stopPropagation(); setIsMusicList(true); }}><BiListUl size={26} /></button>
@@ -271,12 +265,11 @@ const Section1 = () => {
           </div>
         </div>
 
-        {/* 2. 플레이리스트 오버레이 */}
+        {/* --- [2] 플레이리스트 오버레이 --- */}
         <div className={`playlist-overlay ${isMusicList ? 'active' : ''}`}>
           <div className="playlist-view">
             <div className="list-header">
               <div className="text-group">
-                {/* 수정: 날씨에 맞춰 동적으로 플레이리스트 타이틀 변경 */}
                 <h3>PLAYLIST: {playlistTitleMap[activePlaylistKey]}</h3>
                 <span>현재 {playlist.length}곡이 있습니다.</span>
               </div>
@@ -301,7 +294,9 @@ const Section1 = () => {
                         </div>
                       </div>
                       <span className="duration">
-                        {index === currentSongIndex && isPlaying ? <MdOutlineEqualizer size={16} /> : (song.duration || "로딩중...")}
+                        {index === currentSongIndex && isPlaying ? (
+                          <MdOutlineEqualizer size={16} />
+                        ) : (song.duration || "로딩중...")}
                       </span>
                     </div>
                   ))}
