@@ -5,207 +5,211 @@ body{
 }
 .weather-section{
   width:100%;
-  height:100%;
+  min-height:100vh;
   position:relative;
-
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-
   background:transparent;
-}
 
-.section-head{
-  top:80px;
-  left:60px;
-  right:60px;
-  display:flex;
-  justify-content:space-between;
-  margin-bottom: 60;
-  width: 100%;
-  max-width: 1440px;
-  margin: 80px auto 80px;
-  height: 120px;
- //왼쪽텍스트
-  .left{
-    animation:leftFade 1s ease forwards;
-    h2{
-      font-size:32px;
-      margin-bottom:20px;
+  .section-head{
+    top:80px;
+    left:60px;
+    right:60px;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom: 60px;
+    width: 100%;
+    max-width: 1440px;
+    margin: 80px auto 80px;
+    height: 120px;
+  //왼쪽텍스트
+    .left{
+      opacity: 0;
+      h2{
+        font-size:32px;
+        margin-bottom:20px;
+      }
+      p{
+        opacity:.8;
+      }
+    }
+    
+    //유튜브버튼
+    .right{
+      opacity: 0;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        .youtube-btn{
+            background:$text-color;
+            padding:14px 40px;
+            border-radius:20px;
+            color:white;
+            text-decoration:none;
+            }
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        padding-top: 10px;
+    }
+
+  }
+  .pick-label{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span{
+      display: inline-block;
+      background: #333; color: #fff;
+      padding: 4px 18px; border-radius: 20px;
+      font-size: 13px; margin-bottom: 10px;
     }
     p{
-      opacity:.6;
-    }
-  }
-  //유튜브버튼
-  .right{
-      animation:rightFade 1s ease forwards;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      .youtube-btn{
-          background:$text-color;
-          padding:14px 30px;
-          border-radius:20px;
-          color:white;
-          text-decoration:none;
-          margin-right: 10px;
-          }
-  }
-
-}
-
-.pick-label{
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  span{
-    display: inline-block;
-    background: #333; color: #fff;
-    padding: 4px 18px; border-radius: 20px;
-    font-size: 13px; margin-bottom: 10px;
-  }
-  p{
-    font-size: 12px;
-  }
-}
-
-//날씨버튼
-.weather-filter{
-
-  margin-bottom:70px;
-  display:flex;
-  gap:20px;
-
-  button{
-    padding:10px 20px;
-    border-radius:20px;
-    border:none;
-    cursor:pointer;
-    font-weight:600;
-
-    transition: all .25s ease;
-
-    &:hover{
-      transform: scale(1.08);
-      box-shadow:0 2px 2px rgba(0,0,0,.1);
-      scale: 1.05;
+      font-size: 12px;
     }
   }
 
-  .sunny{
-    background:$sunny;
+  //날씨버튼
+  .weather-filter{
 
-    &:hover{
-      background:$sunny-dark;
-    }
-  }
+    margin-bottom:70px;
+    display:flex;
+    gap:20px;
 
-  .rainy{
-    background:$rain;
+    button{
+      padding:10px 20px;
+      border-radius:20px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
 
-    &:hover{
-      background:$rain-dark;
-    }
-  }
+      transition: all .25s ease;
 
-  .snowy{
-    background:$snow;
-    color:#333;
-
-    &:hover{
-      background:$snow-dark;
-    }
-  }
-
-  .misty{
-    background:$mist;
-
-    &:hover{
-      background:$mist-dark;
-    }
-  }
-
-  .stormy{
-    background:$thunder;
-
-    &:hover{
-      background:$thunder-dark;
-    }
-  }
-
-  .cloudy{
-    background:$clouds;
-
-    &:hover{
-      background:$clouds-dark;
-    }
-  }
-
-}
-
-
-//스와이퍼영역
-.swiper-area {
-    width: 100%;
-    height: 600px;
-    /* max-width: 1400px; */
-    perspective: 1200px; // 입체감 베이스
-
-    .swiper-slide {
-      transition: 0.6s ease;
-      opacity: 0.3; // 기본적으로 흐리게
-      transform: scale(0.8);
-
-      .slide-content {
-        position: relative;
-        border-radius: 25px;
-        overflow: hidden;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-        
-        img { width: 100%; display: block; }
-        
-        .overlay {
-          position: absolute; inset: 0;
-          display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
-          background: rgba(0,0,0,0.1);
-          color: #fff;
-          
-        }
+      &:hover{
+        transform: scale(1.08);
+        box-shadow:0 2px 2px rgba(0,0,0,.1);
+        scale: 1.05;
       }
     }
 
-    // 가운데 활성화된 슬라이드
-    .swiper-slide-active {
-      opacity: 1;
-      transform: scale(1.15); // 더 크게 강조
-      z-index: 5;
+    .sunny{
+      background:$sunny;
+
+      &:hover{
+        background:$sunny-dark;
+      }
     }
-    
-    // 양옆 슬라이드 투명도 조절
-    .swiper-slide-prev, .swiper-slide-next {
-      opacity: 0.5;
+
+    .rainy{
+      background:$rain;
+
+      &:hover{
+        background:$rain-dark;
+      }
     }
+
+    .snowy{
+      background:$snow;
+      color:#333;
+
+      &:hover{
+        background:$snow-dark;
+      }
+    }
+
+    .misty{
+      background:$mist;
+
+      &:hover{
+        background:$mist-dark;
+      }
+    }
+
+    .stormy{
+      background:$thunder;
+
+      &:hover{
+        background:$thunder-dark;
+      }
+    }
+
+    .cloudy{
+      background:$clouds;
+
+      &:hover{
+        background:$clouds-dark;
+      }
+    }
+
   }
+  //스와이퍼영역
+  .swiper-area {
+      width: 100%;
+      height: 600px;
+      /* max-width: 1400px; */
+      perspective: 1200px; // 입체감 베이스
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(40px);
 
+      .swiper-slide {
+        transition: 0.6s ease;
+        opacity: 0.3; // 기본적으로 흐리게
+        transform: scale(0.8);
 
+        .slide-content {
+          position: relative;
+          border-radius: 25px;
+          overflow: hidden;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+          
+          img { width: 100%; display: block; }
+        }
+      }
 
+      // 가운데 활성화된 슬라이드
+      .swiper-slide-active {
+        opacity: 1;
+        transform: scale(1.15); // 더 크게 강조
+        z-index: 5;
+      }
+      
+      // 양옆 슬라이드 투명도 조절
+      .swiper-slide-prev, .swiper-slide-next {
+        opacity: 0.5;
+      }
+    }
+}
+.weather-section.show .left{
+      animation:leftFade 1s ease forwards;
+    }
+.weather-section.show .right{
+    animation:rightFade 1s ease forwards;
+  }
+.weather-section.show .swiper-area{
+    animation: swiperFade 1s ease forwards;
+    animation-delay: .7s;
+  }
 //날씨버튼애니메이션
 .weather-filter button{
-  opacity:0;
-  transform:translateY(-30px);
-  animation:fadeDown .6s forwards;
-}
+    opacity:0;
+    transform:translateY(-30px);
+    /* animation:fadeDown .6s forwards; */
+  }
+.weather-section.show .weather-filter button{
+    animation:fadeDown .6s forwards;
+  
+    &:nth-child(1){animation-delay:.1s}
+    &:nth-child(2){animation-delay:.2s}
+    &:nth-child(3){animation-delay:.3s}
+    &:nth-child(4){animation-delay:.4s}
+    &:nth-child(5){animation-delay:.5s}
+    &:nth-child(6){animation-delay:.6s}
+  }
 
-.weather-filter button:nth-child(1){animation-delay:.1s}
-.weather-filter button:nth-child(2){animation-delay:.2s}
-.weather-filter button:nth-child(3){animation-delay:.3s}
-.weather-filter button:nth-child(4){animation-delay:.4s}
-.weather-filter button:nth-child(5){animation-delay:.5s}
-.weather-filter button:nth-child(6){animation-delay:.6s}
 
 
 //애니메이션
@@ -251,4 +255,359 @@ body{
   }
 
 }
+@keyframes swiperFade{
 
+  from{
+    opacity:0;
+  }
+
+  to{
+    opacity:1;
+  }
+
+}
+
+
+
+//반응형
+
+@media screen and (max-width: 1440px) {
+  .weather-section{
+  width:100%;
+  .section-head{
+      margin-bottom: 60px;
+      max-width: 1280px;
+    //왼쪽텍스트
+      .left{
+        h2{
+          font-size:32px;
+          margin-bottom:20px;
+        }
+        p{
+        }
+      }
+      //유튜브버튼
+      .right{
+        .youtube-btn{
+          padding:14px 40px;
+          border-radius:20px;
+        }
+      }
+    }
+    .pick-label{
+      margin-bottom: 30px;
+      span{
+        padding: 4px 18px; border-radius: 20px;
+        font-size: 13px; margin-bottom: 10px;
+      }
+      p{
+        font-size: 12px;
+      }
+    }
+    //날씨버튼
+    .weather-filter{
+      margin-bottom:70px;
+      gap:20px;
+      button{
+        padding:10px 20px;
+        border-radius:20px;
+        font-weight:600;
+      }
+    }
+    //스와이퍼영역
+    .swiper-area {
+        .swiper-slide {
+          .slide-content {
+            border-radius: 25px;
+          }
+        }
+      }
+    }
+}
+@media screen and (max-width: 1280px) {
+  .weather-section{
+  width:100%;
+  .section-head{
+      margin-bottom: 60px;
+      max-width: 1024px;
+    //왼쪽텍스트
+      .left{
+        h2{
+          font-size:32px;
+          margin-bottom:20px;
+        }
+        p{
+          font-size: 15px;
+        }
+      }
+      //유튜브버튼
+      .right{
+        .youtube-btn{
+          padding:14px 35px;
+          border-radius:20px;
+        }
+      }
+    }
+    .pick-label{
+      margin-bottom: 30px;
+      span{
+        padding: 4px 18px; border-radius: 20px;
+        font-size: 13px; margin-bottom: 10px;
+      }
+      p{
+        font-size: 12px;
+      }
+    }
+    //날씨버튼
+    .weather-filter{
+      margin-bottom:70px;
+      gap:20px;
+      button{
+        padding:10px 20px;
+        border-radius:20px;
+        font-weight:600;
+      }
+    }
+    //스와이퍼영역
+    .swiper-area {
+        .swiper-slide {
+          .slide-content {
+            border-radius: 25px;
+          }
+        }
+      }
+    }
+}
+@media screen and (max-width: 1024px) {
+  .weather-section{
+  width:100%;
+  .section-head{
+      margin-bottom: 80px;
+      max-width: 800px;
+    //왼쪽텍스트
+      .left{
+        h2{
+          font-size:32px;
+          margin-bottom:20px;
+        }
+        p{
+        }
+      }
+      //유튜브버튼
+      .right{
+        .youtube-btn{
+          padding:14px 35px;
+          border-radius:18px;
+        }
+      }
+    }
+    .pick-label{
+      margin-bottom: 30px;
+      span{
+        padding: 4px 18px; border-radius: 20px;
+        font-size: 13px; margin-bottom: 10px;
+      }
+      p{
+        font-size: 12px;
+      }
+    }
+    //날씨버튼
+    .weather-filter{
+      margin-bottom:70px;
+      gap:20px;
+      button{
+        padding:10px 20px;
+        border-radius:20px;
+        font-weight:600;
+      }
+    }
+    //스와이퍼영역
+    .swiper-area {
+        .swiper-slide {
+          .slide-content {
+            border-radius: 25px;
+          }
+        }
+      }
+    }
+}
+@media screen and (max-width: 960px) {
+  .weather-section{
+  width:100%;
+  .section-head{
+      margin-bottom: 80px;
+      max-width: 720px;
+    //왼쪽텍스트
+      .left{
+        h2{
+          font-size:28px;
+          margin-bottom:10px;
+        }
+        p{
+          font-size: 12px;
+        }
+      }
+      //유튜브버튼
+      .right{
+        .youtube-btn{
+          padding:10px 25px;
+          border-radius:15px;
+          font-size: 14px;
+        }
+      }
+    }
+    .pick-label{
+      margin-bottom: 30px;
+      span{
+        padding: 4px 18px; border-radius: 20px;
+        font-size: 13px; margin-bottom: 10px;
+      }
+      p{
+        font-size: 12px;
+      }
+    }
+    //날씨버튼
+    .weather-filter{
+      margin-bottom:70px;
+      gap:20px;
+      button{
+        padding:10px 20px;
+        border-radius:20px;
+        font-weight:600;
+      }
+    }
+    //스와이퍼영역
+    .swiper-area {
+        .swiper-slide {
+          .slide-content {
+            border-radius: 25px;
+          }
+        }
+      }
+    }
+}
+@media screen and (max-width: 720px) {
+  .weather-section{
+  width:100%;
+  .section-head{
+      margin-bottom: 100px;
+      max-width: 520px;
+      display:flex;
+      flex-direction:column;
+      text-align: center;
+    //왼쪽텍스트
+      .left{
+        margin-bottom: 10px;
+        h2{
+          font-size:28px;
+          margin-bottom:10px;
+        }
+        p{
+          font-size: 12px;
+        }
+      }
+      //유튜브버튼
+      .right{
+        width:100%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+
+        .youtube-btn{
+          padding:8px 20px;
+          border-radius:10px;
+          font-size: 12px;
+        }
+      }
+    }
+    .pick-label{
+      margin-bottom: 20px;
+      span{
+        padding: 4px 18px; border-radius: 20px;
+        font-size: 13px; margin-bottom: 8px;
+      }
+      p{
+        font-size: 12px;
+      }
+    }
+    //날씨버튼
+    .weather-filter{
+      margin-bottom:70px;
+      gap:12px;
+      button{
+        padding:10px 10px;
+        border-radius:15px;
+        font-weight:500;
+        font-size: 12px;
+      }
+    }
+    //스와이퍼영역
+    .swiper-area {
+        .swiper-slide {
+          .slide-content {
+            border-radius: 20px;
+          }
+        }
+      }
+    }
+}
+@media screen and (max-width: 500px) {
+  .weather-section{
+  width:100%;
+  .section-head{
+      margin-bottom: 100px;
+      max-width: 310px;
+      display:flex;
+      flex-direction:column;
+      text-align: center;
+    //왼쪽텍스트
+      .left{
+        h2{
+          font-size:28px;
+          margin-bottom:10px;
+        }
+        p{
+          font-size: 12px;
+        }
+      }
+      //유튜브버튼
+      .right{
+        .youtube-btn{
+          padding:10px 25px;
+          border-radius:15px;
+          font-size: 14px;
+        }
+      }
+    }
+    .pick-label{
+      margin-bottom: 20px;
+      span{
+        padding: 4px 18px; border-radius: 20px;
+        font-size: 12px; margin-bottom: 8px;
+        font-weight: 300;
+      }
+      p{
+        font-size: 10px;
+      }
+    }
+    //날씨버튼
+    .weather-filter{
+      margin-bottom:30px;
+      gap:6px;
+      button{
+        padding:8px 10px;
+        border-radius:15px;
+        font-weight:500;
+        font-size: 11px;
+      }
+    }
+    //스와이퍼영역
+    .swiper-area {
+        .swiper-slide {
+          .slide-content {
+            border-radius: 20px;
+          }
+        }
+      }
+    }
+}
