@@ -1,204 +1,493 @@
 @import "./variables.scss";
 
-*{margin: 0;padding: 0; box-sizing: border-box;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 .section2 {
-  position: relative;
+
+position:relative;
+width:100%;
+min-height:100vh;
+padding:160px 0;
+display:block;
+
+.section2-inner{
+
+max-width:1440px;
+margin:0 auto;
+
+}
+
+/* ===== LEFT ===== */
+
+.playlist-list{
+
+width:35%;
+margin-top:-30px;
+
+.section-title{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.section-desc{
+margin-bottom:40px;
+font-size:14px;
+opacity:.6;
+}
+
+/* wrapper */
+
+.playlist-wrapper{
+
+cursor:grab;
+user-select:none;
+
+transition:transform .35s cubic-bezier(.22,1,.36,1);
+will-change:transform;
+
+}
+
+.playlist-wrapper:active{
+
+cursor:grabbing;
+
+}
+
+/* 카드 */
+
+.playlist-card{
+
+background:#e8e6e3;
+border-radius:30px;
+padding:25px;
+margin-bottom:30px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+transition:
+transform .45s cubic-bezier(.22,1,.36,1),
+opacity .35s,
+box-shadow .35s;
+
+}
+
+/* active 카드 */
+
+.playlist-card.active{
+
+transform:scale(1.05);
+opacity:1;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.25),
+0 0 25px rgba(255,255,255,.4);
+
+}
+
+/* 작은 카드 */
+
+.playlist-card.small{
+
+transform:scale(.9);
+opacity:.45;
+
+}
+
+/* hover */
+
+.playlist-card:hover{
+
+transform:scale(1.02);
+
+}
+
+/* 썸네일 */
+
+.card-thumb{
+
+width:80px;
+height:80px;
+
+border-radius:20px;
+
+background-size:contain;
+background-position:center;
+background-repeat:no-repeat;
+
+}
+
+}
+
+/* nav */
+
+.playlist-nav{
+
+background:none;
+border:none;
+font-size:24px;
+cursor:pointer;
+color: #333;
+
+margin:10px 230px;
+
+&.up{
+align-self:center;
+}
+
+&.down{
+align-self:center;
+}
+
+}
+
+/* ===== RIGHT ===== */
+
+.playlist-detail{
+
+position:absolute;
+top:130px;
+right:0;
+
+width:52%;
+
+background:#efefef;
+
+border-radius:40px 0 0 40px;
+
+padding:50px;
+
+overflow:hidden;
+
+padding-right:0;
+
+.detail-top{
+
+display:flex;
+gap:40px;
+
+.album-cover{
+
+width:250px;
+height:250px;
+
+border-radius:30px;
+
+background-size:contain;
+background-position:center;
+background-repeat:no-repeat;
+
+}
+
+.detail-info{
+
+flex:1;
+
+/* waveform */
+
+.waveform{
+
+display:flex;
+gap:3px;
+
+margin:8px 0 15px;
+
+height:5px;
+
+}
+
+.wave{
+
+width:3px;
+height:10px;
+background:#aaa;
+
+}
+
+.wave.play{
+
+animation:waveAnim 1s infinite ease-in-out;
+
+}
+
+.wave:nth-child(odd){
+
+animation-delay:.2s;
+
+}
+
+.wave:nth-child(even){
+
+animation-delay:.4s;
+
+}
+
+@keyframes waveAnim{
+
+0%{height:6px;}
+50%{height:18px;}
+100%{height:6px;}
+
+}
+
+/* progress */
+
+.progress-bar{
+
+width:64%;
+height:4px;
+
+background:#ccc;
+
+margin:30px 0;
+
+.progress{
+
+width:30%;
+height:100%;
+
+background:#555;
+
+}
+
+}
+
+/* player */
+
+.player-controls{
+
+display:flex;
+gap:30px;
+
+padding-top:20px;
+
+.desc-btn{
+
+padding:12px 30px;
+
+border-radius:25px;
+border:none;
+
+background:#444;
+color:white;
+
+cursor:pointer;
+
+}
+
+.play-btn,
+.next-btn{
+
+border:none;
+background:none;
+
+font-size:28px;
+
+cursor:pointer;
+
+color:#333;
+
+transition:.3s;
+
+&:hover{
+
+transform:scale(1.15);
+color:#000;
+
+}
+
+}
+
+}
+
+  /* description panel */
+
+  .desc-panel{
+
+  max-height:0;
+  overflow:hidden;
+
+  opacity:0;
+
+  transition:
+  max-height .45s cubic-bezier(.22,1,.36,1),
+  opacity .35s ease;
+
+  margin-top:10px;
+
+  }
+
+  .desc-panel.open{
+
+  max-height:160px;
+  opacity:1;
+  width: 64%;
+
+  }
+
+  .desc-divider{
+
+  width:100%;
+  height:1px;
+  background:#ddd;
+
+  margin:15px 0;
+
+  }
+
+  .desc-panel h4{
+
+  font-size:14px;
+  margin-bottom:6px;
+
+  }
+
+  .desc-track{
+
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:5px;
+
+  }
+
+  .desc-text{
+
+  font-size:12px;
+  opacity:.7;
+  line-height:1.5;
   width: 100%;
-  min-height: 100vh;
-  padding: 160px 0;
-  display: block;
 
-  .section2-inner {
-    max-width: 1440px;
-    margin: 0 auto;
   }
 
-  /* ===== Left ===== */
-  .playlist-list {
-    width: 35%;
-    margin-top: -30px;
+  .desc-artist{
 
-    .section-title {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
+  font-size:13px;
+  opacity:.7;
+  margin-bottom:6px;
 
-    .section-desc {
-      margin-bottom: 40px;
-      font-size: 14px;
-      opacity: 0.6;
-    }
-
-    .playlist-card {
-      background: #e8e6e3;
-      border-radius: 30px;
-      padding: 25px;
-      margin-bottom: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .card-thumb {
-        width: 80px;
-        height: 80px;
-        border-radius: 20px;
-
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-    }
   }
 
-  .playlist-nav {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    margin: 10px 230px;
+  .desc-tags{
 
-    &.up {
-      align-self: center;
-    }
+  margin-top:10px;
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
 
-    &.down {
-      align-self: center;
-    }
   }
 
-  /* ===== Right ===== */
-  .playlist-detail {
-    position: absolute;
-    top: 130px;
-    right: 0;
-    width: 52%;
-    background: #efefef;
-    border-radius: 40px 0 0 40px;
-    padding: 50px;
-    overflow: hidden;
-    padding-right: 0;
+  .tag{
 
-    .detail-top {
-      display: flex;
-      gap: 40px;
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:12px;
+  background:#ddd;
 
-      .album-cover {
-        width: 250px;
-        height: 250px;
-        border-radius: 30px;
-
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-
-      .detail-info {
-        flex: 1;
-
-        .progress-bar {
-          width: 64%;
-          height: 4px;
-          background: #ccc;
-          margin: 30px 0;
-
-          .progress {
-            width: 30%;
-            height: 100%;
-            background: #555;
-          }
-        }
-
-        .player-controls {
-          display: flex;
-          gap: 30px;
-          padding-top: 20px;
-
-          .desc-btn {
-            padding: 12px 30px;
-            border-radius: 25px;
-            border: none;
-            background: #444;
-            color: white;
-            cursor: pointer;
-          }
-
-          .play-btn,
-          .next-btn {
-            border: none;
-            background: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #333;
-            transition: 0.3s;
-
-            &:hover {
-              transform: scale(1.15);
-              color: #000;
-            }
-          }
-        }
-      }
-    }
-
-    .detail-subtitle {
-      margin: 50px 0 20px;
-    }
-    .detail-swiper .swiper-slide {
-      opacity: 1 !important;
-    }
-    .detail-swiper {
-      overflow: visible;
-
-      .swiper {
-        overflow: visible;
-      }
-
-      .swiper-wrapper {
-        overflow: visible;
-      }
-
-      .swiper-slide {
-        overflow: visible;
-      }
-    }
-        .detail-card {
-      width: 140px;
-      flex-shrink: 0;
-      cursor: pointer;
-
-      .detail-thumb {
-        width: 140px;
-        height: 140px;
-        border-radius: 20px;
-        margin-bottom: 10px;
-
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-
-        transition: 0.3s;
-      }
-
-      p {
-        font-size: 12px;
-        opacity: 0.6;
-      }
-
-      &.active {
-
-        .detail-thumb {
-          transform: scale(1.08);
-          box-shadow: 0 0 20px rgba(0,0,0,0.25);
-          
-        }
-
-        p {
-          opacity: 1;
-          font-weight: 600;
-        }
-
-      }
-    }
   }
+}
+
+}
+
+/* detail list */
+
+.detail-subtitle{
+
+margin:50px 0 20px;
+
+}
+
+/* swiper fix */
+
+.detail-swiper{
+
+overflow:visible;
+
+.swiper{
+overflow:visible;
+}
+
+.swiper-wrapper{
+overflow:visible;
+}
+
+.swiper-slide{
+overflow:visible;
+}
+
+}
+
+/* detail card */
+
+.detail-card{
+
+width:140px;
+flex-shrink:0;
+
+cursor:pointer;
+
+.detail-thumb{
+
+width:140px;
+height:140px;
+
+border-radius:20px;
+
+margin-bottom:10px;
+
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+
+transition:.3s;
+
+}
+
+p{
+
+font-size:12px;
+opacity:.6;
+
+}
+
+&.active{
+
+.detail-thumb{
+
+transform:scale(1.08);
+box-shadow:0 0 20px rgba(0,0,0,.25);
+
+}
+
+p{
+
+opacity:1;
+font-weight:600;
+
+}
+
+}
+
+}
+
+}
+
+/* ===== 날씨 crossfade ===== */
+
+.section2.fade{
+
+animation:weatherFade .5s ease;
+
+}
+
+@keyframes weatherFade{
+
+0%{opacity:0;}
+100%{opacity:1;}
+
+}
 }
