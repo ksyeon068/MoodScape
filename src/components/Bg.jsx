@@ -4,19 +4,23 @@ import "../style/bg.scss";
 
 function Bg() {
 
-  const { weather } = useContext(ApiContext);
+  const { weather } = useContext(ApiContext); // ⭐ weather 가져오기
+  console.log("weather:", weather);
 
-  let videoSrc = "/Project_Video/Rainy.mp4";
+  const videoMap = {
+    sunny: "/Project_Video/Sunny.mp4",
+    cloudy: "/Project_Video/Cloud.mp4",
+    rainy: "/Project_Video/Rainy.mp4",
+    snowy: "/Project_Video/Snow.mp4",
+    stormy: "/Project_Video/Thunder.mp4",
+    misty: "/Project_Video/Fog.mp4"
+  };
 
-  if (weather === "Rain") videoSrc = "/Project_Video/Rainy.mp4";
-  if (weather === "Rain") videoSrc = "/Project_Video/Rainy.mp4";
-  if (weather === "Snow") videoSrc = "/Project_Video/Snow.mp4";
-  if (weather === "Thunderstorm") videoSrc = "/Project_Video/Thunder.mp4";
-  if (weather === "Clouds") videoSrc = "/Project_Video/Cloud.mp4";
+  const videoSrc = videoMap[weather] || "/Project_Video/Sunny.mp4";
 
   return (
     <div className="bg-video">
-      <video autoPlay loop muted playsInline>
+      <video autoPlay loop muted playsInline key={videoSrc}>
         <source src={videoSrc} type="video/mp4" />
       </video>
     </div>
