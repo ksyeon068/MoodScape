@@ -13,7 +13,7 @@ const images = [
 ];
 
 const Section4 = () => {
-	const { WEATHER_API_KEY } = useApi();
+	const { weather } = useApi();
     const sectionRef = useRef(null);
     const [currentImg, setCurrentImg] = useState(0);
 
@@ -67,7 +67,7 @@ const Section4 = () => {
     }, []);
 
   	return (
-		<section className="about" ref={sectionRef}>
+		<section className={`about ${weather}`} ref={sectionRef}>
 
 			<div className="top_des">
 				<h2 className="left_des">An atmosphere shaped</h2>

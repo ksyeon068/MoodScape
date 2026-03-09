@@ -10,6 +10,56 @@
     overflow-x: clip;
     margin: 0 auto;
 
+
+    &.sunny{
+        background: linear-gradient(
+            180deg,
+            $sunny 0%,
+            $sunny-dark 100%
+        );
+    }
+
+    &.cloudy{
+        background: linear-gradient(
+            180deg,
+            $clouds 0%,
+            $clouds-dark 100%
+        );
+    }
+
+    &.rainy{
+        background: linear-gradient(
+            180deg,
+            $rain 0%,
+            $rain-dark 100%
+        );
+    }
+
+    &.stormy{
+        background: linear-gradient(
+            180deg,
+            $thunder 0%,
+            $thunder-dark 100%
+        );
+    }
+
+    &.snowy{
+        background: linear-gradient(
+            180deg,
+            $snow 0%,
+            $snow-dark 100%
+        );
+    }
+
+    &.misty{
+        background: linear-gradient(
+            180deg,
+            $mist 0%,
+            $mist-dark 100%
+        );
+    }
+
+
     .text, .circle, .top_des {
         opacity: 0;
         transform: translateY(60px);
