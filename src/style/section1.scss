@@ -1,21 +1,20 @@
 @use "sass:color";
-@use "../style/variables" as *;
-@use "../style/layout" as *;
+@use "../style/variables" as *; 
+@use "../style/layout" as *; 
 
 @mixin apply-theme($light, $dark) {
-  background-color: $light; 
+ 
+  .music-widget { background-color: rgba($light, 0.85); }
+  .playlist-overlay { background-color: rgba($light, 0.97); }
 
-  .music-widget { background-color: $light; }
-  .playlist-overlay { background-color: color.adjust($light, $lightness: -5%); }
-
-  .weather-widget { background-color: rgba($dark, 0.4); }
+  .weather-widget { background-color: rgba($dark, 0.6); }
   .weather-overlay { background-color: rgba($dark, 0.85); }
 }
 
 .hero-container {
   width: 100%;
   height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: $font-Kr;
   overflow: hidden;
   color: $text-color; 
 
@@ -26,23 +25,21 @@
   &.theme-snow { @include apply-theme($snow, $snow-dark); }
   &.theme-mist { @include apply-theme($mist, $mist-dark); }
   
-  background-color: $clouds; 
+  
 
   .inner {
     position: relative; height: 100%; width: 100%;
     
-    // --- 공통 위젯 스타일 (명시적인 transition 부여) ---
+    // --- 공통 위젯 스타일  ---
     .music-widget, .weather-widget, .playlist-overlay, .weather-overlay {
       position: absolute; bottom: 60px; padding: 24px; border-radius: 20px;
       box-sizing: border-box; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
-      /* 수정: transition을 opacity와 transform에 0.4초 동안 부드럽게 걸도록 명시 */
       transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.4s ease;
     }
 
     /* --- [1] 기본 뮤직 위젯 --- */
     .music-widget {
-      left: 80px; width: 380px; height: 180px; z-index: 10; color: $text-color;
-      // 수정: 리스트 열릴 때 부드럽게 투명해지고 클릭 안 되게 처리
+      left: 0; width: 380px; height: 180px; z-index: 10; color: $text-color; 
       &.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
 
       .player-view {
@@ -58,7 +55,7 @@
         .controls {
           display: flex; justify-content: space-around; align-items: center;
           .icon-btn { background: none; border: none; cursor: pointer; color: rgba($text-color, 0.6); transition: color 0.2s; &:hover{ color: rgba($text-color, 0.9); } &.active { color: $text-color; font-weight: bold; transform: scale(1.1); } }
-          .play-btn { width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 0, 0, 0.05); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; &:hover { background: rgba(0,0,0,0.1); } }
+          .play-btn { width: 64px; height: 64px; border-radius: 50%; background: rgba(0,0,0,0.05); border: none; display: flex; justify-content: center; align-items: center; cursor: pointer; &:hover { background: rgba(0,0,0,0.1); } }
         }
         .footer-info {
           display: flex; align-items: center; gap: 12px;
@@ -66,13 +63,37 @@
           .track-info { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: rgba($text-color, 0.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; .eq-icon { color: rgba($text-color, 0.6); } }
           .list-btn { background: none; border: none; cursor: pointer; color: rgba($text-color, 0.6); &:hover{ color: rgba($text-color, 0.9); } }
         }
+        .animated-eq {
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          gap: 2px;
+          width: 15px;
+          height: 16px;
+
+          .bar {
+            width: 3px;
+            background-color: rgba($text-color, 0.6);
+            border-radius: 1px;
+            height: 4px; //
+            transition: height 0.2s;
+          }
+          &.playing {
+            .bar1 { animation: eq-updown 0.8s infinite ease-in-out alternate; }
+            .bar2 { animation: eq-updown 0.9s infinite ease-in-out alternate-reverse 0.2s; }
+            .bar3 { animation: eq-updown 0.7s infinite ease-in-out alternate 0.4s; }
+          }
+        }
+        @keyframes eq-updown {
+          0% { height: 3px; }
+          100% { height: 16px; }
+        }
       }
     }
 
     /* --- [2] 플레이리스트 오버레이 --- */
     .playlist-overlay {
-      left: 80px; width: 380px; height: 450px; z-index: 20; color: $text-color;
-      /* 수정: visibility 속성 제거 및 pointer-events로 대체하여 부드러운 애니메이션 보장 */
+      left: 0; width: 380px; height: 450px; z-index: 20; color: $text-color;
       opacity: 0; pointer-events: none; transform: translateY(10px);
       &.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
@@ -99,9 +120,8 @@
 
     /* --- [3] 기본 날씨 위젯 --- */
     .weather-widget {
-      right: 80px; width: 380px; height: 180px; z-index: 10; cursor: pointer;
+      right: 0; width: 380px; height: 180px; z-index: 10; cursor: pointer;
       backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255, 0.1); color: rgba(255,255,255, 0.9);
-      // 오버레이 켜질 때 부드럽게 숨김
       &.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
 
       .weather-summary-view {
@@ -113,9 +133,8 @@
 
     /* --- [4] 상세 날씨 오버레이 --- */
     .weather-overlay {
-      right: 80px; width: 740px; height: 650px; z-index: 20; 
+      right: 0; width: 740px; height: 650px; z-index: 20; 
       backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255, 0.2); color: rgba(255,255,255, 0.9);
-      /* 수정: visibility 속성 제거 및 pointer-events로 대체 */
       opacity: 0; pointer-events: none; transform: translateY(10px);
       &.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
@@ -141,11 +160,176 @@
     }
 
     .scroll-indicator {
-      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; opacity: 0.7;
-      .arrow { color: white; stroke-width: 1.5; margin-top: -25px; animation: bounce 2s infinite; }
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; opacity: 0.7; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+      .arrow { color: white; stroke-width: 1.5; margin-top: -30px; animation: bounce 2s infinite; }
     }
   }
 }
 
 @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   📱 반응형 레이아웃 (Media Queries) 📱
+   ========================================= */
+
+/* 🌟 공통 적용: 가로 스크롤 차단 및 전체 세로 스크롤 허용 */
+@media (max-width: 1024px) {
+  .hero-container { height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
+  .hero-container .inner { min-height: 100vh; }
+}
+
+/* 1. 1440px 이하 */
+@media (max-width: 1440px) {
+  .hero-container .inner {
+    .music-widget, .playlist-overlay { left: 60px; }
+    .weather-widget, .weather-overlay { right: 60px; }
+  }
+}
+
+/* 2. 1280px 이하 */
+@media (max-width: 1280px) {
+  .hero-container .inner {
+    .music-widget, .playlist-overlay { left: 40px; }
+    .weather-widget, .weather-overlay { right: 40px; }
+    .weather-overlay { width: 680px; } 
+  }
+}
+
+/* 3. 1024px 이하 */
+@media (max-width: 1024px) {
+  .hero-container .inner {
+    .music-widget, .playlist-overlay { left: 20px; width: 340px; }
+    .weather-widget { right: 20px; width: 340px; }
+    
+    .weather-overlay { 
+      right: 20px; width: 500px; 
+      top: 100px; bottom: auto; height: auto; padding-bottom: 30px;
+      .detail-content .bottom-cards {
+        flex-direction: column; 
+        .daily-card .daily-list { padding: 0 10px; } 
+        .detail-info-card .info-list {
+          padding: 0 10px;
+          .info-row {
+            align-items: flex-start; justify-content: center; gap: 4px; padding: 6px 0;
+            .info-value { align-self: flex-start; text-align: left; font-size: 13px; margin-left: 24px; opacity: 0.9; }
+          }
+        }
+      }
+    }
+    
+    .playlist-overlay { 
+      top: auto; 
+      bottom: 40px; 
+      height: auto; 
+      min-height: 0; 
+      max-height: calc(100vh - 120px); 
+      overflow-y: auto; 
+      -ms-overflow-style: none; scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+    }
+  }
+}
+
+/* 4. 960px 이하 */
+@media (max-width: 960px) {
+  .hero-container .inner {
+    .music-widget, .playlist-overlay { width: 320px; }
+    .weather-widget { width: 320px; }
+    .weather-overlay { width: 500px; }
+  }
+}
+
+/* 5. 720px 이하 (모바일 뷰): 🌟 플레이리스트 하단 텅 빈 여백 제거 🌟 */
+@media (max-width: 720px) {
+  .hero-container .inner {
+    min-height: 900px; 
+    .center-art { top: 40%; transform: translate(-50%, -50%) scale(0.6); }
+
+    .weather-widget { 
+      top: 45vh; 
+      right: 50%; transform: translateX(50%); bottom: auto;
+      width: 90%; height: 140px;
+      &.hidden { transform: translate(50%, -10px); }
+      .date-info{
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+    }
+    
+    .weather-overlay {
+      top: 12vh; 
+      right: 50%; transform: translate(50%, -10px); bottom: auto;
+      width: 90%; height: auto; max-height: 75vh; overflow-y: auto; padding-bottom: 20px;
+      -ms-overflow-style: none; scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+      &.active { transform: translate(50%, 0); }
+      .detail-content .bottom-cards { 
+        flex-direction: column; 
+        .glass-card { padding: 26px 36px; }
+      }
+    }
+
+    .music-widget {
+      left: 50%; transform: translateX(-50%); 
+      bottom: 12vh; 
+      width: 90%;
+      &.hidden { transform: translate(-50%, 10px); }
+    }
+
+    .playlist-overlay {
+      left: 50%; transform: translate(-50%, 10px); 
+      bottom: 10vh;
+      width: 90%; 
+      height: auto; 
+      
+      /* 🛠️ 해결 2: 악성 코드였던 min-height(450px)를 0으로 강제 초기화해서 빈 공간을 싹 없앱니다! */
+      min-height: 0; 
+      
+      max-height: 75vh; overflow-y: auto;
+      -ms-overflow-style: none; scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+      &.active { transform: translate(-50%, 0); }
+    }
+
+    .scroll-indicator { display: none; } 
+  }
+}
+
+/* 6. 480px 이하 (찐 모바일) */
+@media (max-width: 480px) {
+  .hero-container .inner {
+    .weather-widget {
+      height: 120px; padding: 16px;
+      .weather-summary-view .top-row .temp-wrap .temp { font-size: 48px; }
+    }
+    .music-widget {
+      padding: 16px; height: 160px;
+      .player-view .controls .play-btn { width: 48px; height: 48px; }
+    }
+
+    .weather-overlay {
+      padding: 24px; 
+      .detail-header {
+        flex-direction: row; align-items: center; justify-content: space-between;
+        .header-left { margin-left: 0; gap: 8px; .big-temp { font-size: 54px; } }
+        .header-right { margin-right: 0; text-align: right; .loc-row { justify-content: flex-end; font-size: 20px; margin-bottom: 4px; } .date-text { font-size: 13px; } }
+      }
+      .detail-content {
+        .glass-card { padding: 20px; } 
+        .hourly-card .hourly-list { 
+          overflow-x: auto; justify-content: flex-start; gap: 17px; padding-bottom: 8px;
+          .hour-item{
+            width: 34px;
+            .h-time{
+              width: 34px;
+            }
+          }
+          &::-webkit-scrollbar { display: block; height: 4px; }
+          &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        }
+      }
+    }
+  }
+}

@@ -61,15 +61,8 @@ export const ApiProvider = ({ children }) => {
   );
 };
 
-<<<<<<< HEAD
-// 3. 쉽게 가져다 쓸 수 있도록 커스텀 훅 만들기
-export const useApi = () => {
-  return useContext(ApiContext);
-};
-=======
 export const useApi = () => {
   return useContext(ApiContext);
 };
 
 export default ApiContext;
->>>>>>> 7bea2f5fa69ceaa66853c2e6dbe7e2b4637fbc21
