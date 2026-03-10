@@ -578,8 +578,18 @@
       position: absolute; 
       bottom: 20px; 
       left: 50%; 
-      transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; opacity: 0.7; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
-      .arrow { color: white; stroke-width: 1.5; margin-top: -30px; animation: bounce 2s infinite; }
+      transform: translateX(-50%); 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      opacity: 0.7; 
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+      .arrow { 
+        color: white; 
+        stroke-width: 1.5; 
+        margin-top: -30px; 
+        animation: bounce 2s infinite; 
+      }
     }
   }
 }
@@ -593,8 +603,15 @@
 
 /* 🌟 공통 적용: 가로 스크롤 차단 및 전체 세로 스크롤 허용 */
 @media (max-width: 1024px) {
-  .hero-container { height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
-  .hero-container .inner { min-height: 100vh; }
+  .hero-container { 
+    height: auto; 
+    min-height: 100vh; 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+  }
+  .hero-container .inner { 
+    min-height: 100vh; 
+  }
 }
 
 /* 1. 1440px 이하 */
@@ -644,8 +661,14 @@
     .weather-widget { right: 20px; width: 340px; }
     
     .weather-overlay { 
-      right: 20px; width: 500px; 
-      top: 100px; bottom: auto; height: auto; max-height: 85vh; overflow-y: auto; padding-bottom: 30px;
+      right: 20px;
+      width: 500px; 
+      top: 100px; 
+      bottom: auto; 
+      height: auto; 
+      max-height: 85vh; 
+      overflow-y: auto; 
+      padding-bottom: 30px;
       .weather-detail-view{
         .detail-header{
           .header-left{
@@ -670,8 +693,16 @@
         .detail-info-card .info-list {
           padding: 0 10px;
           .info-row {
-            align-items: flex-start; justify-content: center; gap: 4px; padding: 6px 0;
-            .info-value { align-self: flex-start; text-align: left; font-size: 13px; margin-left: 24px; opacity: 0.9; }
+            align-items: flex-start; 
+            justify-content: center; 
+            gap: 4px; 
+            padding: 6px 0;
+            .info-value { 
+              align-self: flex-start; 
+              text-align: left; 
+              font-size: 13px; 
+              margin-left: 24px; 
+              opacity: 0.9; }
           }
         }
       }
@@ -684,7 +715,8 @@
       min-height: 0; 
       max-height: calc(100vh - 120px); 
       overflow-y: auto; 
-      -ms-overflow-style: none; scrollbar-width: none;
+      -ms-overflow-style: none; 
+      scrollbar-width: none;
       &::-webkit-scrollbar { display: none; }
     }
   }
@@ -703,12 +735,18 @@
 @media (max-width: 720px) {
   .hero-container .inner {
     min-height: 900px; 
-    .center-art { top: 40%; transform: translate(-50%, -50%) scale(0.6); }
+    .center-art { 
+      top: 40%; 
+      transform: translate(-50%, -50%) scale(0.6); 
+    }
 
     .weather-widget { 
       top: 45%; 
-      right: 50%; transform: translateX(50%); bottom: auto;
-      width: 90%; height: 140px;
+      right: 50%; 
+      transform: translateX(50%); 
+      bottom: auto;
+      width: 90%; 
+      height: 140px;
       &.hidden { transform: translate(50%, -10px); }
       .date-info{
         display: flex;
@@ -719,9 +757,16 @@
     
     .weather-overlay {
       top: 12vh; 
-      right: 50%; transform: translate(50%, -10px); bottom: auto;
-      width: 90%; height: auto; max-height: 85vh; overflow-y: auto; padding-bottom: 20px;
-      -ms-overflow-style: none; scrollbar-width: none;
+      right: 50%; 
+      transform: translate(50%, -10px); 
+      bottom: auto;
+      width: 90%;
+      height: auto; 
+      max-height: 85vh; 
+      overflow-y: auto; 
+      padding-bottom: 20px;
+      -ms-overflow-style: none; 
+      scrollbar-width: none;
       &::-webkit-scrollbar { display: none; }
       &.active { transform: translate(50%, 0); }
       .weather-detail-view{
@@ -750,21 +795,24 @@
     }
 
     .music-widget {
-      left: 50%; transform: translateX(-50%); 
+      left: 50%; 
+      transform: translateX(-50%); 
       bottom: 17%; 
       width: 90%;
       &.hidden { transform: translate(-50%, 10px); }
     }
 
     .playlist-overlay {
-      left: 50%; transform: translate(-50%, 10px); 
+      left: 50%; 
+      transform: translate(-50%, 10px); 
       bottom: 17%;
       width: 90%; 
       height: auto; 
-      min-height: 0; 
-      
-      max-height: 75vh; overflow-y: auto;
-      -ms-overflow-style: none; scrollbar-width: none;
+      min-height: 0;   
+      max-height: 75vh; 
+      overflow-y: auto;
+      -ms-overflow-style: none; 
+      scrollbar-width: none;
       &::-webkit-scrollbar { display: none; }
       &.active { transform: translate(-50%, 0); }
     }
@@ -773,38 +821,73 @@
   }
 }
 
-/* 6. 480px 이하 (찐 모바일) */
+/* 6. 480px 이하 */
 @media (max-width: 480px) {
   .hero-container .inner {
     .weather-widget {
-      height: 140px; padding: 20px;
+      height: 140px; 
+      padding: 20px;
       .weather-summary-view .top-row .temp-wrap .temp { font-size: 48px; }
     }
     .music-widget {
-      padding: 16px; height: 160px;
-      .player-view .controls .play-btn { width: 48px; height: 48px; }
+      padding: 16px; 
+      height: 160px;
+      .player-view .controls .play-btn { 
+        width: 48px; 
+        height: 48px; 
+      }
     }
 
     .weather-overlay {
       padding: 24px;
       .weather-detail-view{
         .detail-header {
-          flex-direction: row; align-items: center; justify-content: space-between;
-          .header-left { margin-left: 0; gap: 8px; .big-temp { font-size: 50px; } }
-          .header-right { margin-right: 15px; text-align: right; .loc-row { justify-content: flex-end; font-size: 20px; margin-bottom: 4px; } .date-text { font-size: 14px; } }
+          flex-direction: row; 
+          align-items: center; 
+          justify-content: space-between;
+          .header-left { 
+            margin-left: 0; 
+            gap: 8px; 
+            .big-temp { 
+              font-size: 50px; 
+            } 
+          }
+          .header-right { 
+            margin-right: 15px; 
+            text-align: right; 
+            .loc-row { 
+              justify-content: flex-end; 
+              font-size: 20px; 
+              margin-bottom: 4px; 
+            } 
+            .date-text { 
+              font-size: 14px; 
+            } 
+          }
         }
         .detail-content {
-          .glass-card { padding: 20px; } 
+          .glass-card { 
+            padding: 20px; 
+          } 
           .hourly-card .hourly-list { 
-            overflow-x: auto; justify-content: flex-start; gap: 17px; padding-bottom: 8px;
+            overflow-x: auto; 
+            justify-content: flex-start; 
+            gap: 17px; 
+            padding-bottom: 8px;
             .hour-item{
               width: 34px;
               .h-time{
                 width: 34px;
               }
             }
-            &::-webkit-scrollbar { display: block; height: 4px; }
-            &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+            &::-webkit-scrollbar { 
+              display: block; 
+              height: 4px; 
+            }
+            &::-webkit-scrollbar-thumb { 
+              background: rgba(255,255,255,0.2); 
+              border-radius: 4px; 
+            }
           }
         }
         .close-btn{
