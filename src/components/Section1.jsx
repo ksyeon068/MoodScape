@@ -80,13 +80,10 @@ const Section1 = () => {
       return;
     }
 
-    const fetchAllWeather = async () => {
+    const fetchAllWeather = async (lat, lon) => {
       try {
-        const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${WEATHER_API_KEY}&units=metric&lang=kr`);
+        const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=kr`);
         setWeather(weatherRes.data);
-        
-        const lat = weatherRes.data.coord.lat;
-        const lon = weatherRes.data.coord.lon;
 
         const forecastRes = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric&lang=kr`);
         setForecast(forecastRes.data);
@@ -112,10 +109,20 @@ const Section1 = () => {
 
       } catch (error) {
         console.error("Weather API Error:", error);
-      }
-    };
-    fetchAllWeather();
-  }, [WEATHER_API_KEY]); 
+        }
+      };
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          fetchAllWeather(lat, lon);
+        },
+        (error) => {
+          console.warn("위치 정보를 가져올 수 없어 기본값(서울)을 사용합니다.", error);
+          fetchAllWeather(37.5665, 126.9780);
+        }
+      );
+    }, [WEATHER_API_KEY]); 
 
   const today = new Date();
   const dateString = `${today.getFullYear()} ${(today.getMonth() + 1).toString().padStart(2, '0')} ${today.getDate().toString().padStart(2, '0')}`;
@@ -222,7 +229,7 @@ const Section1 = () => {
 
   return (
     <section className={`hero-container ${weatherClass}`}>
-      <div className="inner">
+      <div className="inner" onClick={() => { setIsMusicList(false); setIsWeatherDetail(false); }}>
 
         <audio 
           ref={audioRef} src={currentSong?.audioSrc}
@@ -230,7 +237,7 @@ const Section1 = () => {
         />
 
         {/* --- [1] 기본 플레이어 위젯 --- */}
-        <div className={`music-widget ${isMusicList ? 'hidden' : ''}`}>
+        <div className={`music-widget ${isMusicList ? 'hidden' : ''}`} onClick={(e) => e.stopPropagation()}>
           <div className="player-view">
             <div className="progress-area">
               <span className="time">{formatTime(currentTime)}</span>
@@ -268,7 +275,7 @@ const Section1 = () => {
         </div>
 
         {/* --- [2] 플레이리스트 오버레이 --- */}
-        <div className={`playlist-overlay ${isMusicList ? 'active' : ''}`}>
+        <div className={`playlist-overlay ${isMusicList ? 'active' : ''}`} onClick={(e) => e.stopPropagation()}>
           <div className="playlist-view">
             <div className="list-header">
               <div className="text-group">
@@ -310,7 +317,10 @@ const Section1 = () => {
         {/* --- [날씨 영역] --- */}
         <div 
           className={`weather-widget ${isWeatherDetail ? 'hidden' : ''}`}
-          onClick={() => setIsWeatherDetail(true)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsWeatherDetail(true);
+          }}
         >
           <div className="weather-summary-view">
             <div className="top-row">
@@ -318,17 +328,17 @@ const Section1 = () => {
               <FiMapPin size={20} className="loc-icon" />
             </div>
             <div className="bottom-row">
-              <div className="date-info"><p className="city">SEOUL</p><span className="date">{dateString}</span></div>
+              <div className="date-info"><p className="city">{weather ? weather.name.toUpperCase() : 'SEOUL'}</p><span className="date">{dateString}</span></div>
               <button className="menu-btn"><BiListUl size={24} /></button>
             </div>
           </div>
         </div>
 
-        <div className={`weather-overlay ${isWeatherDetail ? 'active' : ''}`}>
+        <div className={`weather-overlay ${isWeatherDetail ? 'active' : ''}`} onClick={(e) => e.stopPropagation()}>
           <div className="weather-detail-view">
              <div className="detail-header">
                 <div className="header-left"><span className="big-temp">{weather ? Math.round(weather.main.temp) : '0'}°</span>{weather ? getWeatherIcon(weather.weather[0].main, 40) : <WiDaySunny size={40}/>}</div>
-                <div className="header-right"><div className="loc-row"><FiMapPin size={16}/> SEOUL</div><span className="date-text">{dateString}</span></div>
+                <div className="header-right"><div className="loc-row"><FiMapPin size={16}/> {weather ? weather.name.toUpperCase() : 'SEOUL'}</div><span className="date-text">{dateString}</span></div>
              </div>
              <div className="detail-content">
                 <div className="glass-card hourly-card">

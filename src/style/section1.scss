@@ -32,14 +32,14 @@
     
     // --- 공통 위젯 스타일  ---
     .music-widget, .weather-widget, .playlist-overlay, .weather-overlay {
-      position: absolute; bottom: 60px; padding: 24px; border-radius: 20px;
+      position: absolute; bottom: 80px; padding: 24px 34px; border-radius: 20px;
       box-sizing: border-box; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
       transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.4s ease;
     }
 
     /* --- [1] 기본 뮤직 위젯 --- */
     .music-widget {
-      left: 0; width: 380px; height: 180px; z-index: 10; color: $text-color; 
+      left: 0; width: 450px; height: 180px; z-index: 10; color: $text-color; 
       &.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
 
       .player-view {
@@ -93,7 +93,7 @@
 
     /* --- [2] 플레이리스트 오버레이 --- */
     .playlist-overlay {
-      left: 0; width: 380px; height: 450px; z-index: 20; color: $text-color;
+      left: 0; width: 450px; height: 450px; z-index: 20; color: $text-color;
       opacity: 0; pointer-events: none; transform: translateY(10px);
       &.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
@@ -120,7 +120,7 @@
 
     /* --- [3] 기본 날씨 위젯 --- */
     .weather-widget {
-      right: 0; width: 380px; height: 180px; z-index: 10; cursor: pointer;
+      right: 0; width: 500px; height: 180px; z-index: 10; cursor: pointer;
       backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255, 0.1); color: rgba(255,255,255, 0.9);
       &.hidden { opacity: 0; pointer-events: none; transform: translateY(10px); }
 
@@ -133,7 +133,7 @@
 
     /* --- [4] 상세 날씨 오버레이 --- */
     .weather-overlay {
-      right: 0; width: 740px; height: 650px; z-index: 20; 
+      right: 0; width: 710px; height: 660px; z-index: 20; 
       backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255, 0.2); color: rgba(255,255,255, 0.9);
       opacity: 0; pointer-events: none; transform: translateY(10px);
       &.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
