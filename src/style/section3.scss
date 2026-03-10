@@ -50,17 +50,22 @@ body{
             text-decoration:none;
             position: relative;
             transition: .5s;
+            &::after{
+              content: "→";
+              position: absolute;
+              top: 13px;
+              right: 35px;
+              opacity: 0;
+              transition: all 0.3s;
+            }
              &:hover{
                         background: #333;
                         color: #FEF2E3;
                         padding-right: 50px;
-                        transition: .5s;
                     }
                     &:hover:after{
-                        content: "→";
-                        position: absolute;
-                        top: 12px; right: 15px;
-                        
+                        right: 25px;
+                        opacity: 1;
                     }
             }
             
