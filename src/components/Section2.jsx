@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "../style/section2.scss";
 import { useApi } from "../context/ApiContext";
+import { musicData } from "../data/musicData";
 
 const weatherFolders = {
   sunny: "sunshine-scene",
@@ -15,9 +16,53 @@ const weatherFolders = {
   misty: "foggy-dawn"
 };
 
+const weatherText = {
+  sunny: "Sunny",
+  cloudy: "Cloudy",
+  rainy: "Rainy",
+  stormy: "Stormy",
+  snowy: "Snowy",
+  misty: "Misty"
+};
+
+const weatherMood = {
+
+  sunny:{
+  tag:["Warm","Bright","Positive"],
+  desc:"Warm sunshine mood playlist."
+  },
+
+  cloudy:{
+  tag:["Calm","Soft","Lo-fi"],
+  desc:"Soft cloudy day ambience."
+  },
+
+  rainy:{
+  tag:["Rain","Focus","Chill"],
+  desc:"Perfect for a rainy afternoon."
+  },
+
+  stormy:{
+  tag:["Dark","Deep","Cinematic"],
+  desc:"Thunder and dramatic atmosphere."
+  },
+
+  snowy:{
+  tag:["Cold","Peaceful","Ambient"],
+  desc:"Quiet snowy day atmosphere."
+  },
+
+  misty:{
+  tag:["Dreamy","Fog","Ambient"],
+  desc:"Early foggy morning mood."
+  }
+
+};
+
 const Section2 = () => {
 
   const { weather } = useApi();
+  /* const [weather, setWeater] = useState("stormy") */
   const weatherFolder = weatherFolders[weather] || "sunshine-scene";
 
   const playlists = [1,2,3,4];
@@ -34,6 +79,8 @@ const Section2 = () => {
   const audioRef = useRef(new Audio());
 
   const activePlaylist = playlists[activeIndex];
+    const trackData =
+    musicData?.[weather]?.[`playlist${activePlaylist}`]?.[trackIndex];
 
   const getVisiblePlaylists = () => {
 
@@ -175,7 +222,7 @@ onClick={()=>handleCardClick(index)}
 
 <div className="card-text">
 <h3>Playlist {item}</h3>
-<p>Weather mood music</p>
+<p>{weatherText[weather]} Mood Music</p>
 </div>
 
 <div
@@ -216,7 +263,7 @@ backgroundImage:`url(/music/${weatherFolder}/playlist${activePlaylist}/cover${tr
 
 <div className="detail-info">
 
-<h2>Playlist {activePlaylist}</h2>
+<h2>{trackData?.title || "Track Title"}</h2>
 
 <div className="waveform">
 
@@ -239,18 +286,23 @@ className={`wave ${isPlaying ? "play":""}`}
 
 <div className="desc-divider"/>
 
-<h4>Track Info</h4>
-
-<p className="desc-track">
-Track {trackIndex+1} from Playlist {activePlaylist}
+<p className="desc-artist">
+{trackData?.artist || "Artist Name"}
 </p>
 
 <p className="desc-text">
-This track fits the current weather mood.  
-Ambient textures and relaxing tones create
-a comfortable atmosphere for today’s
-{weather} weather.
+{weatherMood[weather]?.desc}
 </p>
+
+<div className="desc-tags">
+
+{weatherMood[weather]?.tag.map((tag,i)=>(
+<span key={i} className="tag">
+#{tag}
+</span>
+))}
+
+</div>
 
 </div>
 
