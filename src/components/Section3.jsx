@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "../style/section3.scss";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FiChevronDown } from "react-icons/fi";
 
 
 
@@ -73,7 +73,9 @@ function Section3() {
 
       <div className="pick-label">
         <span>pick your weather</span>
-        <p>MOVE TO PLAYLIST <FaArrowRightLong /></p>
+        <div className="scroll-indicator">
+          <FiChevronDown size={40} className="arrow first" /><FiChevronDown size={40} className="arrow second" />
+        </div>
       </div>
       
       <div className="weather-filter">
