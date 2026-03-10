@@ -62,7 +62,7 @@ const weatherMood = {
 const Section2 = () => {
 
   const { weather } = useApi();
-  /* const [weather, setWeater] = useState("stormy") */
+  /* const [weather, setWeater] = useState("rainy") */
   const weatherFolder = weatherFolders[weather] || "sunshine-scene";
 
   const playlists = [1,2,3,4];
@@ -72,6 +72,8 @@ const Section2 = () => {
   const [trackIndex,setTrackIndex] = useState(0);
   const [isPlaying,setIsPlaying] = useState(false);
   const [progress,setProgress] = useState(0);
+  const progressRef = useRef(null);
+  const isDragging = useRef(false);
 
   /* NEW */
   const [showDesc,setShowDesc] = useState(false);
@@ -189,6 +191,54 @@ const Section2 = () => {
     setShowDesc(!showDesc);
   };
 
+  const updateProgress = (clientX) => {
+
+  const bar = progressRef.current;
+  if(!bar || !audioRef.current.duration) return;
+
+  const rect = bar.getBoundingClientRect();
+
+  let percent = (clientX - rect.left) / rect.width;
+  percent = Math.max(0, Math.min(1, percent));
+
+  const newTime = percent * audioRef.current.duration;
+
+  audioRef.current.currentTime = newTime;
+  setProgress(percent * 100);
+
+};
+
+const handleProgressClick = (e) => {
+
+  isDragging.current = true;
+  updateProgress(e.clientX);
+
+};
+
+useEffect(()=>{
+
+  const handleMove = (e)=>{
+    if(isDragging.current){
+      updateProgress(e.clientX);
+    }
+  };
+
+  const handleUp = ()=>{
+    isDragging.current = false;
+  };
+
+  window.addEventListener("mousemove",handleMove);
+  window.addEventListener("mouseup",handleUp);
+
+  return ()=>{
+
+    window.removeEventListener("mousemove",handleMove);
+    window.removeEventListener("mouseup",handleUp);
+
+  };
+
+},[]);
+
   return(
 
 <section className="section2">
@@ -199,8 +249,8 @@ const Section2 = () => {
 
 <div className="playlist-list">
 
-<h2 className="section-title">오늘의 날씨 플리</h2>
-<p className="section-desc">Weather Playlist</p>
+<h2 className="section-title">오늘의 날씨 플레이리스트</h2>
+<p className="section-desc">Music for Today’s Weather</p>
 
 <button className="playlist-nav up" onClick={moveUp}>
 <FaChevronUp/>
@@ -306,8 +356,24 @@ className={`wave ${isPlaying ? "play":""}`}
 
 </div>
 
-<div className="progress-bar">
-<div className="progress" style={{width:`${progress}%`}}/>
+<div
+className="progress-bar"
+ref={progressRef}
+onMouseDown={handleProgressClick}
+>
+
+<div className="progress-hitbox"/>
+
+<div
+className="progress"
+style={{width:`${progress}%`}}
+/>
+
+<div
+className="progress-knob"
+style={{left:`${progress}%`}}
+/>
+
 </div>
 
 <div className="player-controls">

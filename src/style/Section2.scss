@@ -43,7 +43,7 @@ opacity:.6;
 
 .playlist-wrapper{
 
-cursor:grab;
+cursor:pointer;
 user-select:none;
 
 transition:transform .35s cubic-bezier(.22,1,.36,1);
@@ -156,7 +156,7 @@ right:0;
 
 width:52%;
 
-background:#efefefd0;
+background:#eeeeeee3;
 
 border-radius:40px 0 0 40px;
 
@@ -178,9 +178,9 @@ height:250px;
 
 border-radius:30px;
 
-background-size:contain;
 background-position:center;
 background-repeat:no-repeat;
+background-size: cover;
 
 }
 
@@ -243,15 +243,63 @@ width:64%;
 height:4px;
 
 background:#ccc;
-
 margin:30px 0;
+
+position:relative;
+cursor:pointer;
 
 .progress{
 
-width:30%;
 height:100%;
-
 background:#555;
+}
+
+/* 👇 보이지 않는 드래그 영역 */
+
+.progress-hitbox{
+
+position:absolute;
+
+top:-12px;
+left:0;
+
+width:100%;
+height:28px;
+
+}
+
+/* knob */
+
+.progress-knob{
+
+position:absolute;
+
+top:50%;
+transform:translate(-50%,-50%);
+
+width:14px;
+height:14px;
+
+border-radius:50%;
+
+background:#333;
+border:2px solid #333;
+
+box-shadow:0 0 6px rgba(0,0,0,.25);
+
+pointer-events:none;
+
+transition:transform .2s;
+
+}
+
+/* 👇 hover 효과 */
+
+&:hover{
+
+.progress-knob{
+transform:translate(-50%,-50%) scale(1.2);
+}
 
 }
 
@@ -334,7 +382,7 @@ color:#000;
 
   width:100%;
   height:1px;
-  background:#ddd;
+  background:#cacaca;
 
   margin:15px 0;
 
