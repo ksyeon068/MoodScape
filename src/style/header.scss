@@ -40,7 +40,7 @@ body {
         cursor: pointer;
 
         &:hover{
-            color: $text-color;
+            color: black;
             }
         }
     }
@@ -93,26 +93,137 @@ body {
         img{
           width: 90px;
         }
-        cursor: pointer;
     }
     .menu{
         display: flex;
         gap: 40px;
 
         button{
-        background: none;
-        border: none;
         font-size: 15px;
-        color: $text-color;
-        font-weight: 500;
-        cursor: pointer;
-
-        &:hover{
-            color: $text-color;
-            }
         }
     }
   }
-  
+  }
 }
+@media screen and (max-width: 1280px) {
+  .header {
+    height: 50px;
+  .header-inner{
+        max-width: 1024px;
+    .logo{
+        img{
+          width: 85px;
+        }
+    }
+    .menu{
+        display: flex;
+        gap: 30px;
+
+        button{
+        font-size: 13px;
+        }
+    }
+  } 
+  }
+}
+@media screen and (max-width: 1024px) {
+  .header {
+    height: 50px;
+  .header-inner{
+        max-width: 800px;
+    .logo{
+        img{
+          width: 85px;
+        }
+    }
+    .menu{
+        display: flex;
+        gap: 30px;
+
+        button{
+        font-size: 13px;
+        }
+    }
+  } 
+  }
+}
+@media screen and (max-width: 960px) {
+  .header {
+    height: 50px;
+  .header-inner{
+        max-width: 720px;
+    .logo{
+        img{
+          width: 85px;
+        }
+    }
+    .menu{
+        display: flex;
+        gap: 30px;
+        button{
+        font-size: 13px;
+        }
+    }
+  } 
+  }
+}
+@media screen and (max-width: 720px) {
+  .header{
+    height: 120px;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    .header-inner{
+        max-width: 520px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      .logo{
+        margin-bottom: 10px;
+          img{
+            width: 100px;
+          }
+      }
+      .menu{
+          display: flex;
+          gap: 50px;
+          button{
+          font-size: 14px;
+          }
+          .mohide{display: none;}
+      }
+    } 
+  }
+  .header.fixed{
+  position: fixed;
+  /* top: -100px;  */
+  transform: translateY(100px);
+  transition: transform 0.3s ease;
+}
+}
+@media screen and (max-width: 480px) {
+  .header{
+    height: 100px;
+    .header-inner{
+        max-width: 310px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      .logo{
+        margin-bottom: 10px;
+          img{
+            width: 90px;
+          }
+      }
+      .menu{
+          display: flex;
+          gap: 40px;
+          button{
+          font-size: 12px;
+          }
+      }
+    } 
+  }
 }

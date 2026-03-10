@@ -1,25 +1,35 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Autoplay } from "swiper/modules";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "../style/section3.scss";
-import { FaPlayCircle } from "react-icons/fa";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FiChevronDown } from "react-icons/fi";
 
 
 
 function Section3() {
 
   const swiperRef = useRef(null);
-
+  const sectionRef = useRef(null);
+  const [show, setShow] = useState(false);
   useEffect(() => {
-    const btn = document.querySelector(".youtube-btn");
 
-    setTimeout(() => {
-      btn.classList.add("show");
-    }, 400);
+  const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShow(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if(sectionRef.current){
+      observer.observe(sectionRef.current);
+    }
+
   }, []);
+
 
   const weatherSlides = [
   { name: "SUNNY", img: "/img/thumbnail/Sunny_Final cut.jpg", youtube: "https://youtu.be/HlBBH6dFrq8?si=2Cahj1pEKJNWTXNg", class: "sunny" },
@@ -35,12 +45,16 @@ function Section3() {
   };
 
   return (
-    <section className="weather-section" id="weather">
+    <section3
+      ref={sectionRef}
+      className={`weather-section ${show ? "show" : ""}`}
+      id="weather"
+    >
 
       <div className="section-head">
 
         <div className="left">
-          <h2>날씨 별 플레이리스트</h2>
+          <h2>날씨별 플레이리스트</h2>
           <p>Weather Playlist <br />
           Discover music that fits the mood of today's weather</p>
         </div>
@@ -53,15 +67,15 @@ function Section3() {
           >
             유튜브 채널 가기
           </a>
-          <FaPlayCircle size={50} color="$text-color"
-          onClick={() => window.open("https://www.youtube.com/@MoodScape_201", "_blank")}/>
         </div>
 
       </div>
 
       <div className="pick-label">
         <span>pick your weather</span>
-        <p>MOVE TO PLAYLIST <FaArrowRightLong /></p>
+        <div className="scroll-indicator">
+          <FiChevronDown size={40} className="arrow first" /><FiChevronDown size={40} className="arrow second" />
+        </div>
       </div>
       
       <div className="weather-filter">
@@ -86,8 +100,30 @@ function Section3() {
           effect={"coverflow"}
           centeredSlides={true}
           loop={true}
-          slidesPerView={1.8} // 양옆 슬라이드가 살짝 보이게 조절
-          spaceBetween={400}
+          slidesPerView={1.8}
+          breakpoints={{
+            1920: {
+              spaceBetween: 400,
+            },
+            1440: {
+              spaceBetween: 300,
+            },
+            1280: {
+              spaceBetween: 250,
+            },
+            1024: {
+              spaceBetween: 250,
+            },
+            960: {
+              spaceBetween: 180,
+            },
+            720: {
+              spaceBetween: 120,
+            },
+            480: {
+              spaceBetween: 50,
+            }
+          }}
           grabCursor={true}
           onClick={(swiper) => {
             const clickedIndex = swiper.clickedIndex;
@@ -104,9 +140,9 @@ function Section3() {
             }
           }}
           coverflowEffect={{
-            rotate: 40,      // 이미지처럼 팍 꺾이게
-            stretch: 0,    // 슬라이드들이 서로 겹치는 정도
-            depth: 300,      // 뒤로 밀리는 깊이감
+            rotate: 40,      
+            stretch: 0,    
+            depth: 300,      
             modifier: 1,
             slideShadows: false,
           }}
@@ -122,7 +158,7 @@ function Section3() {
         </Swiper>
       </div>
 
-    </section>
+    </section3>
   );
 }
 
