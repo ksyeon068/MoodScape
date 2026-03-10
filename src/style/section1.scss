@@ -182,8 +182,10 @@
 /* 1. 1440px 이하 */
 @media (max-width: 1440px) {
   .hero-container .inner {
-    .music-widget, .playlist-overlay { left: 60px; }
-    .weather-widget, .weather-overlay { right: 60px; }
+    .music-widget{ left: 60px; width: 400px; }
+    .playlist-overlay { left: 60px; }
+    .weather-widget{ right: 60px; width: 400px; }
+    .weather-overlay { right: 60px; }
   }
 }
 
@@ -192,7 +194,28 @@
   .hero-container .inner {
     .music-widget, .playlist-overlay { left: 40px; }
     .weather-widget, .weather-overlay { right: 40px; }
-    .weather-overlay { width: 680px; } 
+    
+    .weather-overlay { 
+      width: 680px; 
+
+      .detail-content .bottom-cards {
+        .detail-info-card .info-list .info-row {
+          align-items: flex-start; 
+          gap: 12px; 
+          
+          .info-label {
+            white-space: nowrap;
+            flex-shrink: 0;
+          }
+          
+          .info-value {
+            text-align: right;
+            word-break: keep-all;
+            line-height: 1.4;
+          }
+        }
+      }
+    } 
   }
 }
 
@@ -204,7 +227,25 @@
     
     .weather-overlay { 
       right: 20px; width: 500px; 
-      top: 100px; bottom: auto; height: auto; padding-bottom: 30px;
+      top: 100px; bottom: auto; height: auto; max-height: 85vh; overflow-y: auto; padding-bottom: 30px;
+      .weather-detail-view{
+        .detail-header{
+          .header-left{
+            .big-temp{
+              font-size: 70px;
+            }
+          }
+          .header-right{
+            .loc-row{
+              font-size: 26px;
+            }
+            .date-text{
+              font-size: 15px;
+            }
+          }
+          
+        }
+      }
       .detail-content .bottom-cards {
         flex-direction: column; 
         .daily-card .daily-list { padding: 0 10px; } 
@@ -240,14 +281,14 @@
   }
 }
 
-/* 5. 720px 이하 (모바일 뷰): 🌟 플레이리스트 하단 텅 빈 여백 제거 🌟 */
+/* 5. 720px 이하 (모바일 뷰):  */
 @media (max-width: 720px) {
   .hero-container .inner {
     min-height: 900px; 
     .center-art { top: 40%; transform: translate(-50%, -50%) scale(0.6); }
 
     .weather-widget { 
-      top: 45vh; 
+      top: 45%; 
       right: 50%; transform: translateX(50%); bottom: auto;
       width: 90%; height: 140px;
       &.hidden { transform: translate(50%, -10px); }
@@ -261,10 +302,29 @@
     .weather-overlay {
       top: 12vh; 
       right: 50%; transform: translate(50%, -10px); bottom: auto;
-      width: 90%; height: auto; max-height: 75vh; overflow-y: auto; padding-bottom: 20px;
+      width: 90%; height: auto; max-height: 85vh; overflow-y: auto; padding-bottom: 20px;
       -ms-overflow-style: none; scrollbar-width: none;
       &::-webkit-scrollbar { display: none; }
       &.active { transform: translate(50%, 0); }
+      .weather-detail-view{
+        .detail-header{
+          .header-left{
+            .big-temp{
+              font-size: 60px;
+            }
+          }
+          .header-right{
+            .loc-row{
+              font-size: 22px;
+            }
+            .date-text{
+              font-size: 14px;
+            }
+          }
+          
+        }
+      }
+      
       .detail-content .bottom-cards { 
         flex-direction: column; 
         .glass-card { padding: 26px 36px; }
@@ -273,18 +333,16 @@
 
     .music-widget {
       left: 50%; transform: translateX(-50%); 
-      bottom: 12vh; 
+      bottom: 17%; 
       width: 90%;
       &.hidden { transform: translate(-50%, 10px); }
     }
 
     .playlist-overlay {
       left: 50%; transform: translate(-50%, 10px); 
-      bottom: 10vh;
+      bottom: 17%;
       width: 90%; 
       height: auto; 
-      
-      /* 🛠️ 해결 2: 악성 코드였던 min-height(450px)를 0으로 강제 초기화해서 빈 공간을 싹 없앱니다! */
       min-height: 0; 
       
       max-height: 75vh; overflow-y: auto;
@@ -301,7 +359,7 @@
 @media (max-width: 480px) {
   .hero-container .inner {
     .weather-widget {
-      height: 120px; padding: 16px;
+      height: 140px; padding: 20px;
       .weather-summary-view .top-row .temp-wrap .temp { font-size: 48px; }
     }
     .music-widget {
@@ -310,26 +368,33 @@
     }
 
     .weather-overlay {
-      padding: 24px; 
-      .detail-header {
-        flex-direction: row; align-items: center; justify-content: space-between;
-        .header-left { margin-left: 0; gap: 8px; .big-temp { font-size: 54px; } }
-        .header-right { margin-right: 0; text-align: right; .loc-row { justify-content: flex-end; font-size: 20px; margin-bottom: 4px; } .date-text { font-size: 13px; } }
-      }
-      .detail-content {
-        .glass-card { padding: 20px; } 
-        .hourly-card .hourly-list { 
-          overflow-x: auto; justify-content: flex-start; gap: 17px; padding-bottom: 8px;
-          .hour-item{
-            width: 34px;
-            .h-time{
+      padding: 24px;
+      .weather-detail-view{
+        .detail-header {
+          flex-direction: row; align-items: center; justify-content: space-between;
+          .header-left { margin-left: 0; gap: 8px; .big-temp { font-size: 50px; } }
+          .header-right { margin-right: 15px; text-align: right; .loc-row { justify-content: flex-end; font-size: 20px; margin-bottom: 4px; } .date-text { font-size: 14px; } }
+        }
+        .detail-content {
+          .glass-card { padding: 20px; } 
+          .hourly-card .hourly-list { 
+            overflow-x: auto; justify-content: flex-start; gap: 17px; padding-bottom: 8px;
+            .hour-item{
               width: 34px;
+              .h-time{
+                width: 34px;
+              }
             }
+            &::-webkit-scrollbar { display: block; height: 4px; }
+            &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
           }
-          &::-webkit-scrollbar { display: block; height: 4px; }
-          &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        }
+        .close-btn{
+          top: -5px;
+          right: -5px;
         }
       }
+      
     }
   }
 }
