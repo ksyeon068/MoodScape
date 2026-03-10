@@ -213,62 +213,9 @@
     
     .footer-inner{
           max-width:310px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align-last: center;
-          .footer-left{
-            
-            margin-bottom: 50px;
-              .logo{
-                img{width: 120px;}
-              }
-              p{
-              font-size:13px;
-              margin-bottom:6px;
-              }
-
-              .desc{
-              margin-top:12px;
-              width:420px;
-              line-height:1.6;
-              opacity:.8;
-              font-weight: 300;
-              }
-          }
-
-          .footer-right{
-              display:flex;
-              gap:120px;
-
-              h3{
-              font-size:15px;
-              margin-bottom:20px;
-              letter-spacing:1px;
-              font-weight: 500;
-              }
-              ul{
-              list-style:none;
-              padding:0;
-              li{
-                  font-size:13px;
-                  margin-bottom:10px;
-                  cursor:pointer;
-
-                  &:hover{
-                  opacity:.6;
-                  }
-                  a{color: #ddd;}
-              }
-          }
-      }
     }
     .copyright{
           height:40px;
-          font-size:12px;
-          .inner{
-              max-width:310px;
-          }
       }    
   }
 }

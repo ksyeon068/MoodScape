@@ -121,7 +121,7 @@ function Section3() {
               spaceBetween: 120,
             },
             480: {
-              spaceBetween: 40,
+              spaceBetween: 50,
             }
           }}
           grabCursor={true}
