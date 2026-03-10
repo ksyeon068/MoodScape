@@ -22,7 +22,7 @@ const Section1 = () => {
   const [airQuality, setAirQuality] = useState(null); 
   const [weatherClass, setWeatherClass] = useState('theme-clouds'); 
 
-  const [activePlaylistKey, setActivePlaylistKey] = useState('sunshine'); 
+  const [activePlaylistKey, setActivePlaylistKey] = useState('sunny'); 
   const [playlist, setPlaylist] = useState([]); 
   
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
@@ -48,7 +48,7 @@ const Section1 = () => {
 
   useEffect(() => {
     const fetchDurations = async () => {
-      const currentArray = musicLibrary[activePlaylistKey] || musicLibrary['sunshine'];
+      const currentArray = musicLibrary[activePlaylistKey] || musicLibrary['sunny'];
 
       const updatedPlaylist = await Promise.all(
         currentArray.map((song) => {
