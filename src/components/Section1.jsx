@@ -369,8 +369,9 @@ const Section1 = () => {
           </div>
         </div>
 
-        <div className="scroll-indicator">
-          <FiChevronDown size={40} className="arrow first" /><FiChevronDown size={40} className="arrow second" />
+        <div className={`scroll-indicator ${(isMusicList || isWeatherDetail) ? 'hidden' : ''}`}>
+          <FiChevronDown size={40} className="arrow first" />
+          <FiChevronDown size={40} className="arrow second" />
         </div>
         
       </div>
