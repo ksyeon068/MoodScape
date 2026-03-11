@@ -6,7 +6,7 @@ export const ApiProvider = ({ children }) => {
 
   const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-  const [weather, setWeather] = useState("sunny"); // ⭐ 여기 추가
+  const [weather, setWeather] = useState("sunny");
 
   const getWeatherType = (apiWeather) => {
 
@@ -32,7 +32,7 @@ export const ApiProvider = ({ children }) => {
     return weatherMap[apiWeather] || "sunny";
   };
 
-  // ⭐ 여기서 날씨 API 한번만 호출
+ 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
 
