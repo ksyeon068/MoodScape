@@ -45,7 +45,7 @@ function Section3() {
   };
 
   return (
-    <section3
+    <section
       ref={sectionRef}
       className={`weather-section ${show ? "show" : ""}`}
       id="weather"
@@ -158,7 +158,7 @@ function Section3() {
         </Swiper>
       </div>
 
-    </section3>
+    </section>
   );
 }
 

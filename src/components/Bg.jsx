@@ -5,7 +5,7 @@ import "../style/bg.scss";
 function Bg() {
 
   const { weather } = useContext(ApiContext); // ⭐ weather 가져오기
-  console.log("weather:", weather);
+  if (!weather) return null;
 
   const videoMap = {
     sunny: "/Project_Video/Sunny.mp4",
