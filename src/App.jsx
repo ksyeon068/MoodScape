@@ -14,8 +14,17 @@ import './App.css'
 function AppContent() {
 
   const { loading } = useApi();
+  const [minLoading, setMinLoading] = useState(true);
 
-  if (loading) return <Loader />;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMinLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading || minLoading) return <Loader />;
 
   return (
     <div className="App">
