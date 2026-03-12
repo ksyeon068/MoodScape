@@ -458,7 +458,7 @@ body{
 @media screen and (max-width: 720px) {
   .weather-section{
     .section-head{
-        margin-bottom: 50px;
+        margin-bottom: 100px;
         max-width: 520px;
         flex-direction:column;
         text-align: center;
@@ -503,7 +503,7 @@ body{
       .scroll-indicator {
             width: 5px;
             height: 5px;
-            top: 288px;
+            top: 338px;
             .second{display: none;}
           }
     }
