@@ -68,7 +68,7 @@ body{
             position: absolute;
             width: 10px;
             height: 10px;
-            top: 340px; left: 50%;
+            top: 380px; left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
@@ -287,11 +287,18 @@ body{
         max-width: 1280px;
         margin-top: 60px;
       }
+    .pick-label{
+      .scroll-indicator {
+            width: 10px;
+            height: 10px;
+            top: 320px
+          }
     }
     .swiper-area {
       margin-bottom: 160px;
     }
   }
+}
 @media screen and (max-width: 1280px) {
   .weather-section{
     .section-head{
@@ -317,9 +324,11 @@ body{
         padding: 4px 18px; border-radius: 20px;
         font-size: 13px; margin-bottom: 10px;
       }
-      p{
-        font-size: 12px;
-      }
+      .scroll-indicator {
+            width: 10px;
+            height: 10px;
+            top: 300px;
+          }
     }
     //날씨버튼
     .weather-filter{
@@ -425,7 +434,7 @@ body{
       .scroll-indicator {
             width: 5px;
             height: 5px;
-            top: 343px;
+            top: 320px;
           }
     }
     //날씨버튼
@@ -529,11 +538,12 @@ body{
         display:flex;
         justify-content:center;
         align-items:center;
-
         .youtube-btn{
           padding:8px 20px;
           border-radius:10px;
           font-size: 12px;
+          background: none;
+          border: 1px solid;
         }
       }
     }
@@ -543,7 +553,7 @@ body{
       .scroll-indicator {
             width: 5px;
             height: 5px;
-            top: 307px;
+            top: 288px;
             .second{display: none;}
           }
     }
@@ -568,7 +578,7 @@ body{
       }
     }
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 480px) {
   .weather-section{
   width:100%;
   .section-head{
