@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Noto+Sans+KR:wght@100..900&display=swap');
 
 $sunny: #F7E7B0; //맑음
 $sunny-dark: #F4D66D; //맑음 어두움
@@ -18,4 +18,4 @@ $text-color: #333;
 
 // font
 $font-Kr: "Noto Sans KR", sans-serif;
-$font-En: "Bodoni Moda 18pt", serif;
+$font-En: "Libre Bodoni", "Bodoni Moda", serif;

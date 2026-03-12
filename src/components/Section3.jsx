@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "../style/section3.scss";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FiChevronDown } from "react-icons/fi";
 
 
 
@@ -45,7 +45,7 @@ function Section3() {
   };
 
   return (
-    <section3
+    <div
       ref={sectionRef}
       className={`weather-section ${show ? "show" : ""}`}
       id="weather"
@@ -73,7 +73,9 @@ function Section3() {
 
       <div className="pick-label">
         <span>pick your weather</span>
-        <p>MOVE TO PLAYLIST <FaArrowRightLong /></p>
+        <div className="scroll-indicator">
+          <FiChevronDown size={40} className="arrow first" /><FiChevronDown size={40} className="arrow second" />
+        </div>
       </div>
       
       <div className="weather-filter">
@@ -110,7 +112,7 @@ function Section3() {
               spaceBetween: 250,
             },
             1024: {
-              spaceBetween: 250,
+              spaceBetween: 180,
             },
             960: {
               spaceBetween: 180,
@@ -119,7 +121,7 @@ function Section3() {
               spaceBetween: 120,
             },
             480: {
-              spaceBetween: 40,
+              spaceBetween: 50,
             }
           }}
           grabCursor={true}
@@ -156,7 +158,7 @@ function Section3() {
         </Swiper>
       </div>
 
-    </section3>
+    </div>
   );
 }
 
