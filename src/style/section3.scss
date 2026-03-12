@@ -8,15 +8,14 @@ body{
   position:relative;
   display:flex;
   flex-direction:column;
-  /* background:transparent; */
-  background: #ffd8d8;
+  background:transparent;
 
   .section-head{
     display:flex;
     justify-content:space-between;
     width: 100%;
     max-width: 1440px;
-    margin: 80px auto 80px;
+    margin: 120px auto 80px;
     height: 120px;
   //왼쪽텍스트
     .left{
@@ -181,7 +180,7 @@ body{
       perspective: 1200px; // 입체감 베이스
       opacity: 0;
       transform: translateY(40px);
-      margin-bottom: 150px;
+      margin-bottom: 250px;
 
       .swiper-slide {
         transition: 0.6s ease;
@@ -306,6 +305,7 @@ body{
   .weather-section{
     .section-head{
         max-width: 1280px;
+        margin-top: 60px;
       }
     .pick-label{
       .scroll-indicator {
@@ -315,7 +315,7 @@ body{
           }
     }
     .swiper-area {
-      margin-bottom: 120px;
+      margin-bottom: 160px;
     }
   }
 }
