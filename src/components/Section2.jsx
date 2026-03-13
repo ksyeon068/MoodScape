@@ -499,8 +499,16 @@ grabCursor={true}
 className="detail-swiper"
 breakpoints={{
   0:{
+    slidesPerView:2,
+    spaceBetween:20
+  },
+  380:{
+    slidesPerView:2,
+    spaceBetween:30
+  },
+  420:{
     slidesPerView:3,
-    spaceBetween:12
+    spaceBetween:30
   },
   481:{
     slidesPerView:3,

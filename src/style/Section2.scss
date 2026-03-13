@@ -810,7 +810,7 @@ display:none;
 position:relative;
 top:auto;
 right:auto;
-box-shadow: 1px 1px 5px #555;
+box-shadow: 1px 1px 3px #8383839a;
 
 width:80%;
 
@@ -991,6 +991,7 @@ text-align:center;
 
 .detail-info .desc-tags{
   display: block;
+  height: 30px;
 }
 }
 
@@ -1023,7 +1024,7 @@ width:100%;
 }
 
 .detail-swiper .swiper-slide{
-  width:90px;
+width:auto;
 }
 .detail-card {
     width: 90px;
