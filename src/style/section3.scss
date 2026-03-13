@@ -86,7 +86,7 @@ body{
             position: absolute;
             width: 10px;
             height: 10px;
-            top: 340px; left: 50%;
+            top: 380px; left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
@@ -311,7 +311,7 @@ body{
       .scroll-indicator {
             width: 10px;
             height: 10px;
-            top: 340px;
+            top: 320px
           }
     }
     .swiper-area {
@@ -346,7 +346,7 @@ body{
       .scroll-indicator {
             width: 10px;
             height: 10px;
-            top: 320px;
+            top: 300px;
           }
     }
     //날씨버튼
@@ -401,7 +401,7 @@ body{
       .scroll-indicator {
             width: 5px;
             height: 5px;
-            top: 343px;
+            top: 320px;
           }
     }
     //날씨버튼
@@ -458,7 +458,7 @@ body{
 @media screen and (max-width: 720px) {
   .weather-section{
     .section-head{
-        margin-bottom: 50px;
+        margin-bottom: 100px;
         max-width: 520px;
         flex-direction:column;
         text-align: center;
@@ -503,7 +503,7 @@ body{
       .scroll-indicator {
             width: 5px;
             height: 5px;
-            top: 307px;
+            top: 338px;
             .second{display: none;}
           }
     }
