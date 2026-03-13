@@ -45,7 +45,7 @@ function Section3() {
   };
 
   return (
-    <section3
+    <div
       ref={sectionRef}
       className={`weather-section ${show ? "show" : ""}`}
       id="weather"
@@ -112,7 +112,7 @@ function Section3() {
               spaceBetween: 250,
             },
             1024: {
-              spaceBetween: 250,
+              spaceBetween: 180,
             },
             960: {
               spaceBetween: 180,
@@ -158,7 +158,7 @@ function Section3() {
         </Swiper>
       </div>
 
-    </section3>
+    </div>
   );
 }
 
