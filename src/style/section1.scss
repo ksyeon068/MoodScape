@@ -763,13 +763,13 @@
     }
     
     .weather-overlay {
-      top: 12vh; 
+      top: 17vh; 
       right: 50%; 
       transform: translate(50%, -10px); 
       bottom: auto;
       width: 90%;
       height: auto; 
-      max-height: 85vh; 
+      max-height: 80vh; 
       overflow-y: auto; 
       padding-bottom: 20px;
       -ms-overflow-style: none; 
