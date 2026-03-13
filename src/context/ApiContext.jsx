@@ -6,7 +6,8 @@ export const ApiProvider = ({ children }) => {
 
   const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-  const [weather, setWeather] = useState("sunny"); // ⭐ 여기 추가
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const getWeatherType = (apiWeather) => {
 
@@ -29,7 +30,7 @@ export const ApiProvider = ({ children }) => {
       Haze: "misty"
     };
 
-    return weatherMap[apiWeather] || "sunny";
+    return weatherMap[apiWeather] || null;
   };
 
   // ⭐ 여기서 날씨 API 한번만 호출
@@ -49,13 +50,14 @@ export const ApiProvider = ({ children }) => {
           const type = getWeatherType(apiWeather);
 
           setWeather(type);
+          setLoading(false);
         });
 
     });
   }, []);
 
   return (
-    <ApiContext.Provider value={{ WEATHER_API_KEY, getWeatherType, weather }}>
+    <ApiContext.Provider value={{ WEATHER_API_KEY, getWeatherType, weather, loading  }}>
       {children}
     </ApiContext.Provider>
   );
