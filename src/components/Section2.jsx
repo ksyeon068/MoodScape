@@ -400,7 +400,7 @@ backgroundImage:`url(/music/${weatherFolder}/playlist${item}/cover1.jpg)`
   
   </div>
   
-  <p>Track {trackIndex+1}</p>
+  <p className="tracktext">Track {trackIndex+1}</p>
   
   {/* NEW DESCRIPTION PANEL */}
   
