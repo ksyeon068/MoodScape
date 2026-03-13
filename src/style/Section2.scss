@@ -11,7 +11,7 @@ box-sizing:border-box;
 position:relative;
 width:100%;
 min-height:100vh;
-padding:160px 0;
+padding:120px 0;
 display:block;
 
 .section2-inner{
@@ -586,7 +586,9 @@ animation:weatherFade .5s ease;
 max-width:1200px;
 }
 
-
+.playlist-nav {
+width: 450px;
+}
 
 .playlist-list{
 
