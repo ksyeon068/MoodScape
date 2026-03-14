@@ -477,18 +477,18 @@ margin:50px 0 20px;
 
 .detail-swiper{
 
-overflow:visible;
+overflow:hidden;
 
 .swiper{
-overflow:visible;
+overflow:hidden;
 }
 
 .swiper-wrapper{
-overflow:visible;
+overflow:hidden;
 }
 
 .swiper-slide{
-overflow:visible;
+overflow:hidden;
 width:160px;
 }
 
@@ -941,7 +941,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:15px;
-overflow:visible;
 }
 
 .playlist-card{
