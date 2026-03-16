@@ -807,7 +807,12 @@
       bottom: 17%; 
       width: 90%;
       &.hidden { transform: translate(-50%, 10px); }
+      &.hidden-mobile {
+          opacity: 0;
+          pointer-events: none;
+      }
     }
+
 
     .playlist-overlay {
       left: 50%; 

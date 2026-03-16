@@ -237,7 +237,7 @@ const Section1 = () => {
         />
 
         {/* --- [1] 기본 플레이어 위젯 --- */}
-        <div className={`music-widget ${isMusicList ? 'hidden' : ''}`} onClick={(e) => e.stopPropagation()}>
+        <div className={`music-widget ${isMusicList ? 'hidden' : ''} ${isWeatherDetail ? 'hidden-mobile' : ''}`} onClick={(e) => e.stopPropagation()}>
           <div className="player-view">
             <div className="progress-area">
               <span className="time">{formatTime(currentTime)}</span>
