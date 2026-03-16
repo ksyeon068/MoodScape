@@ -731,7 +731,7 @@
 
 /* 4. 960px 이하 */
 @media (max-width: 960px) {
-  .hero-container .inner {
+  .hero-container .inner {max-width: 900px;
     .music-widget, .playlist-overlay { width: 320px; }
     .weather-widget { width: 320px; }
     .weather-overlay { width: 500px; }
@@ -752,7 +752,7 @@
       right: 50%; 
       transform: translateX(50%); 
       bottom: auto;
-      width: 90%; 
+      width: 85%; 
       height: 140px;
       &.hidden { transform: translate(50%, -10px); }
       .date-info{
@@ -767,7 +767,7 @@
       right: 50%; 
       transform: translate(50%, -10px); 
       bottom: auto;
-      width: 90%;
+      width: 85%;
       height: auto; 
       max-height: 80vh; 
       overflow-y: auto; 
@@ -805,7 +805,7 @@
       left: 50%; 
       transform: translateX(-50%); 
       bottom: 17%; 
-      width: 90%;
+      width: 85%;
       &.hidden { transform: translate(-50%, 10px); }
       &.hidden-mobile {
           opacity: 0;
@@ -818,7 +818,7 @@
       left: 50%; 
       transform: translate(-50%, 10px); 
       bottom: 17%;
-      width: 90%; 
+      width: 85%; 
       height: auto; 
       min-height: 0;   
       max-height: 75vh; 
